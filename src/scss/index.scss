@@ -1,0 +1,68 @@
+/**
+ * Created by Capricorncd.
+ * https://github.com/capricorncd
+ * Date: 2020-08-08 15:55
+ */
+.zx-calendar {
+  * {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    list-style: none;
+  }
+  .zx-calendar-header-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .__l, .__r {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      background: aqua;
+      display: flex;
+      align-items: center;
+      button {
+        outline: none;
+        min-width: 20px;
+      }
+    }
+    .__l {
+      left: 0;
+      justify-content: flex-start;
+    }
+    .__r {
+      right: 0;
+      justify-content: flex-end;
+    }
+  }
+  .zx-calendar-week-wrapper {
+    display: flex;
+    .__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+  }
+  .zx-calendar-body-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    .__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 14.2857142857%;
+      position: relative;
+      min-height: 40px;
+      cursor: pointer;
+      &.is-disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      &.is-holiday {}
+      &.is-today {}
+      &.is-selected {}
+    }
+  }
+}
