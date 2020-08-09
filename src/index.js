@@ -21,6 +21,10 @@ const DEF_OPTIONS = {
   type: 'date',
   isFullWeek: false,
   titleFormatter: 'yyyy/MM',
+  // item suffix
+  itemSuffix: null,
+  // default selected date
+  defaultDate: null,
 }
 
 function ZxCalendar(params) {
@@ -49,7 +53,7 @@ function ZxCalendar(params) {
     currentDate: date,
     currentDay: today,
     current: today.split('/'),
-    selected: today,
+    selected: options.defaultDate,
     dates: [],
     months: [],
     years: []
@@ -230,7 +234,7 @@ ZxCalendar.prototype = {
   },
   setDate(str) {
     const date = createDate(str)
-    this.data.selected = formatDate(date, 'yyyy/MM/dd')
+    this.data.selected = date ? formatDate(date, 'yyyy/MM/dd') : null
     this._updateDom()
   },
   _setCurrentDate(dateStr) {
@@ -263,7 +267,9 @@ ZxCalendar.prototype = {
   createYears() {
     const years = []
     const systemYear = this.data.today.substr(0, 4)
-    const selectedFullYear = this.data.selected.substr(0, 4)
+    const selectedFullYear = this.data.selected
+      ? this.data.selected.substr(0, 4)
+      : null
     let { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
     let tempText
     for (let i = startFullYear; i <= endFullYear; i++) {
@@ -286,7 +292,9 @@ ZxCalendar.prototype = {
   createMonths() {
     const months = []
     const systemMonth = this.data.today.substr(0, 7)
-    const selectedMonth = this.data.selected.substr(0, 7)
+    const selectedMonth = this.data.selected
+      ? this.data.selected.substr(0, 7)
+      : null
     const prefix = this.data.current[0] + '/'
     let tempText
     for (let i = 1; i <= 12; i++) {
@@ -337,7 +345,7 @@ ZxCalendar.prototype = {
         value: day,
         week: weekIndex++,
         disabled: !day || false,
-        holiday: false,
+        holiday: '',
         selected: selectedDay === tempFullText,
         current: this.data.today === tempFullText
       }
@@ -359,14 +367,24 @@ ZxCalendar.prototype = {
     }
     $('.__title-wrapper', this.$els.header).innerText = title
     // body
-    let classList
+    let { itemSuffix, showHoliday } = this.options
+    let classList, tempArr
     this.$els.body.innerHTML = list.reduce((prev, item, i) => {
       classList = ['__item']
       if (item.disabled) classList.push('is-disabled')
       if (item.holiday) classList.push('is-holiday')
       if (item.selected) classList.push('is-selected')
       if (item.current) classList.push('is-current')
-      prev.push(`<div class="${classList.join(' ')}" data-index="${i}"><span class="__text">${item.text}</span></div>`)
+      tempArr = [`<div class="${classList.join(' ')}" data-index="${i}" title="${item.holiday}">`]
+      tempArr.push(`<span class="__text">${item.text}</span>`)
+      if (itemSuffix) {
+        tempArr.push(`<span class="__suffix">${itemSuffix}</span>`)
+      }
+      if (showHoliday && item.holiday) {
+        tempArr.push(`<span class="__holiday">${item.holiday}</span>`)
+      }
+      tempArr.push('</div>')
+      prev.push(tempArr.join(''))
       return prev
     }, []).join('')
   },

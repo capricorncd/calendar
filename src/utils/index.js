@@ -83,15 +83,11 @@ function createDate(str) {
       date = new Date([s.substr(0, 4), s.substr(4, 2), '01'].join('/'))
     } else if (len === 4) {
       date = new Date(s + '/01/01')
-    } else {
-      throw new Error(`Parameter[${str}] is invalid.`)
     }
   } else if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/.test(str)) {
     date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
   } else if (/^(\d{4})[-/](\d{1,2})/.test(str)) {
     date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
-  } else {
-    throw new Error(`Parameter[${str}] is invalid.`)
   }
   return date
 }

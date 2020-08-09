@@ -26,29 +26,50 @@
       align-items: center;
       button {
         outline: none;
-        min-width: 20px;
-        transition: box-shadow,transform,opacity .3s cubic-bezier(.4,0,.2,1);
+        transition: box-shadow,transform,opacity .2s cubic-bezier(.4,0,.2,1);
         cursor: pointer;
         border: 0;
         width: 2rem;
         height: 2rem;
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.7;
+        &:before {
+          content: '';
+          margin-left: -8px;
+          width: 0.5rem;
+          height: 0.5rem;
+          border-top: 2px solid #999;
+          border-right: 2px solid #999;
+          transform: rotate(45deg);
+        }
+        &:hover {
+          opacity: 1;
+        }
       }
     }
     .__l {
-      left: 0;
+      left: 5px;
       justify-content: flex-start;
+      button {
+        &:before {
+          margin-left: 8px;
+          transform: rotate(225deg);
+        }
+      }
     }
     .__r {
-      right: 0;
+      right: 5px;
       justify-content: flex-end;
     }
     .__title-wrapper {
       display: flex;
       justify-content: center;
       flex: 1;
-      margin: 0 2.4rem;
+      margin: 0 3rem;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -91,6 +112,16 @@
       &.is-selected {
         color: #fff;
         background: darkred;
+      }
+      .__holiday {
+        position: absolute;
+        bottom: 2px;
+        width: 4px;
+        height: 4px;
+        background: #f30;
+        border-radius: 50%;
+        overflow: hidden;
+        text-indent: -9999px;
       }
     }
     &.is-month {

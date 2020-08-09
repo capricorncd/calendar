@@ -21,6 +21,7 @@ const zxCalendar = new ZxCalendar({
   lang: 'jp',
   isFullWeek: false,
   titleFormatter: 'yyyy年MM月',
+  showHoliday: true,
 })
 
 log('zxCalendar', zxCalendar)
@@ -40,6 +41,7 @@ const zxCalendar3 = new ZxCalendar({
   lang: 'jp',
   type: 'year',
   titleFormatter: 'yyyy年-yyyy年',
+  // itemSuffix: '年'
 })
 
 log('zxCalendar3', zxCalendar3)
@@ -50,13 +52,15 @@ const zxCalendar4 = new ZxCalendar({
   lang: 'jp',
   type: 'month',
   titleFormatter: 'yyyy年',
+  itemSuffix: '月',
+  defaultDate: '2020/01',
 })
 
 log('zxCalendar4', zxCalendar4)
 
 setTimeout(function () {
-  zxCalendar.setDate('2020/05/12')
-}, 5000)
+  zxCalendar.setDate('2020-08-12')
+}, 3000)
 
 zxCalendar.on('change', item => {
   logStr('zxCalendar change', item)
