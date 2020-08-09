@@ -19,11 +19,6 @@ const WEEKS = {
   }
 }
 
-const HOLIDAYS = {
-  jp: {},
-  zh: {}
-}
-
 /**
  * init config
  * @param options
@@ -33,7 +28,6 @@ function initConfig(options) {
   const lang = options.lang || 'en'
   return {
     weeks: WEEKS[lang] || WEEKS.en,
-    holidays: HOLIDAYS[lang] || HOLIDAYS.zh
   }
 }
 

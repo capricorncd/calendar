@@ -12,6 +12,7 @@ import './scss/index.scss'
 // title formatter
 const DEF_YEAR_TITLE_FORMATTER = 'yyyy-yyyy'
 const DEF_MONTH_TITLE_FORMATTER = 'yyyy'
+
 // default options
 const DEF_OPTIONS = {
   el: null,
@@ -28,6 +29,7 @@ const DEF_OPTIONS = {
   itemSuffix: null,
   // default selected date
   defaultDate: null,
+  holidayFormatter: null
 }
 
 // reset-item-inner-size
@@ -54,9 +56,8 @@ function ZxCalendar(params = {}) {
   // on event list
   this._eventList = {}
   // config
-  const { weeks, holidays } = initConfig(this.options)
+  const { weeks } = initConfig(this.options)
   this.weeks = this.options.isFullWeek ? weeks.full : weeks.abbr
-  this.holidays = holidays
   // dom
   this.$els = {}
   // data
@@ -350,24 +351,30 @@ ZxCalendar.prototype = {
     }
     // create days
     let weekIndex = 0
-    let tempText
+    let tempText, tempItem
     let prefix = this.data.current.slice(0, 2).join('/') + '/'
     const selectedDay = this.data.selected
+    const { holidayFormatter } = this.options
     this.data.dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
       tempText = day > 0 ? toTwoDigits(day) : ''
       let tempFullText = prefix + tempText
-      return {
+      tempItem = {
         text: tempText,
         fullText: day > 0 ? tempFullText : '',
         value: day,
         week: weekIndex++,
         disabled: !day || false,
-        holiday: 'vv',
+        holiday: false,
         selected: selectedDay === tempFullText,
         current: this.data.today === tempFullText
       }
+      // customer holiday
+      if (typeof holidayFormatter === 'function') {
+        tempItem.holiday = holidayFormatter(tempItem)
+      }
+      return tempItem
     })
   },
   _createBodyDom(list) {

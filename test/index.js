@@ -22,6 +22,9 @@ const zxCalendar = new ZxCalendar({
   isFullWeek: false,
   titleFormatter: 'yyyy年MM月',
   showHoliday: true,
+  holidayFormatter: function (item) {
+    return item.value % 3 === 1 ? 'hello world' : false
+  }
 })
 
 log('zxCalendar', zxCalendar)
