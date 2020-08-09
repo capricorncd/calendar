@@ -3,9 +3,10 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 15:49
  */
-import { initConfig } from './config'
-import { $, createDate, createDom, formatDate, getDateInfo, toTwoDigits } from './utils'
-import { calendarVNode, headerVNode, bodyVNode, weekVNode } from './v-node'
+import { initConfig } from './config/index'
+import { createDate, formatDate, getDateInfo, getYearInfo, toNumber, toTwoDigits } from './utils/index'
+import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
+import { calendarVNode, headerVNode, bodyVNode, getWeekDom } from './config/v-node'
 import './scss/index.scss'
 
 // default options
@@ -19,8 +20,7 @@ const DEF_OPTIONS = {
   // date/month/year
   type: 'date',
   isFullWeek: false,
-  headMonthFormatter: 'yyyy/MM',
-  headYearFormatter: 'yyyy'
+  titleFormatter: 'yyyy/MM',
 }
 
 function ZxCalendar(params) {
@@ -49,8 +49,10 @@ function ZxCalendar(params) {
     currentDate: date,
     currentDay: today,
     current: today.split('/'),
-    days: [],
-    months: []
+    selected: today,
+    dates: [],
+    months: [],
+    years: []
   }
   // initial
   this._initDom()
@@ -62,7 +64,7 @@ ZxCalendar.prototype = {
    * event list
    * @param args
    */
-  on(...args) {
+  emit(...args) {
     const eventName = args[0]
     if (this._eventList[eventName]) {
       this._eventList[eventName].forEach(fn => {
@@ -70,8 +72,8 @@ ZxCalendar.prototype = {
       })
     }
   },
-  emit(eventName, fn) {
-    if (typeof eventName === 'string' || typeof fn !== 'function') return
+  on(eventName, fn) {
+    if (typeof eventName !== 'string' || typeof fn !== 'function') return
     if (!this._eventList[eventName]) {
       this._eventList[eventName] = []
     }
@@ -90,22 +92,17 @@ ZxCalendar.prototype = {
   _initDom() {
     const parent = $(this.options.el)
     const calendar = createDom(calendarVNode)
+    // header
     const header = createDom(headerVNode)
-    // week
-    this.weeks.forEach((item, i) => {
-      let isWeekend = i === 0 || i === 6
-      weekVNode.children.push({
-        attrs: {
-          class: '__item' + (isWeekend ? ' is-weekend' : '')
-        },
-        children: [item]
-      })
-    })
-    const week = createDom(weekVNode)
-    const body = createDom(bodyVNode)
-    // append to calendar
     calendar.appendChild(header)
-    calendar.appendChild(week)
+    // week
+    let week = getWeekDom(this.weeks, this.options)
+    if (week) calendar.appendChild(week)
+    // body
+    const bodyVNodeCopy = JSON.parse(JSON.stringify(bodyVNode))
+    // zx-calendar-body-wrapper is-date is-month is-year
+    bodyVNodeCopy.attrs.class += ' is-' + this.options.type
+    const body = createDom(bodyVNodeCopy)
     calendar.appendChild(body)
     // append to out wrapper
     parent.appendChild(calendar)
@@ -117,6 +114,108 @@ ZxCalendar.prototype = {
       parent,
     }
     this._updateDom()
+    // init events
+    this.eventsHandler = this._eventsHandler.bind(this)
+    this._initEvents()
+  },
+  _initEvents() {
+    this.$els.calendar.addEventListener('click', this.eventsHandler)
+  },
+  _eventsHandler(e) {
+    e.stopPropagation()
+    const el = e.target
+    let className = el.className.split(' ')
+    // prev, next
+    if (className.includes('__prev-button')) {
+      this._onPrevClick()
+    } else if (className.includes('__next-button')) {
+      this._onNextClick()
+    } else if (className.includes('__title-wrapper')) {
+      this._onTitleClick()
+    } else if (className.includes('__item-week')) {
+      this._onWeekClick()
+    } else {
+      // get item
+      const item = getSelectItem(el, className, this.$els.calendar)
+      if (item.el) {
+        this._onItemClick(item)
+      }
+    }
+  },
+  _onTitleClick() {
+    console.log('_onTitleClick')
+  },
+  _onPrevClick() {
+    let [year, month] = this.data.current
+    switch (this.options.type) {
+      case 'date':
+        month = toNumber(month) - 1
+        if (month === 0) {
+          year = toNumber(year) - 1
+          month = 12
+        }
+        this._setCurrentDate([year, month, '01'].join('/'))
+        break
+      case 'month':
+        this._setCurrentDate(year - 1)
+        break
+      case 'year':
+        const temp = this.data.years[0] || {}
+        this._setCurrentDate(temp.value - 1)
+        break
+    }
+  },
+  _onNextClick() {
+    let [year, month] = this.data.current
+    switch (this.options.type) {
+      case 'date':
+        month = toNumber(month) + 1
+        if (month === 13) {
+          year = toNumber(year) + 1
+          month = 1
+        }
+        this._setCurrentDate([year, month, '01'].join('/'))
+        break
+      case 'month':
+        this._setCurrentDate(toNumber(year) + 1)
+        break
+      case 'year':
+        const years = this.data.years
+        const temp = years[years.length - 1] || {}
+        this._setCurrentDate(temp.value + 1)
+        break
+    }
+  },
+  _onWeekClick() {
+    console.log('_onWeekClick')
+  },
+  /**
+   * on item click
+   * @param el
+   * @param className
+   * @param index
+   * @private
+   */
+  _onItemClick({ el, className, index }) {
+    // disabled
+    if (className.includes('is-disabled')) return
+    // data item
+    const arr = this.data[this.options.type + 's'] || []
+    const itemData = arr[index] || {}
+    // is not selected
+    if (!className.includes('is-selected')) {
+      // remove class is-selected
+      const [ ...currentItems ] = this.$els.body.querySelectorAll('.is-selected')
+      currentItems.forEach(item => {
+        removeClass(item, 'is-selected')
+      })
+      // add class is-selected
+      className.push('is-selected')
+      el.className = className.join(' ')
+      itemData.selected = true
+      this.data.selected = itemData.fullText
+      this.emit('change', itemData)
+    }
   },
   /**
    * set/change options
@@ -129,27 +228,56 @@ ZxCalendar.prototype = {
       }
     })
   },
-  setDate(dateStr) {
-    const ret = {}
+  setDate(str) {
+    const date = createDate(str)
+    this.data.selected = formatDate(date, 'yyyy/MM/dd')
     this._updateDom()
   },
-  _changeMonth(type) {
-    const ret = {}
-    switch (type) {
-      case 'prev':
-        break
-      case 'next':
-        break
-    }
-    this.setDate(ret)
+  _setCurrentDate(dateStr) {
+    // yyyy -> yyyy/01/01
+    // yyyy/MM -> yyyy/MM/01
+    // yyyy/MM/dd -> yyyy/MM/dd
+    const date = createDate(dateStr)
+    const currentDay = formatDate(date, 'yyyy/MM/dd')
+    this.data.currentDate = date
+    this.data.currentDay = currentDay
+    this.data.current = currentDay.split('/')
+    this._updateDom()
   },
   _updateDom() {
-    if (this.type === 'month') {
-
-    } else {
-      this.createDays()
-      this._createDaysDom()
+    switch (this.options.type) {
+      case 'date':
+        this.createDays()
+        this._createBodyDom(this.data.dates)
+        break
+      case 'month':
+        this.createMonths()
+        this._createBodyDom(this.data.months)
+        break
+      case 'year':
+        this.createYears()
+        this._createBodyDom(this.data.years)
+        break
     }
+  },
+  createYears() {
+    const years = []
+    const systemYear = this.data.today.substr(0, 4)
+    const selectedFullYear = this.data.selected.substr(0, 4)
+    let { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
+    let tempText
+    for (let i = startFullYear; i <= endFullYear; i++) {
+      tempText = i.toString()
+      years.push({
+        text: tempText,
+        fullText: tempText + '/01/01',
+        value: i,
+        disabled: false,
+        selected: selectedFullYear === tempText,
+        current: systemYear === tempText
+      })
+    }
+    this.data.years = years
   },
   /**
    * create month list
@@ -157,21 +285,25 @@ ZxCalendar.prototype = {
    */
   createMonths() {
     const months = []
-    let index = -1
+    const systemMonth = this.data.today.substr(0, 7)
+    const selectedMonth = this.data.selected.substr(0, 7)
+    const prefix = this.data.current[0] + '/'
+    let tempText
     for (let i = 1; i <= 12; i++) {
-      if (i % 3 === 1) {
-        months.push([])
-        index++
-      }
-      months[index].push({
-        text: toTwoDigits(i)
+      tempText = toTwoDigits(i)
+      months.push({
+        text: tempText,
+        fullText: prefix + tempText + '/01',
+        value: i,
+        disabled: false,
+        selected: selectedMonth === prefix + tempText,
+        current: systemMonth === prefix + tempText,
       })
     }
-    return months
+    this.data.months = months
   },
   /**
    * create days
-   * @param month
    * @returns {any}
    */
   createDays() {
@@ -190,53 +322,58 @@ ZxCalendar.prototype = {
       }
     }
     // create days
-    let index = 0
     let weekIndex = 0
-    let tempDayText
-    let monthText = this.data.current.slice(0, 2).join('/') + '/'
-    this.data.days = days.reduce((prev, day) => {
-      if (prev[index].length >= 7) {
-        index++
-        prev[index] = []
-      }
+    let tempText
+    let prefix = this.data.current.slice(0, 2).join('/') + '/'
+    const selectedDay = this.data.selected
+    this.data.dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
-      tempDayText = day > 0 ? toTwoDigits(day) : ''
-      let tempFullText = monthText + tempDayText
-      prev[index].push({
-        text: tempDayText,
+      tempText = day > 0 ? toTwoDigits(day) : ''
+      let tempFullText = prefix + tempText
+      return {
+        text: tempText,
         fullText: day > 0 ? tempFullText : '',
         value: day,
         week: weekIndex++,
         disabled: !day || false,
         holiday: false,
-        selected: this.data.currentDay === tempFullText,
-        today: this.data.today === tempFullText
-      })
-      return prev
-    }, [[]])
+        selected: selectedDay === tempFullText,
+        current: this.data.today === tempFullText
+      }
+    })
   },
-  _createDaysDom() {
+  _createBodyDom(list) {
     // header
-    $('.__title-wrapper', this.$els.header)
-      .innerText = formatDate(this.data.currentDate, this.options.headMonthFormatter)
-
+    let titleFormatter = this.options.titleFormatter
+    let title = null
+    if (this.options.type === 'year') {
+      const firstItem = list[0]
+      const lastItem = list[list.length - 1]
+      let index = 0
+      title = titleFormatter.replace(/(y+)/g, () => {
+        return index++ === 0 ? firstItem.text : lastItem.text
+      })
+    } else {
+      title = formatDate(this.data.currentDate, titleFormatter)
+    }
+    $('.__title-wrapper', this.$els.header).innerText = title
     // body
     let classList
-    let body = this.data.days.reduce((prev, arr) => {
-      let temp = ''
-      arr.forEach(item => {
-        classList = ['__item']
-        if (item.disabled) classList.push('is-disabled')
-        if (item.holiday) classList.push('is-holiday')
-        if (item.selected) classList.push('is-selected')
-        if (item.today) classList.push('is-today')
-        temp += `<div class="${classList.join(' ')}"><span class="__text">${item.text}</span></div>`
-      })
-      return prev + temp
-    }, '')
-    this.$els.body.innerHTML = body
+    this.$els.body.innerHTML = list.reduce((prev, item, i) => {
+      classList = ['__item']
+      if (item.disabled) classList.push('is-disabled')
+      if (item.holiday) classList.push('is-holiday')
+      if (item.selected) classList.push('is-selected')
+      if (item.current) classList.push('is-current')
+      prev.push(`<div class="${classList.join(' ')}" data-index="${i}"><span class="__text">${item.text}</span></div>`)
+      return prev
+    }, []).join('')
   },
+  destroy() {
+    this.$els.calendar.removeEventListener('click', this.eventsHandler)
+    this.$els.parent.removeChild(this.$els.calendar)
+  }
 }
 
 export default ZxCalendar

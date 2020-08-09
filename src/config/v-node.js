@@ -1,3 +1,5 @@
+import { createDom } from '../utils/dom'
+
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
@@ -25,16 +27,9 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__prev-year-button'
+            class: '__prev-button'
           }
-        },
-        {
-          tag: 'button',
-          attrs: {
-            type: 'button',
-            class: '__prev-month-button'
-          }
-        },
+        }
       ]
     },
     {
@@ -51,16 +46,9 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__next-month-button'
+            class: '__next-button'
           }
-        },
-        {
-          tag: 'button',
-          attrs: {
-            type: 'button',
-            class: '__next-year-button'
-          }
-        },
+        }
       ]
     }
   ]
@@ -81,9 +69,30 @@ const bodyVNode = {
   }
 }
 
+/**
+ * get week dom
+ * @param weeks
+ * @param options
+ * @returns {Node|null}
+ */
+function getWeekDom(weeks, options) {
+  if (options.type !== 'date') return null
+  const weekNodeCopy = JSON.parse(JSON.stringify(weekVNode))
+  weeks.forEach((item, i) => {
+    let isWeekend = i === 0 || i === 6
+    weekNodeCopy.children.push({
+      attrs: {
+        class: '__item-week' + (isWeekend ? ' is-weekend' : '')
+      },
+      children: [item]
+    })
+  })
+  return createDom(weekNodeCopy)
+}
+
 export {
   calendarVNode,
   headerVNode,
   bodyVNode,
-  weekVNode,
+  getWeekDom,
 }

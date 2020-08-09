@@ -81,6 +81,8 @@ function createDate(str) {
     // yyyyMM
     else if (len === 6) {
       date = new Date([s.substr(0, 4), s.substr(4, 2), '01'].join('/'))
+    } else if (len === 4) {
+      date = new Date(s + '/01/01')
     } else {
       throw new Error(`Parameter[${str}] is invalid.`)
     }
@@ -101,8 +103,16 @@ function createDate(str) {
  * @returns {{firstDayOfWeek: number, lastDayOfMonth: number}}
  */
 function getDateInfo({ current, currentDate }) {
+  let year = currentDate.getFullYear()
+  let month = currentDate.getMonth()
+  if (month === 11) {
+    year += 1
+    month = 1
+  } else {
+    month += 1
+  }
   // get timestamp of the next month
-  let timestamp = +createDate(`${currentDate.getFullYear()}${toTwoDigits(currentDate.getMonth() + 2)}`)
+  let timestamp = +createDate(`${year}/${toTwoDigits(month)}/01`)
   // get first day of this month
   let arr = current.slice(0, 2)
   arr.push('01')
@@ -112,56 +122,30 @@ function getDateInfo({ current, currentDate }) {
   }
 }
 
-/**
- * create dom
- * @param vNode
- * @returns {Node}
- */
-function createDom(vNode) {
-  if (typeof vNode === 'string') {
-    return document.createTextNode(vNode)
+function getYearInfo(currentFullYear) {
+  const currentYear = toNumber(currentFullYear.substr(2))
+  // Integer multiples of 20
+  const flag = currentYear % 20 === 0
+  const floor = Math.floor(currentYear / 20)
+  let startYear = (flag ? floor - 1 : floor) * 20 + 1
+  let prefix = toNumber(currentFullYear.substr(0, 2))
+  if (floor === 0 && currentYear === 0) {
+    prefix -= 1
+    startYear = 81
   }
-  const el = document.createElement(vNode.tag || 'div')
-  // attrs
-  const attrs = vNode.attrs
-  if (attrs && typeof attrs === 'object') {
-    Object.keys(attrs).forEach(key => {
-      el.setAttribute(key, attrs[key])
-    })
+  let startFullYear = prefix * 100 + startYear
+  let endFullYear = startFullYear + 19
+  return {
+    startFullYear,
+    endFullYear
   }
-  // children
-  const children = vNode.children
-  if (Array.isArray(children) && children.length > 0) {
-    children.forEach(child => {
-      el.appendChild(createDom(child))
-    })
-  }
-  return el
-}
-
-/**
- * query selector
- * @param s
- * @param context
- * @returns {any}
- */
-function $(s, context = document) {
-  if (!s) return null
-  let el = null
-  if (typeof s === 'string') {
-    el = context.querySelector(s)
-  } else if (typeof s === 'object' && s.nodeType === 1) {
-    el = s
-  }
-  return el
 }
 
 export {
-  $,
   createDate,
-  createDom,
   formatDate,
   getDateInfo,
+  getYearInfo,
   toNumber,
   toTwoDigits
 }

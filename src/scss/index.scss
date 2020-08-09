@@ -4,27 +4,36 @@
  * Date: 2020-08-08 15:55
  */
 .zx-calendar {
+  padding: 0 0 10px;
   * {
     margin: 0;
     padding: 0;
     outline: none;
     list-style: none;
+    box-sizing: border-box;
   }
   .zx-calendar-header-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 3rem;
     .__l, .__r {
       position: absolute;
       top: 0;
       height: 100%;
-      background: aqua;
       display: flex;
       align-items: center;
       button {
         outline: none;
         min-width: 20px;
+        transition: box-shadow,transform,opacity .3s cubic-bezier(.4,0,.2,1);
+        cursor: pointer;
+        border: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.3);
       }
     }
     .__l {
@@ -35,10 +44,23 @@
       right: 0;
       justify-content: flex-end;
     }
+    .__title-wrapper {
+      display: flex;
+      justify-content: center;
+      flex: 1;
+      margin: 0 2.4rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
   }
   .zx-calendar-week-wrapper {
+    margin: 0 10px;
     display: flex;
-    .__item {
+    .__item-week {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -46,6 +68,7 @@
     }
   }
   .zx-calendar-body-wrapper {
+    margin: 0 10px;
     display: flex;
     flex-wrap: wrap;
     .__item {
@@ -61,8 +84,24 @@
         cursor: default;
       }
       &.is-holiday {}
-      &.is-today {}
-      &.is-selected {}
+      // today, this month, this year
+      &.is-current {
+        background: aqua;
+      }
+      &.is-selected {
+        color: #fff;
+        background: darkred;
+      }
+    }
+    &.is-month {
+      .__item {
+        flex: 0 0 33.333333%;
+      }
+    }
+    &.is-year {
+      .__item {
+        flex: 0 0 25%;
+      }
     }
   }
 }
