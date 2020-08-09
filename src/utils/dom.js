@@ -82,10 +82,6 @@ function removeClass(el, className) {
   el.className = arr.join(' ')
 }
 
-function addClass(el, className) {
-  el.className
-}
-
 export {
   $,
   createDom,

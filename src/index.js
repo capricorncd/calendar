@@ -5,7 +5,7 @@
  */
 import { initConfig } from './config/index'
 import { createDate, formatDate, getDateInfo, getYearInfo, toNumber, toTwoDigits } from './utils/index'
-import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
+import { $, createDom, getSelectItem, removeClass } from './utils/dom'
 import { calendarVNode, headerVNode, bodyVNode, getWeekDom } from './config/v-node'
 import './scss/index.scss'
 
@@ -120,9 +120,6 @@ ZxCalendar.prototype = {
     this._updateDom()
     // init events
     this.eventsHandler = this._eventsHandler.bind(this)
-    this._initEvents()
-  },
-  _initEvents() {
     this.$els.calendar.addEventListener('click', this.eventsHandler)
   },
   _eventsHandler(e) {
