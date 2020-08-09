@@ -5,10 +5,13 @@
  */
 import { initConfig } from './config/index'
 import { createDate, formatDate, getDateInfo, getYearInfo, toNumber, toTwoDigits } from './utils/index'
-import { $, createDom, getSelectItem, removeClass } from './utils/dom'
+import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
 import { calendarVNode, headerVNode, bodyVNode, getWeekDom } from './config/v-node'
 import './scss/index.scss'
 
+// title formatter
+const DEF_YEAR_TITLE_FORMATTER = 'yyyy-yyyy'
+const DEF_MONTH_TITLE_FORMATTER = 'yyyy'
 // default options
 const DEF_OPTIONS = {
   el: null,
@@ -27,10 +30,21 @@ const DEF_OPTIONS = {
   defaultDate: null,
 }
 
-function ZxCalendar(params) {
+// reset-item-inner-size
+const RESET_ITEM_INNER_SIZE_CLASS = 'reset-item-inner-size'
+
+function ZxCalendar(params = {}) {
   const options = {
     ...DEF_OPTIONS,
     ...params
+  }
+  // check type
+  if (!params.titleFormatter) {
+    if (options.type === 'year') {
+      options.titleFormatter = DEF_YEAR_TITLE_FORMATTER
+    } else if (options.type === 'month') {
+      options.titleFormatter = DEF_MONTH_TITLE_FORMATTER
+    }
   }
   // check options
   if (!options.el || !$(options.el)) {
@@ -260,6 +274,14 @@ ZxCalendar.prototype = {
         this._createBodyDom(this.data.years)
         break
     }
+    // reset __item box size
+    const el = $('.__item', this.$els.body)
+    console.log(el.offsetWidth, el.offsetHeight)
+    if (el.offsetWidth > el.offsetHeight) {
+      addClass(this.$els.body, RESET_ITEM_INNER_SIZE_CLASS)
+    } else {
+      removeClass(this.$els.body, RESET_ITEM_INNER_SIZE_CLASS)
+    }
   },
   createYears() {
     const years = []
@@ -342,7 +364,7 @@ ZxCalendar.prototype = {
         value: day,
         week: weekIndex++,
         disabled: !day || false,
-        holiday: '',
+        holiday: 'vv',
         selected: selectedDay === tempFullText,
         current: this.data.today === tempFullText
       }
@@ -365,22 +387,32 @@ ZxCalendar.prototype = {
     $('.__title-wrapper', this.$els.header).innerText = title
     // body
     let { itemSuffix, showHoliday } = this.options
-    let classList, tempArr
+    let classList, tempArr, tagTitle
     this.$els.body.innerHTML = list.reduce((prev, item, i) => {
       classList = ['__item']
       if (item.disabled) classList.push('is-disabled')
-      if (item.holiday) classList.push('is-holiday')
-      if (item.selected) classList.push('is-selected')
-      if (item.current) classList.push('is-current')
-      tempArr = [`<div class="${classList.join(' ')}" data-index="${i}" title="${item.holiday}">`]
-      tempArr.push(`<span class="__text">${item.text}</span>`)
-      if (itemSuffix) {
-        tempArr.push(`<span class="__suffix">${itemSuffix}</span>`)
+      if (item.value > 0) {
+        tagTitle = ''
+        if (item.holiday) {
+          classList.push('is-holiday')
+          tagTitle =` title="${item.holiday}"`
+        }
+        if (item.selected) classList.push('is-selected')
+        if (item.current) classList.push('is-current')
+
+        tempArr = [`<div class="${classList.join(' ')}" data-index="${i}"${tagTitle}>`]
+        tempArr.push('<div class="__inner">')
+        tempArr.push(`<p class="__text">${item.text}`)
+        if (itemSuffix) {
+          tempArr.push(`<span class="__suffix">${itemSuffix}</span>`)
+        }
+        if (showHoliday && item.holiday) {
+          tempArr.push(`<span class="__holiday">${item.holiday}</span>`)
+        }
+        tempArr.push('</p></div></div>')
+      } else {
+        tempArr = [`<div class="${classList.join(' ')}"></div>`]
       }
-      if (showHoliday && item.holiday) {
-        tempArr.push(`<span class="__holiday">${item.holiday}</span>`)
-      }
-      tempArr.push('</div>')
       prev.push(tempArr.join(''))
       return prev
     }, []).join('')

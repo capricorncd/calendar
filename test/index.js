@@ -40,7 +40,7 @@ const zxCalendar3 = new ZxCalendar({
   el: document.querySelector('.container'),
   lang: 'jp',
   type: 'year',
-  titleFormatter: 'yyyy年-yyyy年',
+  // titleFormatter: 'yyyy年-yyyy年',
   // itemSuffix: '年'
 })
 
@@ -51,7 +51,7 @@ const zxCalendar4 = new ZxCalendar({
   el: document.querySelector('.container'),
   lang: 'jp',
   type: 'month',
-  titleFormatter: 'yyyy年',
+  // titleFormatter: 'yyyy年',
   itemSuffix: '月',
   defaultDate: '2020/01',
 })

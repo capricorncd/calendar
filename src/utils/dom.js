@@ -82,8 +82,17 @@ function removeClass(el, className) {
   el.className = arr.join(' ')
 }
 
+function addClass(el, cls) {
+  const className = el.className.split(' ')
+  if (!className.includes(cls)) {
+    className.push(cls)
+    el.className = className.join(' ')
+  }
+}
+
 export {
   $,
+  addClass,
   createDom,
   getSelectItem,
   removeClass,
