@@ -102,7 +102,10 @@ function ZxCalendar(params = {}) {
 
 ZxCalendar.prototype = {
   constructor: ZxCalendar,
-  toDate: toDate,
+  formatDate,
+  toDate,
+  toNumber,
+  toTwoDigits,
   /**
    * event list
    * @param args

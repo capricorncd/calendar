@@ -33,11 +33,13 @@ function toTwoDigits(n) {
 
 /**
  * format date
- * @param date Date
+ * @param srcDate any
  * @param fmt yyyy-MM-dd hh:mm:ss
  * @returns {*}
  */
-function formatDate(date, fmt) {
+function formatDate(srcDate, fmt) {
+  const date = toDate(srcDate)
+  if (!date) return srcDate
   if (/(y+)/i.test(fmt)) {
     fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
   }
