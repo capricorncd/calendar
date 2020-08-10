@@ -122,8 +122,7 @@ ZxCalendar.prototype = {
     }
     this._eventList[eventName].push(fn)
   },
-  off(...args) {
-    const eventName = args[0]
+  off(eventName) {
     if (typeof eventName !== 'string') return
     if (!this._eventList[eventName]) return
     this._eventList[eventName].length = 0
