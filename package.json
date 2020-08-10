@@ -1,6 +1,6 @@
 {
   "name": "zx-calendar",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "calendar",
   "main": "dist/zx-calendar.min.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "zx-calendar"
   ],
   "author": "Capricorncd",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/capricorncd/calendar/issues"
   },
