@@ -34,6 +34,8 @@ const zxCalendar2 = new ZxCalendar({
   el: document.querySelector('.container'),
   lang: 'en',
   isFullWeek: false,
+  dateRange: ['2009/12/09', '2019/12/09'],
+  defaultDate: '2028/10/25'
 })
 
 log('zxCalendar2', zxCalendar2)
@@ -44,7 +46,8 @@ const zxCalendar3 = new ZxCalendar({
   lang: 'jp',
   type: 'year',
   // titleFormatter: 'yyyy年-yyyy年',
-  // itemSuffix: '年'
+  dateRange: ['2009/12/09', '2019/12/09'],
+  itemSuffix: '年'
 })
 
 log('zxCalendar3', zxCalendar3)
@@ -57,6 +60,7 @@ const zxCalendar4 = new ZxCalendar({
   // titleFormatter: 'yyyy年',
   itemSuffix: '月',
   defaultDate: '2020/01',
+  dateRange: ['2009/12/09', '2021/02/01'],
 })
 
 log('zxCalendar4', zxCalendar4)
@@ -76,6 +80,22 @@ zxCalendar3.on('change', item => {
 })
 zxCalendar4.on('change', item => {
   logStr('zxCalendar4 change', item)
+})
+
+zxCalendar.on('error', err => {
+  console.error(err)
+})
+
+zxCalendar2.on('error', err => {
+  console.error(err)
+})
+
+zxCalendar3.on('error', err => {
+  console.error(err)
+})
+
+zxCalendar4.on('error', err => {
+  console.error(err)
 })
 
 export default zxCalendar

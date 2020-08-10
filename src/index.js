@@ -4,9 +4,10 @@
  * Date: 2020-08-08 15:49
  */
 import { initConfig } from './config/index'
-import { createDate, formatDate, getDateInfo, getYearInfo, toNumber, toTwoDigits } from './utils/index'
-import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
+import { checkItemRange, toDate, formatDate, getDateRange, getDateInfo, getYearInfo, toNumber, toTwoDigits } from './utils/index'
+import { $, createDom, getSelectItem, removeClass } from './utils/dom'
 import { calendarVNode, headerVNode, bodyVNode, getWeekDom } from './config/v-node'
+import { createBodyDom, setHeaderBtnStatus } from './utils/private'
 import './scss/index.scss'
 
 // title formatter
@@ -29,11 +30,9 @@ const DEF_OPTIONS = {
   itemSuffix: null,
   // default selected date
   defaultDate: null,
-  holidayFormatter: null
+  // function
+  holidayFormatter: null,
 }
-
-// reset-item-inner-size
-const RESET_ITEM_INNER_SIZE_CLASS = 'reset-item-inner-size'
 
 function ZxCalendar(params = {}) {
   const options = {
@@ -60,18 +59,42 @@ function ZxCalendar(params = {}) {
   this.weeks = this.options.isFullWeek ? weeks.full : weeks.abbr
   // dom
   this.$els = {}
-  // data
-  const date = new Date()
+  // today
+  let date = new Date()
   const today = formatDate(date, 'yyyy/MM/dd')
+  // dateRange
+  const [ dateRangeStart, dateRangeEnd ] = getDateRange(options.dateRange)
+  // after today
+  if (dateRangeStart && +dateRangeStart > +date) {
+    date = dateRangeStart
+  }
+  // before today
+  if (dateRangeEnd && +dateRangeEnd < +date) {
+    date = dateRangeEnd
+  }
+  // check default date
+  let defaultDate = this.toDate(options.defaultDate)
+  if (defaultDate) {
+    if ((dateRangeStart && +defaultDate < +dateRangeStart) || (dateRangeEnd && +defaultDate > +dateRangeEnd)) {
+      let timer = setTimeout(() => {
+        this.emit('error', new Error(`The default date[${options.defaultDate}] is not within the range[${options.dateRange}].`))
+        clearTimeout(timer)
+        timer = null
+      }, 0)
+    } else {
+      date = defaultDate
+    }
+  }
+  const currentDay = formatDate(date, 'yyyy/MM/dd')
   this.data = {
     today: today,
     currentDate: date,
-    currentDay: today,
-    current: today.split('/'),
+    currentDay,
+    current: currentDay.split('/'),
     selected: options.defaultDate,
     dates: [],
     months: [],
-    years: []
+    years: [],
   }
   // initial
   this._initDom()
@@ -79,6 +102,7 @@ function ZxCalendar(params = {}) {
 
 ZxCalendar.prototype = {
   constructor: ZxCalendar,
+  toDate: toDate,
   /**
    * event list
    * @param args
@@ -110,7 +134,11 @@ ZxCalendar.prototype = {
    */
   _initDom() {
     const parent = $(this.options.el)
-    const calendar = createDom(calendarVNode)
+    // calendar
+    const calendarVNodeCopy = JSON.parse(JSON.stringify(calendarVNode))
+    // zx-calendar is-date is-month is-year
+    calendarVNodeCopy.attrs.class += ' is-' + this.options.type
+    const calendar = createDom(calendarVNodeCopy)
     // header
     const header = createDom(headerVNode)
     calendar.appendChild(header)
@@ -118,10 +146,7 @@ ZxCalendar.prototype = {
     let week = getWeekDom(this.weeks, this.options)
     if (week) calendar.appendChild(week)
     // body
-    const bodyVNodeCopy = JSON.parse(JSON.stringify(bodyVNode))
-    // zx-calendar-body-wrapper is-date is-month is-year
-    bodyVNodeCopy.attrs.class += ' is-' + this.options.type
-    const body = createDom(bodyVNodeCopy)
+    const body = createDom(bodyVNode)
     calendar.appendChild(body)
     // append to out wrapper
     parent.appendChild(calendar)
@@ -143,9 +168,9 @@ ZxCalendar.prototype = {
     let className = el.className.split(' ')
     // prev, next
     if (className.includes('__prev-button')) {
-      this._onPrevClick()
+      this._onPrevClick(className.includes('date-only'))
     } else if (className.includes('__next-button')) {
-      this._onNextClick()
+      this._onNextClick(className.includes('date-only'))
     } else if (className.includes('__title-wrapper')) {
       this._onTitleClick()
     } else if (className.includes('__item-week')) {
@@ -161,14 +186,25 @@ ZxCalendar.prototype = {
   _onTitleClick() {
     console.log('_onTitleClick')
   },
-  _onPrevClick() {
+  _onPrevClick(isMonth) {
     let [year, month] = this.data.current
     switch (this.options.type) {
       case 'date':
-        month = toNumber(month) - 1
-        if (month === 0) {
+        if (isMonth) {
+          month = toNumber(month) - 1
+          if (month === 0) {
+            year = toNumber(year) - 1
+            month = 12
+          }
+        } else {
           year = toNumber(year) - 1
-          month = 12
+          // range check
+          const [startRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
+          if (startRangeYear && year <= startRangeYear) {
+            year = startRangeYear
+            const [startMonth] = getDateRange(this.options.dateRange, 'MM')
+            if (startMonth) month = startMonth
+          }
         }
         this._setCurrentDate([year, month, '01'].join('/'))
         break
@@ -181,14 +217,25 @@ ZxCalendar.prototype = {
         break
     }
   },
-  _onNextClick() {
+  _onNextClick(isMonth) {
     let [year, month] = this.data.current
     switch (this.options.type) {
       case 'date':
-        month = toNumber(month) + 1
-        if (month === 13) {
+        if (isMonth) {
+          month = toNumber(month) + 1
+          if (month === 13) {
+            year = toNumber(year) + 1
+            month = 1
+          }
+        } else {
           year = toNumber(year) + 1
-          month = 1
+          // range check
+          const [, endRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
+          if (endRangeYear && year >= endRangeYear) {
+            year = endRangeYear
+            const [, endMonth] = getDateRange(this.options.dateRange, 'MM')
+            if (endMonth) month = endMonth
+          }
         }
         this._setCurrentDate([year, month, '01'].join('/'))
         break
@@ -234,18 +281,15 @@ ZxCalendar.prototype = {
     }
   },
   /**
-   * set/change options
-   * @param params
+   * set/change date range
+   * @param start
+   * @param end
    */
-  setOptions(params) {
-    Object.keys(params).forEach(key => {
-      if (this.options.hasOwnProperty(key)) {
-        this.options[key] = params[key]
-      }
-    })
+  setDateRange(start, end) {
+    this.options.dateRange = [start, end]
   },
   setDate(str) {
-    const date = createDate(str)
+    const date = this.toDate(str)
     this.data.selected = date ? formatDate(date, 'yyyy/MM/dd') : null
     this._updateDom()
   },
@@ -253,7 +297,7 @@ ZxCalendar.prototype = {
     // yyyy -> yyyy/01/01
     // yyyy/MM -> yyyy/MM/01
     // yyyy/MM/dd -> yyyy/MM/dd
-    const date = createDate(dateStr)
+    const date = this.toDate(dateStr)
     const currentDay = formatDate(date, 'yyyy/MM/dd')
     this.data.currentDate = date
     this.data.currentDay = currentDay
@@ -264,77 +308,79 @@ ZxCalendar.prototype = {
     switch (this.options.type) {
       case 'date':
         this.createDays()
-        this._createBodyDom(this.data.dates)
+        createBodyDom('dates', this.data, this.options, this.$els)
         break
       case 'month':
         this.createMonths()
-        this._createBodyDom(this.data.months)
+        createBodyDom('months', this.data, this.options, this.$els)
         break
       case 'year':
         this.createYears()
-        this._createBodyDom(this.data.years)
+        createBodyDom('years', this.data, this.options, this.$els)
         break
-    }
-    // reset __item box size
-    const el = $('.__item', this.$els.body)
-    console.log(el.offsetWidth, el.offsetHeight)
-    if (el.offsetWidth > el.offsetHeight) {
-      addClass(this.$els.body, RESET_ITEM_INNER_SIZE_CLASS)
-    } else {
-      removeClass(this.$els.body, RESET_ITEM_INNER_SIZE_CLASS)
     }
   },
   createYears() {
+    const [startRangeYear, endRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
     const years = []
     const systemYear = this.data.today.substr(0, 4)
     const selectedFullYear = this.data.selected
       ? this.data.selected.substr(0, 4)
       : null
     let { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
-    let tempText
+    let tempText, tempFullText
     for (let i = startFullYear; i <= endFullYear; i++) {
       tempText = i.toString()
+      tempFullText = tempText + '/01/01'
       years.push({
         text: tempText,
-        fullText: tempText + '/01/01',
+        fullText: tempFullText,
         value: i,
-        disabled: false,
+        disabled: checkItemRange(i, startRangeYear, endRangeYear),
         selected: selectedFullYear === tempText,
         current: systemYear === tempText
       })
     }
     this.data.years = years
+    // check first page and last page
+    setHeaderBtnStatus(years, startRangeYear, endRangeYear, this.$els.calendar)
   },
   /**
    * create month list
    * @returns {[]}
    */
   createMonths() {
+    const [startRangeMonth, endRangeMonth] = getDateRange(this.options.dateRange, 'yyyyMM')
     const months = []
     const systemMonth = this.data.today.substr(0, 7)
     const selectedMonth = this.data.selected
       ? this.data.selected.substr(0, 7)
       : null
     const prefix = this.data.current[0] + '/'
-    let tempText
+    const prefixNumber = toNumber(this.data.current[0]) * 100
+    let tempText, tempFullText
     for (let i = 1; i <= 12; i++) {
       tempText = toTwoDigits(i)
+      tempFullText = prefix + tempText + '/01'
       months.push({
         text: tempText,
-        fullText: prefix + tempText + '/01',
-        value: i,
-        disabled: false,
-        selected: selectedMonth === prefix + tempText,
-        current: systemMonth === prefix + tempText,
+        fullText: tempFullText,
+        value: prefixNumber + i,
+        disabled: checkItemRange(prefixNumber + i, startRangeMonth, endRangeMonth),
+        selected: tempFullText.startsWith(selectedMonth),
+        current: tempFullText.startsWith(systemMonth),
       })
     }
     this.data.months = months
+    // check first page and last page
+    setHeaderBtnStatus(months, startRangeMonth, endRangeMonth, this.$els.calendar)
   },
   /**
    * create days
    * @returns {any}
    */
   createDays() {
+    const [startRangeDay, endRangeDay] = getDateRange(this.options.dateRange, 'yyyyMMdd')
     // What day is the first day of the month
     // and last day of month
     const { firstDayOfWeek, lastDayOfMonth } = getDateInfo(this.data)
@@ -351,21 +397,22 @@ ZxCalendar.prototype = {
     }
     // create days
     let weekIndex = 0
-    let tempText, tempItem
+    let tempText, tempItem, tempValue
     let prefix = this.data.current.slice(0, 2).join('/') + '/'
     const selectedDay = this.data.selected
     const { holidayFormatter } = this.options
-    this.data.dates = days.map(day => {
+    const dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
       tempText = day > 0 ? toTwoDigits(day) : ''
       let tempFullText = prefix + tempText
+      tempValue = day > 0 ? +tempFullText.replace(/\//g, '') : 0
       tempItem = {
         text: tempText,
         fullText: day > 0 ? tempFullText : '',
-        value: day,
+        value: tempValue,
         week: weekIndex++,
-        disabled: !day || false,
+        disabled: !day || checkItemRange(tempValue, startRangeDay, endRangeDay),
         holiday: false,
         selected: selectedDay === tempFullText,
         current: this.data.today === tempFullText
@@ -376,53 +423,9 @@ ZxCalendar.prototype = {
       }
       return tempItem
     })
-  },
-  _createBodyDom(list) {
-    // header
-    let titleFormatter = this.options.titleFormatter
-    let title = null
-    if (this.options.type === 'year') {
-      const firstItem = list[0]
-      const lastItem = list[list.length - 1]
-      let index = 0
-      title = titleFormatter.replace(/(y+)/g, () => {
-        return index++ === 0 ? firstItem.text : lastItem.text
-      })
-    } else {
-      title = formatDate(this.data.currentDate, titleFormatter)
-    }
-    $('.__title-wrapper', this.$els.header).innerText = title
-    // body
-    let { itemSuffix, showHoliday } = this.options
-    let classList, tempArr, tagTitle
-    this.$els.body.innerHTML = list.reduce((prev, item, i) => {
-      classList = ['__item']
-      if (item.disabled) classList.push('is-disabled')
-      if (item.value > 0) {
-        tagTitle = ''
-        if (item.holiday) {
-          classList.push('is-holiday')
-          tagTitle =` title="${item.holiday}"`
-        }
-        if (item.selected) classList.push('is-selected')
-        if (item.current) classList.push('is-current')
-
-        tempArr = [`<div class="${classList.join(' ')}" data-index="${i}"${tagTitle}>`]
-        tempArr.push('<div class="__inner">')
-        tempArr.push(`<p class="__text">${item.text}`)
-        if (itemSuffix) {
-          tempArr.push(`<span class="__suffix">${itemSuffix}</span>`)
-        }
-        if (showHoliday && item.holiday) {
-          tempArr.push(`<span class="__holiday">${item.holiday}</span>`)
-        }
-        tempArr.push('</p></div></div>')
-      } else {
-        tempArr = [`<div class="${classList.join(' ')}"></div>`]
-      }
-      prev.push(tempArr.join(''))
-      return prev
-    }, []).join('')
+    this.data.dates = dates
+    // check first page and last page
+    setHeaderBtnStatus(dates, startRangeDay, endRangeDay, this.$els.calendar)
   },
   destroy() {
     this.$els.calendar.removeEventListener('click', this.eventsHandler)

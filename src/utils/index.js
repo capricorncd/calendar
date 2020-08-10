@@ -64,7 +64,8 @@ function formatDate(date, fmt) {
  * @param str yyyy/MM/dd, yyyy-MM-dd, yyyyMMdd
  * @returns {Date}
  */
-function createDate(str) {
+function toDate(str) {
+  if (!str) return null
   if (str instanceof Date) return str
   let date = null
   if (isNumberLike(str)) {
@@ -84,10 +85,16 @@ function createDate(str) {
     } else if (len === 4) {
       date = new Date(s + '/01/01')
     }
-  } else if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/.test(str)) {
+  } else if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(str)) {
     date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
-  } else if (/^(\d{4})[-/](\d{1,2})/.test(str)) {
+  } else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
     date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
+  } else {
+    try {
+      date = new Date(str)
+    } catch (e) {
+      if (typeof this.emit === 'function') this.emit('error', e)
+    }
   }
   return date
 }
@@ -108,16 +115,21 @@ function getDateInfo({ current, currentDate }) {
     month += 1
   }
   // get timestamp of the next month
-  let timestamp = +createDate(`${year}/${toTwoDigits(month)}/01`)
+  let timestamp = +toDate(`${year}/${toTwoDigits(month)}/01`)
   // get first day of this month
   let arr = current.slice(0, 2)
   arr.push('01')
   return {
-    firstDayOfWeek: createDate(arr.join('/')).getDay(),
-    lastDayOfMonth: createDate(timestamp - 1).getDate()
+    firstDayOfWeek: toDate(arr.join('/')).getDay(),
+    lastDayOfMonth: toDate(timestamp - 1).getDate()
   }
 }
 
+/**
+ * get year info from current year
+ * @param currentFullYear
+ * @returns {{endFullYear: number, startFullYear: number}}
+ */
 function getYearInfo(currentFullYear) {
   const currentYear = toNumber(currentFullYear.substr(2))
   // Integer multiples of 20
@@ -137,11 +149,39 @@ function getYearInfo(currentFullYear) {
   }
 }
 
+/**
+ * get date instance from options date range
+ * @param dateRange
+ * @param fmt
+ * @returns {[]}
+ */
+function getDateRange(dateRange, fmt) {
+  const ret = []
+  if (Array.isArray(dateRange)) {
+    let [start, end] = dateRange
+    let tempStart = toDate(start)
+    let tempEnd = toDate(end)
+    if (typeof fmt === 'string') {
+      tempStart = tempStart ? +formatDate(tempStart, fmt) : null
+      tempEnd = tempEnd ? +formatDate(tempEnd, fmt) : null
+    }
+    ret.push(tempStart)
+    ret.push(tempEnd)
+  }
+  return ret
+}
+
+function checkItemRange(current, start, end) {
+  return (start && current < start) || (end && current > end)
+}
+
 export {
-  createDate,
+  checkItemRange,
   formatDate,
+  getDateRange,
   getDateInfo,
   getYearInfo,
+  toDate,
   toNumber,
   toTwoDigits
 }

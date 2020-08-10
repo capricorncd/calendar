@@ -28,7 +28,27 @@ const headerVNode = {
           attrs: {
             type: 'button',
             class: '__prev-button'
-          }
+          },
+          children: [
+            {
+              tag: 'i'
+            },
+            {
+              tag: 'i'
+            }
+          ]
+        },
+        {
+          tag: 'button',
+          attrs: {
+            type: 'button',
+            class: '__prev-button date-only'
+          },
+          children: [
+            {
+              tag: 'i'
+            }
+          ]
         }
       ]
     },
@@ -46,8 +66,28 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
+            class: '__next-button date-only'
+          },
+          children: [
+            {
+              tag: 'i'
+            }
+          ]
+        },
+        {
+          tag: 'button',
+          attrs: {
+            type: 'button',
             class: '__next-button'
-          }
+          },
+          children: [
+            {
+              tag: 'i'
+            },
+            {
+              tag: 'i'
+            }
+          ]
         }
       ]
     }

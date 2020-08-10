@@ -3,6 +3,12 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 15:55
  */
+$primaryColor: #f30;
+$arrowColor: #999;
+$holidayDotColor: rgba(0, 0, 0, 0.2);
+$currentItemBgColor: rgba(0, 0, 0, 0.07);
+$whiteColor: #fff;
+
 .zx-calendar {
   padding: 0 0 10px;
   * {
@@ -29,40 +35,48 @@
         transition: box-shadow,transform,opacity .2s cubic-bezier(.4,0,.2,1);
         cursor: pointer;
         border: 0;
-        width: 2rem;
+        width: 1.5rem;
         height: 2rem;
-        border-radius: 50%;
         overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
         opacity: 0.7;
-        &:before {
-          content: '';
-          margin-left: -8px;
+        background: rgba(0, 0, 0, 0);
+        letter-spacing: 1px;
+        i {
+          position: relative;
+          z-index: -1;
+          display: inline-block;
           width: 0.5rem;
           height: 0.5rem;
-          border-top: 2px solid #999;
-          border-right: 2px solid #999;
+          border-top: 1px solid $arrowColor;
+          border-right: 1px solid $arrowColor;
           transform: rotate(45deg);
+          margin-left: -5px;
         }
         &:hover {
+          i {
+            border-color: $primaryColor;
+          }
+        }
+        &:active {
           opacity: 1;
+        }
+        &.date-only {
+          display: none;
         }
       }
     }
     .__l {
-      left: 5px;
+      left: 15px;
       justify-content: flex-start;
       button {
-        &:before {
-          margin-left: 8px;
-          transform: rotate(225deg);
-        }
+        transform: rotate(180deg);
       }
     }
     .__r {
-      right: 5px;
+      right: 15px;
       justify-content: flex-end;
     }
     .__title-wrapper {
@@ -75,7 +89,7 @@
       text-overflow: ellipsis;
       font-size: 1rem;
       font-weight: 800;
-      cursor: pointer;
+      //cursor: pointer;
     }
   }
   .zx-calendar-week-wrapper {
@@ -102,7 +116,7 @@
       margin-left: -2px;
       width: 4px;
       height: 4px;
-      background: rgba(0, 0, 0, 0.2);
+      background: $holidayDotColor;
       border-radius: 50%;
       overflow: hidden;
       text-indent: -9999px;
@@ -112,15 +126,15 @@
       align-items: center;
       justify-content: center;
       flex: 0 0 14.2857142857%;
+      margin: 5px 0;
       position: relative;
-      width: 3rem;
-      height: 3rem;
       cursor: pointer;
+      overflow: hidden;
       .__inner {
         position: relative;
-        width: 100%;
-        height: 0;
-        padding-top: 100%;
+        margin: 2px;
+        width: 2rem;
+        height: 2rem;
         .__text {
           position: absolute;
           top: 0;
@@ -131,6 +145,7 @@
           align-items: center;
           justify-content: center;
           border-radius: 50%;
+          font-size: 0.875rem;
         }
         .__suffix {
           font-size: 0.875rem;
@@ -145,40 +160,66 @@
       &.is-current {
         .__inner {
           .__text {
-            background: rgba(0, 0, 0, 0.07);
+            background: $currentItemBgColor;
           }
         }
       }
       &.is-selected {
         .__inner {
           .__text {
-            background: #f30;
-            color: #fff;
+            background: $primaryColor;
+            color: $whiteColor;
             .__holiday {
-              background: #fff;
+              background: $whiteColor;
             }
           }
         }
       }
-
     }
-    &.is-month {
+  }
+  &.is-date {
+    .zx-calendar-header-wrapper {
+      .__title-wrapper {
+        margin: 0 4rem;
+      }
+      button.date-only {
+        display: flex;
+      }
+    }
+  }
+  &.is-month {
+    .zx-calendar-body-wrapper {
       .__item {
         flex: 0 0 33.333333%;
+        .__inner {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
       }
     }
-    &.is-year {
+  }
+  &.is-year {
+    .zx-calendar-body-wrapper {
       .__item {
         flex: 0 0 25%;
+        .__inner {
+          width: 3rem;
+          height: 3rem;
+        }
       }
     }
-    // change-item-inner-size
-    &.reset-item-inner-size {
-      .__inner {
-        width: 0;
-        height: 100%;
-        padding-top: 0;
-        padding-left: 100%;
+  }
+  &.is-first-page {
+    .zx-calendar-header-wrapper {
+      .__l {
+        display: none;
+      }
+    }
+  }
+  &.is-last-page {
+    .zx-calendar-header-wrapper {
+      .__r {
+        display: none;
       }
     }
   }
