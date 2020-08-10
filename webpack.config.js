@@ -4,9 +4,11 @@
  * Date: 2020-08-08 15:31
  */
 const { resolve } = require('path')
+const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const rawArgs = process.argv.slice(2)
+const banner = require('./build/banner')
 
 console.log(rawArgs)
 
@@ -65,6 +67,9 @@ let webpackConfig = {}
 if (isProduction) {
   webpackConfig = merge(baseConfig, {
     entry: resolve(__dirname, 'src/index.js'),
+    plugins: [
+      new webpack.BannerPlugin(banner)
+    ]
   })
 } else {
   webpackConfig = merge(baseConfig, {
