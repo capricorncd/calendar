@@ -3,7 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 16:14
  */
-import { MODE_RANGE } from '../config'
+import { MODE_RANGE, MODE_SINGLE } from '../config'
 
 const VALUE_FORMAT = {
   date: 'yyyyMMdd',
@@ -209,12 +209,20 @@ function checkItemRange(current, start, end) {
  * @param type
  * @returns {[]}
  */
-function initSelectedDates(defaultDate, type) {
+function initSelectedDates(defaultDate, { type, mode }) {
   let arr = []
   if (defaultDate) {
     if (!Array.isArray(defaultDate)) {
       defaultDate = [defaultDate]
     }
+    // defaultDate check
+    if (mode === MODE_SINGLE && defaultDate.length > 1) {
+      defaultDate = defaultDate.slice(0, 1)
+    }
+    if (mode === MODE_RANGE && defaultDate.length > 2) {
+      defaultDate = defaultDate.slice(0, 2)
+    }
+    // handle date
     const fmt = VALUE_FORMAT[type]
     let temp
     defaultDate.forEach(item => {

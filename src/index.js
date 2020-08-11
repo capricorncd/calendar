@@ -34,7 +34,6 @@ import {
   getSelectedDateRange,
   getYearInfo,
   initSelectedDates,
-  isNumberLike,
   toNumber,
   toTwoDigits, isString, isFunction
 } from './utils/index'
@@ -69,7 +68,9 @@ const DEF_OPTIONS = {
   // language package
   langPackage: {},
   // footer buttons
-  footerButtons: ['clear', 'cancel', 'confirm']
+  footerButtons: ['clear', 'cancel', 'confirm'],
+  // justify-content
+  footerButtonAlign: 'flex-end'
 }
 
 function ZxCalendar(params = {}) {
@@ -93,7 +94,7 @@ function ZxCalendar(params = {}) {
   // on event list
   this._eventList = {}
   // config
-  const { weeks, langPackage } = initConfig(this.options)
+  const { langPackage } = initConfig(this.options)
   this.langPackage = {
     ...options.langPackage,
     ...langPackage
@@ -103,7 +104,7 @@ function ZxCalendar(params = {}) {
   // today
   let date = new Date()
   const today = formatDate(date, 'yyyy/MM/dd')
-  const selectedItems = initSelectedDates(options.defaultDate, options.type)
+  const selectedItems = initSelectedDates(options.defaultDate, options)
   const currentDate = getCurrentDate.call(this, options, selectedItems) || date
   const currentDay = formatDate(currentDate, 'yyyy/MM/dd')
   this.data = {
@@ -123,12 +124,7 @@ function ZxCalendar(params = {}) {
 ZxCalendar.prototype = {
   constructor: ZxCalendar,
   formatDate,
-  isString,
-  isFunction,
-  isNumberLike,
   toDate,
-  toNumber,
-  toTwoDigits,
   /**
    * event list
    * @param args
@@ -189,6 +185,10 @@ ZxCalendar.prototype = {
         })
       })
       const footer = createDom(footerVNodeCopy)
+      // options style
+      if (options.footerButtonAlign) {
+        footer.style.justifyContent = options.footerButtonAlign
+      }
       calendar.appendChild(footer)
     }
     // append to out wrapper
@@ -391,7 +391,7 @@ ZxCalendar.prototype = {
     this._updateDom()
   },
   setDate(str) {
-    this.data.selected = initSelectedDates(str, this.options.type)
+    this.data.selected = initSelectedDates(str, this.options)
     this._updateDom()
   },
   _setCurrentDate(dateStr) {
