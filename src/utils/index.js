@@ -287,6 +287,13 @@ function getCurrentDate(options, selectedItems) {
   return date
 }
 
+function isRangeSelectTemp(current, { data, options }) {
+  if (options.mode === MODE_RANGE && data.selected.length === 1) {
+    return current === data.selected[0].value
+  }
+  return false
+}
+
 export {
   checkItemRange,
   formatDate,
@@ -299,6 +306,7 @@ export {
   isFunction,
   isInvalidOfDateRange,
   isNumberLike,
+  isRangeSelectTemp,
   isString,
   toDate,
   toNumber,

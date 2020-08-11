@@ -3,9 +3,8 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 15:58
  */
-import ZxCalendar from '../src/index'
 import './index.scss'
-import { createCalendar, log, logStr } from './helper'
+import { createCalendar } from './helper'
 
 createCalendar({
   el: '.container',
@@ -26,7 +25,6 @@ createCalendar({
 
 createCalendar({
   el: '.container',
-  lang: 'zh',
   type: 'year',
   // titleFormatter: 'yyyy年-yyyy年',
   dateRange: ['2009/12/09', '2019/12/09'],
@@ -35,7 +33,6 @@ createCalendar({
 
 createCalendar({
   el: '.container',
-  lang: 'jp',
   type: 'month',
   // titleFormatter: 'yyyy年',
   itemSuffix: '月',
@@ -57,6 +54,7 @@ createCalendar({
 
 createCalendar({
   el: '.container',
+  lang: 'en',
   type: 'month',
   mode: 'range',
   defaultDate: ['2010/08/03', '2020/08/19'],

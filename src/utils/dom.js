@@ -78,22 +78,27 @@ function getSelectItem(el, className, calendar) {
   return ret
 }
 
-function removeClass(el, className) {
+function removeClass(...args) {
+  const el = args[0]
+  const classNames = args.slice(1)
   const arr = []
   el.className.split(' ').forEach(item => {
-    if (item !== className) {
+    if (!classNames.includes(item)) {
       arr.push(item)
     }
   })
   el.className = arr.join(' ')
 }
 
-function addClass(el, cls) {
+function addClass(...args) {
+  const el = args[0]
   const className = el.className.split(' ')
-  if (!className.includes(cls)) {
-    className.push(cls)
-    el.className = className.join(' ')
-  }
+  args.slice(1).forEach(cls => {
+    if (!className.includes(cls)) {
+      className.push(cls)
+    }
+  })
+  el.className = className.join(' ')
 }
 
 export {

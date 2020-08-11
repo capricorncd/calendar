@@ -44,9 +44,9 @@ $whiteColor: #fff;
         opacity: 0.7;
         background: rgba(0, 0, 0, 0);
         letter-spacing: 1px;
-        i {
+        &:before, &:after {
+          content: '';
           position: relative;
-          z-index: -1;
           display: inline-block;
           width: 0.5rem;
           height: 0.5rem;
@@ -56,7 +56,7 @@ $whiteColor: #fff;
           margin-left: -5px;
         }
         &:hover {
-          i {
+          &:before, &:after {
             border-color: $primaryColor;
           }
         }
@@ -164,7 +164,7 @@ $whiteColor: #fff;
           }
         }
       }
-      &.is-selected {
+      &.is-selected, &.is-range-temp {
         .__inner {
           .__text {
             background: $primaryColor;
@@ -175,6 +175,7 @@ $whiteColor: #fff;
           }
         }
       }
+
     }
   }
   .zx-calender-footer-wrapper {
@@ -206,7 +207,7 @@ $whiteColor: #fff;
       &.__confirm-button {
         color: $whiteColor;
       }
-      &.__clear-button {
+      &.__clear-button, &.__cancel-button {
         border: 1px solid $currentItemBgColor;
         background: $whiteColor;
       }

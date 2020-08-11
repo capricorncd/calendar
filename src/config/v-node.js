@@ -10,7 +10,7 @@ import {
   CLASS_NAME_ITEM_WEEK,
   CLASS_NAME_NEXT_BUTTON,
   CLASS_NAME_PREV_BUTTON, CLASS_NAME_CONFIRM_BUTTON,
-  CLASS_NAME_TITLE_WRAPPER, TYPE_DATE
+  CLASS_NAME_TITLE_WRAPPER, TYPE_DATE, CLASS_NAME_CANCEL_BUTTON
 } from './index'
 
 // calendar
@@ -37,14 +37,6 @@ const headerVNode = {
             type: 'button',
             class: CLASS_NAME_PREV_BUTTON
           },
-          children: [
-            {
-              tag: 'i'
-            },
-            {
-              tag: 'i'
-            }
-          ]
         },
         {
           tag: 'button',
@@ -52,11 +44,6 @@ const headerVNode = {
             type: 'button',
             class: [CLASS_NAME_PREV_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
           },
-          children: [
-            {
-              tag: 'i'
-            }
-          ]
         }
       ]
     },
@@ -76,11 +63,6 @@ const headerVNode = {
             type: 'button',
             class: [CLASS_NAME_NEXT_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
           },
-          children: [
-            {
-              tag: 'i'
-            }
-          ]
         },
         {
           tag: 'button',
@@ -88,14 +70,6 @@ const headerVNode = {
             type: 'button',
             class: CLASS_NAME_NEXT_BUTTON
           },
-          children: [
-            {
-              tag: 'i'
-            },
-            {
-              tag: 'i'
-            }
-          ]
         }
       ]
     }
@@ -136,6 +110,12 @@ const footerButtonsVNode = {
     tag: 'button',
     attrs: {
       class: CLASS_NAME_CLEAR_BUTTON
+    }
+  },
+  cancel: {
+    tag: 'button',
+    attrs: {
+      class: CLASS_NAME_CANCEL_BUTTON
     }
   }
 }

@@ -8,8 +8,13 @@ import { formatDate } from './index'
 import {
   CLASS_NAME_IS_CURRENT,
   CLASS_NAME_IS_DISABLED,
-  CLASS_NAME_IS_FIRST_PAGE, CLASS_NAME_IS_HOLIDAY,
-  CLASS_NAME_IS_LAST_PAGE, CLASS_NAME_IS_RANGE_FIRST, CLASS_NAME_IS_RANGE_LAST, CLASS_NAME_IS_SELECTED,
+  CLASS_NAME_IS_FIRST_PAGE,
+  CLASS_NAME_IS_HOLIDAY,
+  CLASS_NAME_IS_LAST_PAGE,
+  CLASS_NAME_IS_RANGE_FIRST,
+  CLASS_NAME_IS_RANGE_LAST,
+  CLASS_NAME_IS_RANGE_TEMP,
+  CLASS_NAME_IS_SELECTED,
   CLASS_NAME_TITLE_WRAPPER,
   TYPE_YEAR
 } from '../config'
@@ -63,6 +68,7 @@ function createBodyDom(dataType, data, { titleFormatter, type, itemSuffix, showH
       if (item.current) classList.push(CLASS_NAME_IS_CURRENT)
       if (item.isRangeFirst) classList.push(CLASS_NAME_IS_RANGE_FIRST)
       if (item.isRangeLast) classList.push(CLASS_NAME_IS_RANGE_LAST)
+      if (item.isRangeTemp) classList.push(CLASS_NAME_IS_RANGE_TEMP)
 
       tempArr = [`<div class="${classList.join(' ')}" data-index="${i}"${tagTitle}>`]
       tempArr.push('<div class="__inner">')
@@ -82,7 +88,21 @@ function createBodyDom(dataType, data, { titleFormatter, type, itemSuffix, showH
   }, []).join('')
 }
 
+function changeClassForSelectOneItem(el, { body }, isRange) {
+// remove class is-selected
+  const [...currentItems] = body.querySelectorAll('.' + CLASS_NAME_IS_SELECTED)
+  currentItems.forEach(item => {
+    removeClass(item, CLASS_NAME_IS_SELECTED)
+    if (isRange) {
+      removeClass(item, CLASS_NAME_IS_RANGE_FIRST, CLASS_NAME_IS_RANGE_LAST)
+    }
+  })
+  // add class is-selected
+  addClass(el, isRange ? CLASS_NAME_IS_RANGE_TEMP : CLASS_NAME_IS_SELECTED)
+}
+
 export {
+  changeClassForSelectOneItem,
   createBodyDom,
   setHeaderBtnStatus
 }

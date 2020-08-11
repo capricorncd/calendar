@@ -19,7 +19,11 @@ import {
   CLASS_NAME_PREV_BUTTON,
   CLASS_NAME_NEXT_BUTTON,
   CLASS_NAME_TITLE_WRAPPER,
-  CLASS_NAME_ITEM_WEEK, CLASS_NAME_IS_DISABLED, CLASS_NAME_CLEAR_BUTTON, CLASS_NAME_CONFIRM_BUTTON
+  CLASS_NAME_ITEM_WEEK,
+  CLASS_NAME_IS_DISABLED,
+  CLASS_NAME_CLEAR_BUTTON,
+  CLASS_NAME_CONFIRM_BUTTON,
+  CLASS_NAME_CANCEL_BUTTON
 } from './config/index'
 import {
   checkItemRange,
@@ -36,9 +40,9 @@ import {
 } from './utils/index'
 import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
 import { calendarVNode, headerVNode, bodyVNode, getWeekDom, footerVNode, footerButtonsVNode } from './config/v-node'
-import { createBodyDom, setHeaderBtnStatus } from './utils/private'
+import { changeClassForSelectOneItem, createBodyDom, setHeaderBtnStatus } from './utils/private'
 import './scss/index.scss'
-import { getCurrentDate } from './utils'
+import { getCurrentDate, isRangeSelectTemp } from './utils'
 
 // default options
 const DEF_OPTIONS = {
@@ -65,7 +69,7 @@ const DEF_OPTIONS = {
   // language package
   langPackage: {},
   // footer buttons
-  footerButtons: ['clear', 'confirm']
+  footerButtons: ['clear', 'cancel', 'confirm']
 }
 
 function ZxCalendar(params = {}) {
@@ -218,6 +222,10 @@ ZxCalendar.prototype = {
     else if (className.includes(CLASS_NAME_CONFIRM_BUTTON)) {
       this.emit('change', [...this.data.selected])
     }
+    // cancel button
+    else if (className.includes(CLASS_NAME_CANCEL_BUTTON)) {
+      this.emit('cancel')
+    }
     // clear button
     else if (className.includes(CLASS_NAME_CLEAR_BUTTON)) {
       this.setDate()
@@ -332,10 +340,18 @@ ZxCalendar.prototype = {
     // handle select
     // mode=range
     if (this.options.mode === MODE_RANGE) {
-      if (className.includes(CLASS_NAME_IS_SELECTED)) {
-
-      } else {
-
+      const selectedItems = [...this.data.selected]
+      const len = selectedItems.length
+      if (len === 0 || len >= 2 && selectedItems.every(item => !!item)) {
+        this.data.selected = [itemData]
+        changeClassForSelectOneItem(el, this.$els, true)
+      } else if (len === 1) {
+        if (selectedItems[0].value < itemData.value) {
+          this.data.selected.push(itemData)
+        } else {
+          this.data.selected.unshift(itemData)
+        }
+        this._updateDom()
       }
     }
     // mode=multiple
@@ -353,13 +369,7 @@ ZxCalendar.prototype = {
     // mode=single
     else {
       if (!className.includes(CLASS_NAME_IS_SELECTED)) {
-        // remove class is-selected
-        const [...currentItems] = this.$els.body.querySelectorAll('.' + CLASS_NAME_IS_SELECTED)
-        currentItems.forEach(item => {
-          removeClass(item, CLASS_NAME_IS_SELECTED)
-        })
-        // add class is-selected
-        addClass(el, CLASS_NAME_IS_SELECTED)
+        changeClassForSelectOneItem(el, this.$els)
         itemData.selected = true
         this.data.selected = [
           {
@@ -427,10 +437,11 @@ ZxCalendar.prototype = {
         value: i,
         disabled: checkItemRange(i, startRangeYear, endRangeYear),
         // range
-        isRangeFirst: i === startSelectedRangeYear,
-        isRangeLast: i === endSelectedRangeYear,
+        isRangeFirst: i === startSelectedRangeYear && endSelectedRangeYear,
+        isRangeLast: i === endSelectedRangeYear && startSelectedRangeYear,
+        isRangeTemp: isRangeSelectTemp(i, this),
         // selected
-        selected: this._checkSelected(i),
+        selected: this._isSelected(i),
         current: systemYear === tempText
       })
     }
@@ -460,10 +471,11 @@ ZxCalendar.prototype = {
         value: tempValue,
         disabled: checkItemRange(tempValue, startRangeMonth, endRangeMonth),
         // range
-        isRangeFirst: tempValue === startSelectedRangeMonth,
-        isRangeLast: tempValue === endSelectedRangeMonth,
+        isRangeFirst: tempValue === startSelectedRangeMonth && endSelectedRangeMonth,
+        isRangeLast: tempValue === endSelectedRangeMonth && startSelectedRangeMonth,
+        isRangeTemp: isRangeSelectTemp(tempValue, this),
         // selected
-        selected: this._checkSelected(tempValue),
+        selected: this._isSelected(tempValue),
         current: tempFullText.startsWith(systemMonth)
       })
     }
@@ -511,10 +523,11 @@ ZxCalendar.prototype = {
         disabled: !day || checkItemRange(tempValue, startRangeDay, endRangeDay),
         holiday: false,
         // range
-        isRangeFirst: tempValue === startSelectedRangeDay,
-        isRangeLast: tempValue === endSelectedRangeDay,
+        isRangeFirst: tempValue === startSelectedRangeDay && endSelectedRangeDay,
+        isRangeLast: tempValue === endSelectedRangeDay && startSelectedRangeDay,
+        isRangeTemp: isRangeSelectTemp(tempValue, this),
         // selected
-        selected: this._checkSelected(tempValue),
+        selected: this._isSelected(tempValue),
         current: this.data.today === tempFullText
       }
       // customer holiday
@@ -531,21 +544,17 @@ ZxCalendar.prototype = {
     this.$els.calendar.removeEventListener('click', this.eventsHandler)
     this.$els.parent.removeChild(this.$els.calendar)
   },
-  _checkSelected(current) {
+  _isSelected(current) {
     const selectedItems = this.data.selected
     switch (this.options.mode) {
       // case 'multiple':
       //   return selectedItems.some(item => item.value === current)
       case MODE_RANGE:
         const [startItem, endItem] = selectedItems
-        if (current) {
-          if (startItem) {
-            return current >= startItem.value && (!endItem || current <= endItem.value)
-          }
-          if (endItem) {
-            return current <= endItem.value
-          }
+        if (current && startItem && endItem) {
+          return current >= startItem.value && current <= endItem.value
         }
+        break
       // single, multiple
       default:
         return selectedItems.some(item => item.value === current)

@@ -1,10 +1,10 @@
-import ZxCalendar from '../src'
-
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
  * Date: 2020-08-11 11:11
  */
+// import ZxCalendar from '../src'
+
 function log() {
   console.log.apply(null, arguments)
 }
@@ -92,6 +92,10 @@ function createCalendar(options, title, el) {
 
   calendar.on('change', data => {
     logStr(data)
+  })
+  // cancel button on click
+  calendar.on('cancel', () => {
+    logStr('cancel button on click')
   })
 
   calendar.on('error', err => {

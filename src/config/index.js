@@ -61,6 +61,7 @@ const CLASS_NAME_IS_HOLIDAY = 'is-holiday'
 const CLASS_NAME_IS_CURRENT = 'is-current'
 const CLASS_NAME_IS_RANGE_FIRST = 'is-range-first'
 const CLASS_NAME_IS_RANGE_LAST = 'is-range-last'
+const CLASS_NAME_IS_RANGE_TEMP = 'is-range-temp'
 const CLASS_NAME_IS_FIRST_PAGE = 'is-first-page'
 const CLASS_NAME_IS_LAST_PAGE = 'is-last-page'
 const CLASS_NAME_IS_WEEKEND = 'is-weekend'
@@ -72,6 +73,7 @@ const CLASS_NAME_ITEM_WEEK = '__item-week'
 
 const CLASS_NAME_CONFIRM_BUTTON = '__confirm-button'
 const CLASS_NAME_CLEAR_BUTTON = '__clear-button'
+const CLASS_NAME_CANCEL_BUTTON = '__cancel-button'
 
 // mode
 const MODE_MULTIPLE = 'multiple'
@@ -92,6 +94,7 @@ export {
   CLASS_NAME_IS_CURRENT,
   CLASS_NAME_IS_RANGE_FIRST,
   CLASS_NAME_IS_RANGE_LAST,
+  CLASS_NAME_IS_RANGE_TEMP,
   CLASS_NAME_IS_WEEKEND,
   CLASS_NAME_DATE_ONLY,
   CLASS_NAME_ITEM_WEEK,
@@ -100,6 +103,7 @@ export {
   CLASS_NAME_TITLE_WRAPPER,
   CLASS_NAME_CONFIRM_BUTTON,
   CLASS_NAME_CLEAR_BUTTON,
+  CLASS_NAME_CANCEL_BUTTON,
   HEADER_TITLE_FORMAT_DATE,
   HEADER_TITLE_FORMAT_MONTH,
   HEADER_TITLE_FORMAT_YEAR,
