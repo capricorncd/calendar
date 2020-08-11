@@ -1,5 +1,7 @@
 # zx-calendar
 
+demo https://capricorncd.github.io/calendar/dist/index.html
+
 ```bash
 npm install zx-calendar -S
 ```
@@ -15,7 +17,7 @@ const options = {
   el: '#app',
   // date/month/year
   type: 'date',
-  // zh/jp/en that week
+  // zh/jp/en that week and button text
   lang: 'zh',
   // 星期一(省略形式: 一)
   isFullWeek: false,
@@ -36,47 +38,67 @@ const options = {
   showHoliday: false,
   // function, return string(holiday name)/true/false
   holidayFormatter: null,
+  // Selection mode: single/multiple/range
+  mode: 'single',
+  // language package
+  langPackage: {
+    confirmButton: 'ok',
+    cancelButton: 'cancel',
+    clearButton: 'clear',
+    weeks: ["日", "一", "二", "三", "四", "五", "六"]
+  },
+  // footer buttons
+  // show clear, cancle and confirm button when mode=multiple/range
+  footerButtons: ['clear', 'cancel', 'confirm'],
+  // only show confirm button
+  // footerButtons: ['confirm'],
+  // change button display order
+  // footerButtons: ['confirm', 'clear', 'cancel'],
+  // ...
+  // justify-content
+  footerButtonAlign: 'flex-end',
 }
 
 // create an instance
-const calendar = new ZxCanlendar(options)
+const zxCalendar = new ZxCanlendar(options)
 
 // on change
-calendar.on('change', data => {
+zxCalendar.on('change', data => {
   console.log(data)
 })
 
+// cancel button on click
+zxCalendar.on('cancel', () => {
+  // ...
+})
+
 // on error
-calendar.on('error', err => {
+zxCalendar.on('error', err => {
   console.error(err)
 })
 ```
 
 ## Methods
 
-### destroy()
+### setDate(date)
 
- destroy instance
+parameter `date`
 
-### emit(eventType, ...arguments)
+> type `string/timestamp/Date` or `Array[string/timestamp/Date]`
 
-parameter `eventType`
+```javascript
+// mode: single
+// set select date
+zxCalendar.setDate('2020/08/10')
+// clear selected date
+zxCalendar.setDate()
 
-> custom event type
+// mode: multiple
+zxCalendar.setDate(['2020/08/01', '2020/08/05', '2020/08/10'])
 
-### on(eventType, fn)
-
-parameter `eventType`
-
-> custom event type
-
-parameter `fn`
-
-> function, Callback when executing `emit(eventType)`
-
-### off(eventType)
-
-remove on(eventType)
+// mode: range
+zxCalendar.setDate(['2008/01/14', '2019/12/10'])
+```
 
 ### setDateRange(startDate, endDate)
 
@@ -90,22 +112,7 @@ parameter `endDate`
 
 > end date, type `string/timestamp/Date`
 
-### setDate(date)
-
-set selected date
-
-parameter `date`
-
-> type `string/timestamp/Date`
-
 ### toDate(date)
-
-```javascript
-const date = calendar.toDate('2020/08/10')
-if (date !== null) {
-    console.log(date.getFullYear())
-} 
-```
 
 parameter `date`
 
@@ -114,3 +121,25 @@ parameter `date`
 return
 
 > `Date/null`
+
+```javascript
+const date = zxCalendar.toDate('2020/08/10')
+if (date !== null) {
+    console.log(date.getFullYear())
+} 
+```
+
+### formatDate(date, formatter)
+
+```javascript
+zxCalendar.formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss')
+// 2020/08/10 23:49:12
+```
+
+### destroy()
+
+remove calendar from el(parent)
+
+```javascript
+zxCalendar.destroy()
+```
