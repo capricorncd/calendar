@@ -11,7 +11,7 @@ import {
   CLASS_NAME_IS_FIRST_PAGE,
   CLASS_NAME_IS_HOLIDAY,
   CLASS_NAME_IS_LAST_PAGE,
-  CLASS_NAME_IS_RANGE_FIRST,
+  CLASS_NAME_IS_RANGE_FIRST, CLASS_NAME_IS_RANGE_FIRST_LAST,
   CLASS_NAME_IS_RANGE_LAST,
   CLASS_NAME_IS_RANGE_TEMP,
   CLASS_NAME_IS_SELECTED,
@@ -66,8 +66,12 @@ function createBodyDom(dataType, data, { titleFormatter, type, itemSuffix, showH
       }
       if (item.selected) classList.push(CLASS_NAME_IS_SELECTED)
       if (item.current) classList.push(CLASS_NAME_IS_CURRENT)
-      if (item.isRangeFirst) classList.push(CLASS_NAME_IS_RANGE_FIRST)
-      if (item.isRangeLast) classList.push(CLASS_NAME_IS_RANGE_LAST)
+      if (item.isRangeFirst && item.isRangeLast) {
+        classList.push(CLASS_NAME_IS_RANGE_FIRST_LAST)
+      } else {
+        if (item.isRangeFirst) classList.push(CLASS_NAME_IS_RANGE_FIRST)
+        if (item.isRangeLast) classList.push(CLASS_NAME_IS_RANGE_LAST)
+      }
       if (item.isRangeTemp) classList.push(CLASS_NAME_IS_RANGE_TEMP)
 
       tempArr = [`<div class="${classList.join(' ')}" data-index="${i}"${tagTitle}>`]
@@ -94,7 +98,7 @@ function changeClassForSelectOneItem(el, { body }, isRange) {
   currentItems.forEach(item => {
     removeClass(item, CLASS_NAME_IS_SELECTED)
     if (isRange) {
-      removeClass(item, CLASS_NAME_IS_RANGE_FIRST, CLASS_NAME_IS_RANGE_LAST)
+      removeClass(item, CLASS_NAME_IS_RANGE_FIRST, CLASS_NAME_IS_RANGE_LAST, CLASS_NAME_IS_RANGE_FIRST_LAST)
     }
   })
   // add class is-selected

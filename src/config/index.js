@@ -61,6 +61,7 @@ const CLASS_NAME_IS_HOLIDAY = 'is-holiday'
 const CLASS_NAME_IS_CURRENT = 'is-current'
 const CLASS_NAME_IS_RANGE_FIRST = 'is-range-first'
 const CLASS_NAME_IS_RANGE_LAST = 'is-range-last'
+const CLASS_NAME_IS_RANGE_FIRST_LAST = 'is-range-first-last'
 const CLASS_NAME_IS_RANGE_TEMP = 'is-range-temp'
 const CLASS_NAME_IS_FIRST_PAGE = 'is-first-page'
 const CLASS_NAME_IS_LAST_PAGE = 'is-last-page'
@@ -95,6 +96,7 @@ export {
   CLASS_NAME_IS_RANGE_FIRST,
   CLASS_NAME_IS_RANGE_LAST,
   CLASS_NAME_IS_RANGE_TEMP,
+  CLASS_NAME_IS_RANGE_FIRST_LAST,
   CLASS_NAME_IS_WEEKEND,
   CLASS_NAME_DATE_ONLY,
   CLASS_NAME_ITEM_WEEK,
