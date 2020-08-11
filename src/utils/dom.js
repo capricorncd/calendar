@@ -3,7 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2020-08-09 10:51
  */
-import { toNumber } from './index'
+import { isString, toNumber } from './index'
 
 /**
  * create dom
@@ -11,7 +11,13 @@ import { toNumber } from './index'
  * @returns {Node}
  */
 function createDom(vNode) {
-  if (typeof vNode === 'string') {
+  if (typeof vNode === 'undefined') {
+    vNode = 'undefined'
+  }
+  if (vNode === null) {
+    vNode = 'null'
+  }
+  if (isString(vNode)) {
     return document.createTextNode(vNode)
   }
   const el = document.createElement(vNode.tag || 'div')
@@ -41,7 +47,7 @@ function createDom(vNode) {
 function $(s, context = document) {
   if (!s) return null
   let el = null
-  if (typeof s === 'string') {
+  if (isString(s)) {
     el = context.querySelector(s)
   } else if (typeof s === 'object' && s.nodeType === 1) {
     el = s
@@ -95,5 +101,5 @@ export {
   addClass,
   createDom,
   getSelectItem,
-  removeClass,
+  removeClass
 }

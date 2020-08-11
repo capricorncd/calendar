@@ -1,8 +1,57 @@
+body {
+  font-family: "Microsoft YaHei",微软雅黑,'Arial';
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
 .container {
+  dl {
+    margin: 0 0 30px;
+    dt {
+      display: flex;
+      align-items: center;
+      height: 3rem;
+      line-height: 1rem;
+      color: #666;
+    }
+    dd {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      pre {
+        border-radius: 4px;
+        background: rgba(0, 0, 0, .1);
+        margin: 0;
+        padding: 20px;
+        flex: 1;
+        color: #333;
+        overflow-x: auto;
+      }
+    }
+  }
   .zx-calendar {
-    float: left;
+    margin-right: 20px;
     width: 320px;
-    border: 1px solid #ccc;
-    margin: 10px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    dl {
+      dd {
+        display: block;
+      }
+    }
+    .zx-calendar {
+      width: 100%;
+      margin: 0 0 10px;
+    }
   }
 }

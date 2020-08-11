@@ -3,6 +3,14 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 16:14
  */
+import { MODE_RANGE } from '../config'
+
+const VALUE_FORMAT = {
+  date: 'yyyyMMdd',
+  month: 'yyyyMM',
+  year: 'yyyy'
+}
+
 /**
  * to number
  * @param s
@@ -19,6 +27,14 @@ function toNumber(s) {
  */
 function isNumberLike(n) {
   return /^-?\d+\.?\d+$/.test(n)
+}
+
+function isString(s) {
+  return typeof s === 'string'
+}
+
+function isFunction(fn) {
+  return typeof fn === 'function'
 }
 
 /**
@@ -95,7 +111,7 @@ function toDate(str) {
     try {
       date = new Date(str)
     } catch (e) {
-      if (typeof this.emit === 'function') this.emit('error', e)
+      if (isFunction(this.emit)) this.emit('error', e)
     }
   }
   return date
@@ -163,7 +179,7 @@ function getDateRange(dateRange, fmt) {
     let [start, end] = dateRange
     let tempStart = toDate(start)
     let tempEnd = toDate(end)
-    if (typeof fmt === 'string') {
+    if (isString(fmt)) {
       tempStart = tempStart ? +formatDate(tempStart, fmt) : null
       tempEnd = tempEnd ? +formatDate(tempEnd, fmt) : null
     }
@@ -173,16 +189,117 @@ function getDateRange(dateRange, fmt) {
   return ret
 }
 
+function getSelectedDateRange({ data, options }) {
+  const arr = []
+  if (options.mode === MODE_RANGE) {
+    data.selected.forEach(item => {
+      arr.push(item ? item.value : null)
+    })
+  }
+  return arr
+}
+
 function checkItemRange(current, start, end) {
-  return (start && current < start) || (end && current > end)
+  return (!!start && current < start) || (!!end && current > end)
+}
+
+/**
+ * init selected dates
+ * @param defaultDate
+ * @param type
+ * @returns {[]}
+ */
+function initSelectedDates(defaultDate, type) {
+  let arr = []
+  if (defaultDate) {
+    if (!Array.isArray(defaultDate)) {
+      defaultDate = [defaultDate]
+    }
+    const fmt = VALUE_FORMAT[type]
+    let temp
+    defaultDate.forEach(item => {
+      temp = toDate(item)
+      if (temp) {
+        arr.push({
+          value: toNumber(formatDate(temp, fmt)),
+          date: temp,
+          fullText: formatDate(temp, 'yyyy/MM/dd')
+        })
+      }
+    })
+    // sort
+    arr.sort((a, b) => a.value - b.value)
+  }
+  return arr
+}
+
+function isInvalidItem(timestamp, startRangeDate, endRangeDate) {
+  return (startRangeDate && startRangeDate > timestamp)
+    || (endRangeDate && endRangeDate < timestamp)
+}
+
+function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
+  let invalidItem = []
+  switch (type) {
+    case MODE_RANGE:
+      const [startItem, endItem] = items
+      if (startItem && isInvalidItem(+startItem.date, startRangeDate, endRangeDate)) {
+        invalidItem.push(startItem)
+      }
+      if (endItem && isInvalidItem(+endItem.date, startRangeDate, endRangeDate)) {
+        invalidItem.push(endItem)
+      }
+      break
+    default:
+      items.forEach(item => {
+        if (isInvalidItem(+item.date, startRangeDate, endRangeDate)) {
+          invalidItem.push(item)
+        }
+      })
+  }
+  return invalidItem.length > 0
+}
+
+function getCurrentDate(options, selectedItems) {
+  let date = null
+  // dateRange
+  const [startRangeDate, endRangeDate] = getDateRange(options.dateRange)
+  // after today
+  if (startRangeDate && +startRangeDate > +date) {
+    date = startRangeDate
+  }
+  // before today
+  if (endRangeDate && +endRangeDate < +date) {
+    date = endRangeDate
+  }
+  // check default date
+  if (selectedItems.length) {
+    if (isInvalidOfDateRange(selectedItems, startRangeDate, endRangeDate, options.type)) {
+      let timer = setTimeout(() => {
+        this.emit('error', new Error(`The default date[${options.defaultDate}] is not within the range[${options.dateRange}].`))
+        clearTimeout(timer)
+        timer = null
+      }, 0)
+    } else {
+      date = selectedItems[0].date
+    }
+  }
+  return date
 }
 
 export {
   checkItemRange,
   formatDate,
+  getCurrentDate,
   getDateRange,
   getDateInfo,
+  getSelectedDateRange,
   getYearInfo,
+  initSelectedDates,
+  isFunction,
+  isInvalidOfDateRange,
+  isNumberLike,
+  isString,
   toDate,
   toNumber,
   toTwoDigits

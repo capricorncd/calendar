@@ -1,10 +1,18 @@
-import { createDom } from '../utils/dom'
-
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
  * Date: 2020-08-08 20:35
  */
+import { createDom } from '../utils/dom'
+import {
+  CLASS_NAME_CLEAR_BUTTON,
+  CLASS_NAME_DATE_ONLY, CLASS_NAME_IS_WEEKEND,
+  CLASS_NAME_ITEM_WEEK,
+  CLASS_NAME_NEXT_BUTTON,
+  CLASS_NAME_PREV_BUTTON, CLASS_NAME_CONFIRM_BUTTON,
+  CLASS_NAME_TITLE_WRAPPER, TYPE_DATE
+} from './index'
+
 // calendar
 const calendarVNode = {
   attrs: {
@@ -27,7 +35,7 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__prev-button'
+            class: CLASS_NAME_PREV_BUTTON
           },
           children: [
             {
@@ -42,7 +50,7 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__prev-button date-only'
+            class: [CLASS_NAME_PREV_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
           },
           children: [
             {
@@ -54,7 +62,7 @@ const headerVNode = {
     },
     {
       attrs: {
-        class: '__title-wrapper'
+        class: CLASS_NAME_TITLE_WRAPPER
       }
     },
     {
@@ -66,7 +74,7 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__next-button date-only'
+            class: [CLASS_NAME_NEXT_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
           },
           children: [
             {
@@ -78,7 +86,7 @@ const headerVNode = {
           tag: 'button',
           attrs: {
             type: 'button',
-            class: '__next-button'
+            class: CLASS_NAME_NEXT_BUTTON
           },
           children: [
             {
@@ -109,6 +117,29 @@ const bodyVNode = {
   }
 }
 
+// footer
+const footerVNode = {
+  attrs: {
+    class: 'zx-calender-footer-wrapper'
+  },
+  children: []
+}
+
+const footerButtonsVNode = {
+  confirm: {
+    tag: 'button',
+    attrs: {
+      class: CLASS_NAME_CONFIRM_BUTTON
+    }
+  },
+  clear: {
+    tag: 'button',
+    attrs: {
+      class: CLASS_NAME_CLEAR_BUTTON
+    }
+  }
+}
+
 /**
  * get week dom
  * @param weeks
@@ -116,13 +147,13 @@ const bodyVNode = {
  * @returns {Node|null}
  */
 function getWeekDom(weeks, options) {
-  if (options.type !== 'date') return null
+  if (options.type !== TYPE_DATE) return null
   const weekNodeCopy = JSON.parse(JSON.stringify(weekVNode))
   weeks.forEach((item, i) => {
     let isWeekend = i === 0 || i === 6
     weekNodeCopy.children.push({
       attrs: {
-        class: '__item-week' + (isWeekend ? ' is-weekend' : '')
+        class: CLASS_NAME_ITEM_WEEK + (isWeekend ? ' ' + CLASS_NAME_IS_WEEKEND : '')
       },
       children: [item]
     })
@@ -134,5 +165,7 @@ export {
   calendarVNode,
   headerVNode,
   bodyVNode,
-  getWeekDom,
+  footerVNode,
+  footerButtonsVNode,
+  getWeekDom
 }

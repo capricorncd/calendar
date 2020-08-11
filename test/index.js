@@ -5,97 +5,66 @@
  */
 import ZxCalendar from '../src/index'
 import './index.scss'
+import { createCalendar, log, logStr } from './helper'
 
-function log() {
-  console.log.apply(null, arguments)
-}
-function logStr() {
-  for (let i = 0; i < arguments.length; i++) {
-    log(JSON.stringify(arguments[i], null, 2))
-  }
-}
-
-const zxCalendar = new ZxCalendar({
-  // el: '.container',
-  el: document.querySelector('.container'),
+createCalendar({
+  el: '.container',
   lang: 'jp',
-  isFullWeek: false,
   titleFormatter: 'yyyy年MM月',
   showHoliday: true,
   holidayFormatter: function (item) {
     return item.value % 3 === 1 ? 'hello world' : false
-  }
-})
+  },
+}, 'Show Holiday, custom holidayFormatter')
 
-log('zxCalendar', zxCalendar)
-
-const zxCalendar2 = new ZxCalendar({
-  // el: '.container',
-  el: document.querySelector('.container'),
+createCalendar({
+  el: '.container',
   lang: 'en',
-  isFullWeek: false,
   dateRange: ['2009/12/09', '2019/12/09'],
-  defaultDate: '2028/10/25'
-})
+  defaultDate: '2019/12/02'
+}, 'dateRange, defaultDate')
 
-log('zxCalendar2', zxCalendar2)
-
-const zxCalendar3 = new ZxCalendar({
-  // el: '.container',
-  el: document.querySelector('.container'),
-  lang: 'jp',
+createCalendar({
+  el: '.container',
+  lang: 'zh',
   type: 'year',
   // titleFormatter: 'yyyy年-yyyy年',
   dateRange: ['2009/12/09', '2019/12/09'],
   itemSuffix: '年'
-})
+}, 'type[year], dateRange, itemSuffix[年]')
 
-log('zxCalendar3', zxCalendar3)
-
-const zxCalendar4 = new ZxCalendar({
-  // el: '.container',
-  el: document.querySelector('.container'),
+createCalendar({
+  el: '.container',
   lang: 'jp',
   type: 'month',
   // titleFormatter: 'yyyy年',
   itemSuffix: '月',
   defaultDate: '2020/01',
-  dateRange: ['2009/12/09', '2021/02/01'],
-})
+  dateRange: ['2009/12/09', '2021/02/01']
+}, 'type[month], dateRange, defaultDate, itemSuffix[月]')
 
-log('zxCalendar4', zxCalendar4)
+createCalendar({
+  el: '.container',
+  mode: 'multiple',
+  defaultDate: ['2020/08/01', '2020/08/19'],
+}, 'mode[multiple],  defaultDate')
 
-setTimeout(function () {
-  zxCalendar.setDate('2020-08-12')
-}, 3000)
+createCalendar({
+  el: '.container',
+  mode: 'range',
+  defaultDate: ['2020/08/03', '2020/08/19'],
+}, 'mode[range],  defaultDate')
 
-zxCalendar.on('change', item => {
-  logStr('zxCalendar change', item)
-})
-zxCalendar2.on('change', item => {
-  logStr('zxCalendar2 change', item)
-})
-zxCalendar3.on('change', item => {
-  logStr('zxCalendar3 change', item)
-})
-zxCalendar4.on('change', item => {
-  logStr('zxCalendar4 change', item)
-})
+createCalendar({
+  el: '.container',
+  type: 'month',
+  mode: 'range',
+  defaultDate: ['2010/08/03', '2020/08/19'],
+}, 'mode[range], type[month],  defaultDate')
 
-zxCalendar.on('error', err => {
-  console.error(err)
-})
-
-zxCalendar2.on('error', err => {
-  console.error(err)
-})
-
-zxCalendar3.on('error', err => {
-  console.error(err)
-})
-
-zxCalendar4.on('error', err => {
-  console.error(err)
-})
-
-export default zxCalendar
+createCalendar({
+  el: '.container',
+  type: 'year',
+  mode: 'range',
+  defaultDate: ['2010/08/03', '2020/08/19'],
+}, 'mode[range], type[year],  defaultDate')

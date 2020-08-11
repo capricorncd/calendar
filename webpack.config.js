@@ -59,7 +59,13 @@ const baseConfig = {
         ]
       },
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+    })
+  ]
 }
 
 let webpackConfig = {}
@@ -74,11 +80,6 @@ if (isProduction) {
 } else {
   webpackConfig = merge(baseConfig, {
     entry: resolve(__dirname, 'test/index.js'),
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: './index.html'
-      })
-    ]
   })
 }
 
