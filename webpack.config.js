@@ -15,9 +15,13 @@ console.log(rawArgs)
 const isProduction = rawArgs[1] === 'production'
 
 const baseConfig = {
+  entry: {
+    'zx-calendar.min': resolve(__dirname, 'src/index.js'),
+    test: resolve(__dirname, 'test/index.js')
+  },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'zx-calendar.min.js',
+    filename: '[name].js',
     libraryTarget: 'umd',
     library: 'ZxCalendar',
     libraryExport: 'default',
@@ -72,14 +76,12 @@ let webpackConfig = {}
 
 if (isProduction) {
   webpackConfig = merge(baseConfig, {
-    entry: resolve(__dirname, 'src/index.js'),
     plugins: [
       new webpack.BannerPlugin(banner)
     ]
   })
 } else {
   webpackConfig = merge(baseConfig, {
-    entry: resolve(__dirname, 'test/index.js'),
   })
 }
 
