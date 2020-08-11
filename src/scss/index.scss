@@ -64,7 +64,9 @@ $whiteColor: #fff;
           opacity: 1;
         }
         &.date-only {
-          display: none;
+          &:before {
+            display: none;
+          }
         }
       }
     }
