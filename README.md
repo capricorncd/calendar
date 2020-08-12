@@ -1,6 +1,6 @@
 # zx-calendar
 
-demo https://capricorncd.github.io/calendar/dist/index.html
+https://capricorncd.github.io/calendar/dist/index.html
 
 ```bash
 npm install zx-calendar -S
