@@ -36,8 +36,9 @@ const options = {
   dateRange: [],
   // show holiday info
   showHoliday: false,
-  // function, return string(holiday name)/true/false
-  holidayFormatter: null,
+  // function, custom item handler
+  // return object {text: string, value: number, fullText: string, disabled: boolean, ...}
+  itemFormatter: null,
   // Selection mode: single/multiple/range
   mode: 'single',
   // language package

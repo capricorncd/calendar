@@ -61,8 +61,9 @@ const DEF_OPTIONS = {
   itemSuffix: null,
   // default selected date
   defaultDate: [],
-  // function
-  holidayFormatter: null,
+  // function, custom item handler
+  // return object {}
+  itemFormatter: null,
   // Selection mode: single selection, multiple selection, range selection
   mode: MODE_SINGLE,
   // language package
@@ -508,7 +509,7 @@ ZxCalendar.prototype = {
     let weekIndex = 0
     let tempText, tempItem, tempValue
     let prefix = this.data.current.slice(0, 2).join('/') + '/'
-    const { holidayFormatter } = this.options
+    const { itemFormatter } = this.options
     const dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
@@ -530,11 +531,8 @@ ZxCalendar.prototype = {
         selected: this._isSelected(tempValue),
         current: this.data.today === tempFullText
       }
-      // customer holiday
-      if (isFunction(holidayFormatter)) {
-        tempItem.holiday = holidayFormatter(tempItem)
-      }
-      return tempItem
+      // custom handler: itemFormatter
+      return isFunction(itemFormatter) ? itemFormatter(tempItem) : tempItem
     })
     this.data.dates = dates
     // check first page and last page

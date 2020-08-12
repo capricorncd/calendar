@@ -11,10 +11,13 @@ createCalendar({
   lang: 'jp',
   titleFormatter: 'yyyy年MM月',
   showHoliday: true,
-  holidayFormatter: function (item) {
-    return item.value % 3 === 1 ? 'hello world' : false
+  // custom item handler
+  itemFormatter: function (item) {
+    item.holiday = item.value % 3 === 1 ? 'hello world' : false
+    item.disabled = item.disabled || item.value % 5 === 0
+    return item
   },
-}, 'Show Holiday, custom holidayFormatter')
+}, 'Show Holiday, custom options.itemFormatter')
 
 createCalendar({
   el: '.container',
