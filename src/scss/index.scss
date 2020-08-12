@@ -200,6 +200,7 @@ $rangeSelectedBg: #eee;
       background: $primaryColor;
       cursor: pointer;
       opacity: 0.9;
+      font-size: 0.75rem;
       &:hover {
         opacity: 1;
       }
@@ -287,6 +288,7 @@ $rangeSelectedBg: #eee;
               content: '';
               padding: 3px;
               border-radius: 50%;
+              box-sizing: content-box;
             }
           }
           .__text {
