@@ -209,7 +209,7 @@ ZxCalendar.prototype = {
     e.stopPropagation()
     const el = e.target
     let className = el.className.split(' ')
-    console.log(el, className)
+    // console.log(el, className)
     // prev
     if (className.includes(CLASS_NAME_PREV_BUTTON)) {
       this._onPrevClick(className.includes(CLASS_NAME_DATE_ONLY))

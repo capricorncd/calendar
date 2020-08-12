@@ -65,6 +65,7 @@ $rangeSelectedBg: #eee;
           opacity: 1;
         }
         &.date-only {
+          display: none;
           &:before {
             display: none;
           }
