@@ -6,6 +6,49 @@
 import './index.scss'
 import { createCalendar } from './helper'
 
+/**
+ * test calendar 1
+ * @type {ZxCalendar}
+ */
+const testCalendar = new ZxCalendar({
+  el: '#testCalendar .test-wrapper',
+  defaultDate: '2020/02/21',
+  hideFooter: true,
+})
+
+console.log('testCalendar', testCalendar)
+// handle button[hook-cancel, hook-clear, hook-confirm] click
+document.querySelector('#testCalendar .test-footer')
+  .addEventListener('click', e => {
+    switch (e.target.className) {
+      case 'hook-cancel':
+        alert('cancel button on click')
+        break
+      case 'hook-clear':
+        if (testCalendar.getDate().length === 0) {
+          alert('No dates selected')
+        } else {
+          testCalendar.setDate(null)
+        }
+        break
+      case 'hook-confirm':
+        if (testCalendar.getDate().length === 0) {
+          alert('No dates selected')
+        } else {
+          alert(JSON.stringify(testCalendar.getDate(), null, 2))
+        }
+        break
+    }
+  })
+
+
+testCalendar.on('change', list => {
+  console.log(JSON.stringify(list, null, 2))
+})
+
+/**
+ * test 2 ~ n
+ */
 createCalendar({
   el: '.container',
   lang: 'jp',

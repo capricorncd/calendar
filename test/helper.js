@@ -15,8 +15,11 @@ function logStr() {
   }
 }
 
-function createEl(tag, { html }) {
+function createEl(tag, { html, attrs }) {
   const el = document.createElement(tag)
+  if (attrs) {
+    if (attrs.class) el.className = attrs.class
+  }
   if (html) {
     el.innerHTML = html
   }
@@ -78,10 +81,11 @@ function createCalendar(options, title, el) {
   const dt = createEl('dt', { html: title })
   wrapper.appendChild(dt)
   const dd = createEl('dd', {})
-  wrapper.appendChild(dd)
+  const calendarWrapper = createEl('div', { attrs: {class: 'calendar-wrapper'}})
+  dd.appendChild(calendarWrapper)
   const calendar = new ZxCalendar({
     ...options,
-    el: dd
+    el: calendarWrapper
   })
   const pre = createEl('pre', {
     html: toString(options)

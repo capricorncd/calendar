@@ -3,6 +3,10 @@ body {
   margin: 20px;
 }
 
+button {
+  outline: none;
+}
+
 header, footer {
   position: relative;
   display: flex;
@@ -44,7 +48,7 @@ header, footer {
       }
     }
   }
-  .zx-calendar {
+  .calendar-wrapper {
     margin-right: 20px;
     width: 320px;
     border: 1px solid rgba(0, 0, 0, .1);
@@ -64,6 +68,32 @@ header, footer {
     .zx-calendar {
       width: 100%;
       margin: 0 0 10px;
+    }
+  }
+}
+
+
+.calendar-wrapper {
+  .test-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 15px 20px;
+    button {
+      margin: 0 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 70px;
+      height: 30px;
+      cursor: pointer;
+      opacity: 0.7;
+      &:hover {
+        opacity: 1;
+      }
+      &:last-child {
+        background: #f30;
+        color: #fff;
+        border-color: #f30;
+      }
     }
   }
 }
