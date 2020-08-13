@@ -140,7 +140,7 @@ function getDateInfo({ current, currentDate }) {
   }
   // first day date of next month
   const nextMonthFirstDayTimestamp = new Date(`${year}/${toTwoDigits(month)}/01`).getTime()
-  // get timestamp of the this month last millisecond
+  // get date of the this month last millisecond
   const lastMillisecondDate = new Date(nextMonthFirstDayTimestamp - 1)
   return {
     firstDayOfWeek,
