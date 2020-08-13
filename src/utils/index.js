@@ -124,22 +124,27 @@ function toDate(str) {
  * @returns {{firstDayOfWeek: number, lastDayOfMonth: number}}
  */
 function getDateInfo({ current, currentDate }) {
+  // firstDayOfWeek
+  // get first day of this month
+  let arr = current.slice(0, 2)
+  arr.push('01')
+  const firstDayOfWeek = new Date(arr.join('/')).getDay()
+  // lastDayOfMonth
   let year = currentDate.getFullYear()
-  let month = currentDate.getMonth()
-  if (month === 11) {
+  let month = currentDate.getMonth() + 1
+  if (month === 12) {
     year += 1
     month = 1
   } else {
     month += 1
   }
-  // get timestamp of the next month
-  let timestamp = +toDate(`${year}/${toTwoDigits(month)}/01`)
-  // get first day of this month
-  let arr = current.slice(0, 2)
-  arr.push('01')
+  // first day date of next month
+  const nextMonthFirstDayTimestamp = new Date(`${year}/${toTwoDigits(month)}/01`).getTime()
+  // get timestamp of the this month last millisecond
+  const lastMillisecondDate = new Date(nextMonthFirstDayTimestamp - 1)
   return {
-    firstDayOfWeek: toDate(arr.join('/')).getDay(),
-    lastDayOfMonth: toDate(timestamp - 1).getDate()
+    firstDayOfWeek,
+    lastDayOfMonth: lastMillisecondDate.getDate()
   }
 }
 
