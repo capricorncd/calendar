@@ -71,7 +71,9 @@ const DEF_OPTIONS = {
   // footer buttons
   footerButtons: ['clear', 'cancel', 'confirm'],
   // justify-content
-  footerButtonAlign: 'flex-end'
+  footerButtonAlign: 'flex-end',
+  // hide buttons of footer when mode is multiple/range
+  hideFooter: false,
 }
 
 function ZxCalendar(params = {}) {
@@ -177,7 +179,7 @@ ZxCalendar.prototype = {
     const body = createDom(bodyVNode)
     calendar.appendChild(body)
     // footer
-    if (options.mode === MODE_MULTIPLE || options.mode === MODE_RANGE) {
+    if (!options.hideFooter && (options.mode === MODE_MULTIPLE || options.mode === MODE_RANGE)) {
       const footerVNodeCopy = JSON.parse(JSON.stringify(footerVNode))
       options.footerButtons.forEach(btn => {
         footerVNodeCopy.children.push({
@@ -391,9 +393,20 @@ ZxCalendar.prototype = {
     this.options.dateRange = [start, end]
     this._updateDom()
   },
+  /**
+   * set selected date
+   * @param str
+   */
   setDate(str) {
     this.data.selected = initSelectedDates(str, this.options)
     this._updateDom()
+  },
+  /**
+   * get selected date
+   * @returns {*[]}
+   */
+  getDate() {
+    return this.data.selected.slice(0)
   },
   _setCurrentDate(dateStr) {
     // yyyy -> yyyy/01/01

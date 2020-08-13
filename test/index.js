@@ -69,3 +69,11 @@ createCalendar({
   mode: 'range',
   defaultDate: ['2010/08/03', '2020/08/19'],
 }, 'mode[range], type[year],  defaultDate')
+
+createCalendar({
+  el: '.container',
+  mode: 'range',
+  defaultDate: ['2020/08/03', '2020/08/19'],
+  dateRange: ['2020/08/07'],
+  hideFooter: true,
+}, 'mode[range],  hideFooter[true]')
