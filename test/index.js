@@ -43,9 +43,27 @@ document.querySelector('#testCalendar .test-footer')
   })
 
 
+testCalendar.on('error', err => {
+  console.error(err)
+})
+
 testCalendar.on('change', list => {
   console.log(JSON.stringify(list, null, 2))
 })
+
+testCalendar.on('onWeekClick', item => {
+  console.log('onWeekClick', item)
+})
+
+testCalendar.on('onTitleClick', item => {
+  console.log('onTitleClick', item)
+})
+
+setTimeout(function () {
+  console.log('setDate', '2020年08月19日（水） 22:12:09 PM')
+  testCalendar.setDate('2020年08月19日（水） 22:12:09 PM')
+  console.log(testCalendar.getDate())
+}, 3000)
 
 
 /**

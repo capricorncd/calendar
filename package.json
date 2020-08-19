@@ -1,6 +1,6 @@
 {
   "name": "zx-calendar",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "calendar",
   "main": "dist/zx-calendar.min.js",
   "scripts": {

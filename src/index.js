@@ -107,7 +107,14 @@ function ZxCalendar(params = {}) {
   // today
   let date = new Date()
   const today = formatDate(date, 'yyyy/MM/dd')
-  const selectedItems = initSelectedDates(options.defaultDate, options)
+  let selectedItems = []
+  try {
+    selectedItems = initSelectedDates(options.defaultDate, options)
+  } catch (e) {
+    setTimeout(() => {
+      this.emit('error', e)
+    }, 0)
+  }
   const currentDate = getCurrentDate.call(this, options, selectedItems) || date
   const currentDay = formatDate(currentDate, 'yyyy/MM/dd')
   this.data = {
@@ -212,6 +219,7 @@ ZxCalendar.prototype = {
     e.stopPropagation()
     const el = e.target
     let className = el.className.split(' ')
+    let innerText = el.innerText
     // console.log(el, className)
     // prev
     if (className.includes(CLASS_NAME_PREV_BUTTON)) {
@@ -235,11 +243,19 @@ ZxCalendar.prototype = {
     }
     // title
     else if (className.includes(CLASS_NAME_TITLE_WRAPPER)) {
-      this._onTitleClick()
+      this._onTitleClick({
+        innerText,
+        el,
+        className
+      })
     }
     // week
     else if (className.includes(CLASS_NAME_ITEM_WEEK)) {
-      this._onWeekClick()
+      this._onWeekClick({
+        innerText,
+        el,
+        className
+      })
     } else {
       // get item
       const item = getSelectItem(el, className, this.$els.calendar)
@@ -248,8 +264,8 @@ ZxCalendar.prototype = {
       }
     }
   },
-  _onTitleClick() {
-    console.log('_onTitleClick')
+  _onTitleClick(item) {
+    this.emit('onTitleClick', item)
   },
   /**
    * handle prev button on click
@@ -324,8 +340,8 @@ ZxCalendar.prototype = {
         break
     }
   },
-  _onWeekClick() {
-    console.log('_onWeekClick')
+  _onWeekClick(item) {
+    this.emit('onWeekClick', item)
   },
   /**
    * on item click
@@ -398,8 +414,12 @@ ZxCalendar.prototype = {
    * @param str
    */
   setDate(str) {
-    this.data.selected = initSelectedDates(str, this.options)
-    this._updateDom()
+    try {
+      this.data.selected = initSelectedDates(str, this.options)
+      this._updateDom()
+    } catch (e) {
+      this.emit('error', e)
+    }
   },
   /**
    * get selected date

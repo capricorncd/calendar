@@ -168,6 +168,43 @@ zxCalendar.formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss')
 // 2020/08/10 23:49:12
 ```
 
+### on(eventName, fn)
+
+|parameter|type|required|remark|
+|:--|:--|:--|:-|
+|eventName|`string`|yes|custom event name|
+|fn|`function`|yes|-|
+
+```javascript
+zxCalendar.on('error', err => {
+  console.error(err)
+})
+
+zxCalendar.on('change', arr => {
+  console.log(arr)
+})
+
+zxCalendar.on('onWeekClick', ({el, className, innerText) => {
+  console.log(innerText)
+})
+
+zxCalendar.on('onTitleClick', ({el, className, innerText) => {
+  console.log(innerText)
+})
+```
+
+### emit(eventName[, parameters])
+
+```javascript
+zxCalendar.emit('customEvent', {})
+```
+
+### off(eventName)
+
+```javascript
+zxCalendar.off('customEvent')
+```
+
 ### destroy()
 
 remove calendar from el(parent)

@@ -124,10 +124,9 @@ function toDate(str) {
   } else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
     date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
   } else {
-    try {
-      date = new Date(str)
-    } catch (e) {
-      if (isFunction(this.emit)) this.emit('error', e)
+    date = new Date(str)
+    if (isNaN(date.getFullYear())) {
+      throw new Error(`[${str}] is an invalid Date!`)
     }
   }
   return date
