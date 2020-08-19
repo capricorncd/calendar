@@ -58,6 +58,8 @@ const options = {
   // ...
   // justify-content
   footerButtonAlign: 'flex-end',
+  // hide buttons of footer when mode is multiple/range
+  hideFooter: false,
 }
 
 // create an instance
@@ -83,14 +85,18 @@ zxCalendar.on('error', err => {
 
 ### setDate(date)
 
-parameter `date`
+Set selected date
 
-> type `string/timestamp/Date` or `Array[string/timestamp/Date]`
+|parameter|type|required|remark|
+|:--|:--|:--|:--|
+|date|`string/timestamp/Date` or `Array[string/timestamp/Date]`, `null`|no|-|
+
 
 ```javascript
 // mode: single
 // set select date
 zxCalendar.setDate('2020/08/10')
+zxCalendar.setDate('2020/08/10 22:14:59')
 // clear selected date
 zxCalendar.setDate()
 
@@ -103,25 +109,22 @@ zxCalendar.setDate(['2008/01/14', '2019/12/10'])
 
 ### setDateRange(startDate, endDate)
 
-set date reange
+Set optional date range
 
-parameter `startDate`
-
-> start date, type `string/timestamp/Date`
-
-parameter `endDate`
-
-> end date, type `string/timestamp/Date`
+|parameter|type|required|remark|
+|:--|:--|:--|:--|
+|startDate|`string/timestamp/Date`|yes|-|
+|endDate|`string/timestamp/Date`|yes|-|
 
 ### toDate(date)
 
-parameter `date`
+String, timestamp to Date
 
-> type: `string/timestamp/Date`
+|parameter|type|required|remark|
+|:--|:--|:--|:--|
+|date|`string/timestamp/Date`|yes|-|
 
-return
-
-> `Date/null`
+return `Date/null`
 
 ```javascript
 const date = zxCalendar.toDate('2020/08/10')
@@ -131,6 +134,34 @@ if (date !== null) {
 ```
 
 ### formatDate(date, formatter)
+
+|parameter|type|required|remark|
+|:--|:--|:--|:-|
+|date|`string/timestamp/Date`|yes||
+|formatter|`string`|yes|`yMdhmsaAwW`|
+
+formatter
+
+`2020/08/18 22:59:02`
+
+|format|meaning|example|
+|:--|:--|:--|
+|yyyy|year|2020|
+|M|month|8|
+|MM|month|08|
+|d|day|18|
+|dd|day|18|
+|h|hour|22|
+|hh|hour|22|
+|m|minute|59|
+|mm|minute|59|
+|s|second|2|
+|ss|second|02|
+|a|am/pm|pm|
+|A|AM/PM|PM|
+|w|week|2|
+|ww|week|02|
+|W|week|`options: {isFullWeek: false, lang: 'zh'}`, 二<br>`options: {isFullWeek: true, lang: 'zh'}`, 星期二<br>`ZxCalendar.prototype.formatDate(date, 'W')`, 2<br>`ZxCalendar.prototype.formatDate(date, 'WW')`, 02|
 
 ```javascript
 zxCalendar.formatDate(new Date(), 'yyyy/MM/dd hh:mm:ss')
