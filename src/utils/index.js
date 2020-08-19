@@ -4,6 +4,7 @@
  * Date: 2020-08-08 16:14
  */
 import { MODE_RANGE, MODE_SINGLE } from '../config'
+import ZxCalendar from '../index'
 
 const VALUE_FORMAT = {
   date: 'yyyyMMdd',
@@ -55,9 +56,11 @@ function toTwoDigits(n) {
  */
 function formatDate(srcDate, fmt) {
   const date = toDate(srcDate)
-  if (!date) return srcDate
+  if (!date || !fmt) return srcDate
+  let $1
   if (/(y+)/i.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    $1 = RegExp.$1
+    fmt = fmt.replace($1, (date.getFullYear() + '').substr(4 - $1.length))
   }
 
   const obj = {
@@ -65,13 +68,26 @@ function formatDate(srcDate, fmt) {
     'd+': date.getDate(),
     'h+': date.getHours(),
     'm+': date.getMinutes(),
-    's+': date.getSeconds()
+    's+': date.getSeconds(),
+    // week number
+    'w+': date.getDay(),
+    // week text
+    'W+': date.getDay(),
+    // am/pm
+    'a+': date.getHours() < 12 ? 'am' : 'pm',
+    'A+': date.getHours() < 12 ? 'AM' : 'PM',
+  }
+
+  if (this instanceof ZxCalendar) {
+    const { langPackage } = this
+    obj['W+'] = langPackage.weeks[date.getDay()]
   }
 
   for (let key in obj) {
     if (new RegExp('(' + key + ')').test(fmt)) {
+      $1 = RegExp.$1
       let str = obj[key] + ''
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : toTwoDigits(str))
+      fmt = fmt.replace($1, ($1.length === 1) ? str : toTwoDigits(str))
     }
   }
   return fmt

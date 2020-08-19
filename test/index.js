@@ -5,6 +5,7 @@
  */
 import './index.scss'
 import { createCalendar } from './helper'
+import ZxCalendar from '../src/index'
 
 /**
  * test calendar 1
@@ -46,10 +47,11 @@ testCalendar.on('change', list => {
   console.log(JSON.stringify(list, null, 2))
 })
 
+
 /**
  * test 2 ~ n
  */
-createCalendar({
+const jpCalendar = createCalendar({
   el: '.container',
   lang: 'jp',
   titleFormatter: 'yyyy年MM月',
@@ -61,6 +63,8 @@ createCalendar({
     return item
   },
 }, 'Show Holiday, custom options.itemFormatter')
+
+console.warn(jpCalendar.formatDate('2020/08/19 22:12:09', 'yyyy年MM月dd日（W） hh:mm:ss A a ww'))
 
 createCalendar({
   el: '.container',
@@ -120,3 +124,5 @@ createCalendar({
   dateRange: ['2020/08/07'],
   hideFooter: true,
 }, 'mode[range],  hideFooter[true]')
+
+export default ZxCalendar
