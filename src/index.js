@@ -115,7 +115,7 @@ function ZxCalendar(params = {}) {
       this.emit('error', e)
     }, 0)
   }
-  const currentDate = getCurrentDate.call(this, options, selectedItems) || date
+  const currentDate = getCurrentDate.call(this, selectedItems) || date
   const currentDay = formatDate(currentDate, 'yyyy/MM/dd')
   this.data = {
     today: today,
@@ -223,11 +223,11 @@ ZxCalendar.prototype = {
     // console.log(el, className)
     // prev
     if (className.includes(CLASS_NAME_PREV_BUTTON)) {
-      this._onPrevClick(className.includes(CLASS_NAME_DATE_ONLY))
+      this.prev(!className.includes(CLASS_NAME_DATE_ONLY))
     }
     // next
     else if (className.includes(CLASS_NAME_NEXT_BUTTON)) {
-      this._onNextClick(className.includes(CLASS_NAME_DATE_ONLY))
+      this.next(!className.includes(CLASS_NAME_DATE_ONLY))
     }
     // confirm button
     else if (className.includes(CLASS_NAME_CONFIRM_BUTTON)) {
@@ -268,21 +268,14 @@ ZxCalendar.prototype = {
     this.emit('onTitleClick', item)
   },
   /**
-   * handle prev button on click
-   * @param isMonth
-   * @private
+   * prev
+   * @param isYear only type=date
    */
-  _onPrevClick(isMonth) {
+  prev(isYear) {
     let [year, month] = this.data.current
     switch (this.options.type) {
       case TYPE_DATE:
-        if (isMonth) {
-          month = toNumber(month) - 1
-          if (month === 0) {
-            year = toNumber(year) - 1
-            month = 12
-          }
-        } else {
+        if (isYear) {
           year = toNumber(year) - 1
           // range check
           const [startRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
@@ -291,34 +284,34 @@ ZxCalendar.prototype = {
             const [startMonth] = getDateRange(this.options.dateRange, 'MM')
             if (startMonth) month = startMonth
           }
+        } else {
+          month = toNumber(month) - 1
+          if (month === 0) {
+            year = toNumber(year) - 1
+            month = 12
+          }
         }
-        this._setCurrentDate([year, month, '01'].join('/'))
+        this.setCurrentDate([year, month, '01'].join('/'))
         break
       case TYPE_MONTH:
-        this._setCurrentDate(year - 1)
+        this.setCurrentDate(year - 1)
         break
       case TYPE_YEAR:
         const temp = this.data.years[0] || {}
-        this._setCurrentDate(temp.value - 1)
+        this.setCurrentDate(temp.value - 1)
         break
     }
   },
   /**
    * handle next button on click
-   * @param isMonth
+   * @param isYear
    * @private
    */
-  _onNextClick(isMonth) {
+  next(isYear) {
     let [year, month] = this.data.current
     switch (this.options.type) {
       case TYPE_DATE:
-        if (isMonth) {
-          month = toNumber(month) + 1
-          if (month === 13) {
-            year = toNumber(year) + 1
-            month = 1
-          }
-        } else {
+        if (isYear) {
           year = toNumber(year) + 1
           // range check
           const [, endRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
@@ -327,16 +320,22 @@ ZxCalendar.prototype = {
             const [, endMonth] = getDateRange(this.options.dateRange, 'MM')
             if (endMonth) month = endMonth
           }
+        } else {
+          month = toNumber(month) + 1
+          if (month === 13) {
+            year = toNumber(year) + 1
+            month = 1
+          }
         }
-        this._setCurrentDate([year, month, '01'].join('/'))
+        this.setCurrentDate([year, month, '01'].join('/'))
         break
       case TYPE_MONTH:
-        this._setCurrentDate(toNumber(year) + 1)
+        this.setCurrentDate(toNumber(year) + 1)
         break
       case TYPE_YEAR:
         const years = this.data.years
         const temp = years[years.length - 1] || {}
-        this._setCurrentDate(temp.value + 1)
+        this.setCurrentDate(temp.value + 1)
         break
     }
   },
@@ -416,7 +415,12 @@ ZxCalendar.prototype = {
   setDate(str) {
     try {
       this.data.selected = initSelectedDates(str, this.options)
-      this._updateDom()
+      if (this.data.selected.length === 0) {
+        this._updateDom()
+        return
+      }
+      const item = this.data.selected[0]
+      this.setCurrentDate(item.fullText)
     } catch (e) {
       this.emit('error', e)
     }
@@ -428,11 +432,16 @@ ZxCalendar.prototype = {
   getDate() {
     return this.data.selected.slice(0)
   },
-  _setCurrentDate(dateStr) {
+  /**
+   * set current date
+   * @param dateStr
+   */
+  setCurrentDate(dateStr) {
     // yyyy -> yyyy/01/01
     // yyyy/MM -> yyyy/MM/01
     // yyyy/MM/dd -> yyyy/MM/dd
     const date = this.toDate(dateStr)
+    if (!date) return
     const currentDay = formatDate(date, 'yyyy/MM/dd')
     this.data.currentDate = date
     this.data.currentDay = currentDay

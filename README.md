@@ -91,7 +91,6 @@ Set selected date
 |:--|:--|:--|:--|
 |date|`string/timestamp/Date` or `Array[string/timestamp/Date]`, `null`|no|-|
 
-
 ```javascript
 // mode: single
 // set select date
@@ -107,6 +106,14 @@ zxCalendar.setDate(['2020/08/01', '2020/08/05', '2020/08/10'])
 zxCalendar.setDate(['2008/01/14', '2019/12/10'])
 ```
 
+### setCurrentDate(date)
+
+Set current date
+
+|parameter|type|required|remark|
+|:--|:--|:--|:--|
+|date|`string/timestamp/Date`|yes|-|
+
 ### setDateRange(startDate, endDate)
 
 Set optional date range
@@ -115,6 +122,22 @@ Set optional date range
 |:--|:--|:--|:--|
 |startDate|`string/timestamp/Date`|yes|-|
 |endDate|`string/timestamp/Date`|yes|-|
+
+### prev(isYear)
+
+|options.type|isYear|remark|
+|:--|:--|:--|
+|date|effective|isYear=`true`, go to prev year<br>isYear=`false`, go to prev month|
+|month|invalid|go to prev year|
+|year|invalid|go to prev years page|
+
+### next(isYear)
+
+|options.type|isYear|remark|
+|:--|:--|:--|
+|date|effective|isYear=`true`, go to next year<br>isYear=`false`, go to next month|
+|month|invalid|go to next year|
+|year|invalid|go to next years page|
 
 ### toDate(date)
 
@@ -204,6 +227,12 @@ zxCalendar.emit('customEvent', {})
 ```javascript
 zxCalendar.off('customEvent')
 ```
+
+### getDate()
+
+get selected dates
+
+return `Array`
 
 ### destroy()
 

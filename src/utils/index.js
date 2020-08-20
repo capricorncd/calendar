@@ -126,7 +126,13 @@ function toDate(str) {
   } else {
     date = new Date(str)
     if (isNaN(date.getFullYear())) {
-      throw new Error(`[${str}] is an invalid Date!`)
+      const err = new Error(`"${str}" is an invalid Date!`)
+      if (this && isFunction(this.emit)) {
+        this.emit('error', err)
+        date = null
+      } else {
+        throw err
+      }
     }
   }
   return date
@@ -288,7 +294,12 @@ function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
   return invalidItem.length > 0
 }
 
-function getCurrentDate(options, selectedItems) {
+/**
+ * get current date
+ * @returns {null}
+ */
+function getCurrentDate(selectedItems) {
+  const { options } = this
   let date = null
   // dateRange
   const [startRangeDate, endRangeDate] = getDateRange(options.dateRange)

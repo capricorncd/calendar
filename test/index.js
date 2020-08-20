@@ -4,7 +4,7 @@
  * Date: 2020-08-08 15:58
  */
 import './index.scss'
-import { createCalendar } from './helper'
+import { $, createCalendar, log, logStr } from './helper'
 import ZxCalendar from '../src/index'
 
 /**
@@ -13,13 +13,17 @@ import ZxCalendar from '../src/index'
  */
 const testCalendar = new ZxCalendar({
   el: '#testCalendar .test-wrapper',
+  // defaultDate: 'undefined/09/02',
+  // new Date('undefined/09/02')
+  // -> Sun Sep 02 2001 00:00:00 GMT+0900 (Japan Standard Time)
+  // defaultDate: 'undefined/undefined/undefined',
   defaultDate: '2020/02/21',
   hideFooter: true,
 })
 
 console.log('testCalendar', testCalendar)
 // handle button[hook-cancel, hook-clear, hook-confirm] click
-document.querySelector('#testCalendar .test-footer')
+$('#testCalendar .test-footer')
   .addEventListener('click', e => {
     switch (e.target.className) {
       case 'hook-cancel':
@@ -60,9 +64,9 @@ testCalendar.on('onTitleClick', item => {
 })
 
 setTimeout(function () {
-  console.log('setDate', '2020年08月19日（水） 22:12:09 PM')
+  log('setDate', '2020年08月19日（水） 22:12:09 PM')
   testCalendar.setDate('2020年08月19日（水） 22:12:09 PM')
-  console.log(testCalendar.getDate())
+  log(testCalendar.getDate())
 }, 3000)
 
 

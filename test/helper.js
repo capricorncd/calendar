@@ -5,6 +5,10 @@
  */
 // import ZxCalendar from '../src'
 
+function $(s,  context = document) {
+  return context.querySelector(s)
+}
+
 function log() {
   console.log.apply(null, arguments)
 }
@@ -76,7 +80,7 @@ function getSpace(count = 2) {
 }
 
 function createCalendar(options, title, el) {
-  el = el || document.querySelector('.container')
+  el = el || $('.container')
   const wrapper = createEl('dl', {})
   const dt = createEl('dt', { html: title })
   wrapper.appendChild(dt)
@@ -112,6 +116,7 @@ function createCalendar(options, title, el) {
 }
 
 export {
+  $,
   createCalendar,
   createEl,
   log,

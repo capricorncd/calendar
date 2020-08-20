@@ -1,5 +1,5 @@
 body {
-  font-family: "Microsoft YaHei",微软雅黑,'Arial';
+  font-family: "Microsoft YaHei", 微软雅黑, 'Arial';
   margin: 20px;
 }
 
@@ -12,11 +12,14 @@ header, footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   h1, div {
     color: #333;
   }
+
   a {
     opacity: 0.6;
+
     &:hover {
       opacity: 1;
     }
@@ -26,6 +29,7 @@ header, footer {
 .container {
   dl {
     margin: 0 0 30px;
+
     dt {
       display: flex;
       align-items: center;
@@ -33,10 +37,12 @@ header, footer {
       line-height: 1rem;
       color: #666;
     }
+
     dd {
       margin: 0;
       padding: 0;
       display: flex;
+
       pre {
         border-radius: 4px;
         background: rgba(0, 0, 0, .1);
@@ -48,6 +54,7 @@ header, footer {
       }
     }
   }
+
   .calendar-wrapper {
     margin-right: 20px;
     width: 320px;
@@ -66,6 +73,7 @@ header, footer {
         display: block;
       }
     }
+
     .calendar-wrapper {
       width: 100%;
       margin: 0 0 10px;
@@ -79,6 +87,7 @@ header, footer {
     display: flex;
     justify-content: flex-end;
     padding: 0 15px 20px;
+
     button {
       margin: 0 5px;
       border-radius: 4px;
@@ -87,9 +96,11 @@ header, footer {
       height: 30px;
       cursor: pointer;
       opacity: 0.7;
+
       &:hover {
         opacity: 1;
       }
+
       &:last-child {
         background: #f30;
         color: #fff;
@@ -97,4 +108,13 @@ header, footer {
       }
     }
   }
+}
+
+.input {
+  height: 40px;
+  border: 1px solid #ccc;
+  padding: 0 8px;
+  border-radius: 4px;
+  width: 200px;
+  font-size: 1rem;
 }
