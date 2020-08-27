@@ -16,7 +16,7 @@ const isProduction = rawArgs[1] === 'production'
 
 const baseConfig = {
   entry: {
-    'zx-calendar.min': resolve(__dirname, 'src/index.js'),
+    'zx-calendar.min': resolve(__dirname, 'src/index.ts'),
     test: resolve(__dirname, 'test/index.js')
   },
   output: {
@@ -30,11 +30,26 @@ const baseConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: '/node_modules/',
+        enforce: 'pre',
+        test: /\.(js|tsx?)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          extensions: ['js', 'ts'],
+          fix: true
+        }
+      },
+      {
+        test: /\.jsx?$/,
         use: [
           'babel-loader'
-        ]
+        ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
       },
       {
         test: /\.(scss|sass)$/,
@@ -54,20 +69,23 @@ const baseConfig = {
                 return [
                   // remove: false
                   // -webkit-box-orient: vertical;
-                  require('autoprefixer')({remove: false})
+                  require('autoprefixer')({ remove: false })
                 ]
               }
             }
           },
           'sass-loader'
         ]
-      },
+      }
     ]
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js']
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
-      filename: 'index.html',
+      filename: 'index.html'
     })
   ]
 }
@@ -80,10 +98,10 @@ if (isProduction) {
       new webpack.BannerPlugin(banner)
     ]
   })
-} else {
+}
+else {
   webpackConfig = merge(baseConfig, {
   })
 }
 
 module.exports = webpackConfig
-

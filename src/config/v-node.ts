@@ -1,7 +1,7 @@
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
- * Date: 2020-08-08 20:35
+ * Date: 2020-08-23 23:58
  */
 import { createDom } from '../utils/dom'
 import {
@@ -11,7 +11,8 @@ import {
   CLASS_NAME_NEXT_BUTTON,
   CLASS_NAME_PREV_BUTTON, CLASS_NAME_CONFIRM_BUTTON,
   CLASS_NAME_TITLE_WRAPPER, TYPE_DATE, CLASS_NAME_CANCEL_BUTTON
-} from './index'
+} from './constants'
+import { calendarOptions } from '../../types/index'
 
 // calendar
 const calendarVNode = {
@@ -36,14 +37,14 @@ const headerVNode = {
           attrs: {
             type: 'button',
             class: CLASS_NAME_PREV_BUTTON
-          },
+          }
         },
         {
           tag: 'button',
           attrs: {
             type: 'button',
             class: [CLASS_NAME_PREV_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
-          },
+          }
         }
       ]
     },
@@ -62,14 +63,14 @@ const headerVNode = {
           attrs: {
             type: 'button',
             class: [CLASS_NAME_NEXT_BUTTON, CLASS_NAME_DATE_ONLY].join(' ')
-          },
+          }
         },
         {
           tag: 'button',
           attrs: {
             type: 'button',
             class: CLASS_NAME_NEXT_BUTTON
-          },
+          }
         }
       ]
     }
@@ -126,11 +127,11 @@ const footerButtonsVNode = {
  * @param options
  * @returns {Node|null}
  */
-function getWeekDom(weeks, options) {
+function getWeekDom(weeks: string[], options: calendarOptions) {
   if (options.type !== TYPE_DATE) return null
   const weekNodeCopy = JSON.parse(JSON.stringify(weekVNode))
-  weeks.forEach((item, i) => {
-    let isWeekend = i === 0 || i === 6
+  weeks.forEach((item: string, i: number) => {
+    const isWeekend = i === 0 || i === 6
     weekNodeCopy.children.push({
       attrs: {
         class: CLASS_NAME_ITEM_WEEK + (isWeekend ? ' ' + CLASS_NAME_IS_WEEKEND : '')

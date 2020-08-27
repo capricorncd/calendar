@@ -1,12 +1,19 @@
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
- * Date: 2020-08-08 16:14
+ * Date: 2020-08-23 23:57
  */
-import { MODE_RANGE, MODE_SINGLE } from '../config'
-import ZxCalendar from '../index'
+import { MODE_RANGE, MODE_SINGLE } from '../config/constants'
+import {
+  anyObject, calendarData,
+  calendarDate,
+  calendarItem,
+  calendarLangPackage,
+  calendarOptions,
+  calendarTypeObject
+} from '../../types'
 
-const VALUE_FORMAT = {
+const VALUE_FORMAT: calendarTypeObject = {
   date: 'yyyyMMdd',
   month: 'yyyyMM',
   year: 'yyyy'
@@ -17,8 +24,16 @@ const VALUE_FORMAT = {
  * @param s
  * @returns {*}
  */
-function toNumber(s) {
+function toNumber(s: any): number {
   return s >> 0
+}
+
+/**
+ * is number
+ * @param s
+ */
+function isNumber(s: any): boolean {
+  return typeof s === 'number'
 }
 
 /**
@@ -26,15 +41,15 @@ function toNumber(s) {
  * @param n
  * @returns {boolean}
  */
-function isNumberLike(n) {
-  return /^-?\d+\.?\d+$/.test(n)
+function isNumberLike(n: any): boolean {
+  return isNumber(n) || /^-?\d+\.?\d+$/.test(n)
 }
 
-function isString(s) {
+function isString(s: any): boolean {
   return typeof s === 'string'
 }
 
-function isFunction(fn) {
+function isFunction(fn: any): boolean {
   return typeof fn === 'function'
 }
 
@@ -43,7 +58,7 @@ function isFunction(fn) {
  * @param n
  * @returns {*}
  */
-function toTwoDigits(n) {
+function toTwoDigits(n: any): string {
   n += ''
   return n[1] ? n : '0' + n
 }
@@ -52,18 +67,19 @@ function toTwoDigits(n) {
  * format date
  * @param srcDate any
  * @param fmt yyyy-MM-dd hh:mm:ss
+ * @param langPackage
  * @returns {*}
  */
-function formatDate(srcDate, fmt) {
+function formatDate(srcDate: calendarDate, fmt: string, langPackage?: calendarLangPackage): string {
   const date = toDate(srcDate)
-  if (!date || !fmt) return srcDate
+  if (!date || !fmt) return srcDate + ''
   let $1
   if (/(y+)/i.test(fmt)) {
     $1 = RegExp.$1
     fmt = fmt.replace($1, (date.getFullYear() + '').substr(4 - $1.length))
   }
 
-  const obj = {
+  const obj: anyObject = {
     'M+': date.getMonth() + 1,
     'd+': date.getDate(),
     'h+': date.getHours(),
@@ -75,18 +91,17 @@ function formatDate(srcDate, fmt) {
     'W+': date.getDay(),
     // am/pm
     'a+': date.getHours() < 12 ? 'am' : 'pm',
-    'A+': date.getHours() < 12 ? 'AM' : 'PM',
+    'A+': date.getHours() < 12 ? 'AM' : 'PM'
   }
 
-  if (this instanceof ZxCalendar) {
-    const { langPackage } = this
+  if (langPackage && langPackage.weeks) {
     obj['W+'] = langPackage.weeks[date.getDay()]
   }
 
-  for (let key in obj) {
+  for (const key in obj) {
     if (new RegExp('(' + key + ')').test(fmt)) {
       $1 = RegExp.$1
-      let str = obj[key] + ''
+      const str = obj[key] + ''
       fmt = fmt.replace($1, ($1.length === 1) ? str : toTwoDigits(str))
     }
   }
@@ -98,13 +113,14 @@ function formatDate(srcDate, fmt) {
  * @param str yyyy/MM/dd, yyyy-MM-dd, yyyyMMdd
  * @returns {Date}
  */
-function toDate(str) {
-  if (!str) return null
+function toDate(str: calendarDate): Date | undefined {
+  if (!str) return undefined
   if (str instanceof Date) return str
-  let date = null
+  let date
+  /** number and number like */
   if (isNumberLike(str)) {
-    let s = str + ''
-    let len = s.length
+    const s = str + ''
+    const len = s.length
     // time stamp
     if (len === 13) {
       date = new Date(str)
@@ -116,26 +132,46 @@ function toDate(str) {
     // yyyyMM
     else if (len === 6) {
       date = new Date([s.substr(0, 4), s.substr(4, 2), '01'].join('/'))
-    } else if (len === 4) {
+    }
+    else if (len === 4) {
       date = new Date(s + '/01/01')
     }
-  } else if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(str)) {
-    date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
-  } else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
-    date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
-  } else {
-    date = new Date(str)
-    if (isNaN(date.getFullYear())) {
-      const err = new Error(`"${str}" is an invalid Date!`)
-      if (this && isFunction(this.emit)) {
-        this.emit('error', err)
-        date = null
-      } else {
-        throw err
+  }
+  /** replace 年月日, remove cn/jp week */
+  else if (typeof str === 'string') {
+    // replace 年月日
+    str = str.replace(/[年月日]/g, (match) => {
+      return match === '日' ? '' : '/'
+    })
+    // remove cn/jp week, comment
+    // 2020/08/22(星期六) 11:56:21
+    // Sat Aug 22 2020 11:56:24 GMT+0900 (Japan Standard Time)
+    str = str.replace(/[(（（].*?[)））]/g, ' ')
+      .replace(/\bam|pm\b/ig, ' ')
+      .replace(/\s+/g, ' ')
+    /** yyyy/MM/dd yyyy-MM-dd */
+    if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(str)) {
+      date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
+    }
+    /** yyyy/MM yyyy-MM */
+    else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
+      date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
+    }
+    /** other string */
+    else {
+      console.log('======', str)
+      date = new Date(str)
+      if (isNaN(date.getFullYear())) {
+        date = undefined
       }
     }
   }
   return date
+}
+
+interface TypesDateInfo {
+  firstDayOfWeek: number,
+  lastDayOfMonth: number
 }
 
 /**
@@ -144,10 +180,10 @@ function toDate(str) {
  * @param currentDate
  * @returns {{firstDayOfWeek: number, lastDayOfMonth: number}}
  */
-function getDateInfo({ current, currentDate }) {
+function getDateInfo({ current, currentDate }: any): TypesDateInfo {
   // firstDayOfWeek
   // get first day of this month
-  let arr = current.slice(0, 2)
+  const arr = current.slice(0, 2)
   arr.push('01')
   const firstDayOfWeek = new Date(arr.join('/')).getDay()
   // lastDayOfMonth
@@ -156,7 +192,8 @@ function getDateInfo({ current, currentDate }) {
   if (month === 12) {
     year += 1
     month = 1
-  } else {
+  }
+  else {
     month += 1
   }
   // first day date of next month
@@ -169,12 +206,17 @@ function getDateInfo({ current, currentDate }) {
   }
 }
 
+interface TypesYearInfo {
+  startFullYear: number,
+  endFullYear: number
+}
+
 /**
  * get year info from current year
  * @param currentFullYear
  * @returns {{endFullYear: number, startFullYear: number}}
  */
-function getYearInfo(currentFullYear) {
+function getYearInfo(currentFullYear: string): TypesYearInfo {
   const currentYear = toNumber(currentFullYear.substr(2))
   // Integer multiples of 20
   const flag = currentYear % 20 === 0
@@ -185,8 +227,8 @@ function getYearInfo(currentFullYear) {
     prefix -= 1
     startYear = 81
   }
-  let startFullYear = prefix * 100 + startYear
-  let endFullYear = startFullYear + 19
+  const startFullYear = prefix * 100 + startYear
+  const endFullYear = startFullYear + 19
   return {
     startFullYear,
     endFullYear
@@ -199,33 +241,39 @@ function getYearInfo(currentFullYear) {
  * @param fmt
  * @returns {[]}
  */
-function getDateRange(dateRange, fmt) {
-  const ret = []
+function getDateRange(dateRange: any, fmt?: string): number[] {
+  const arr: number[] = []
   if (Array.isArray(dateRange)) {
-    let [start, end] = dateRange
-    let tempStart = toDate(start)
-    let tempEnd = toDate(end)
-    if (isString(fmt)) {
-      tempStart = tempStart ? +formatDate(tempStart, fmt) : null
-      tempEnd = tempEnd ? +formatDate(tempEnd, fmt) : null
+    const [start, end] = dateRange
+    const tempStart = toDate(start)
+    const tempEnd = toDate(end)
+    if (typeof fmt === 'string') {
+      if (tempStart) {
+        arr.push(+formatDate(tempStart, fmt))
+      }
+      if (tempEnd) {
+        arr[1] = +formatDate(tempEnd, fmt)
+      }
     }
-    ret.push(tempStart)
-    ret.push(tempEnd)
+    else {
+      arr.push(tempStart ? +tempStart : 0)
+      arr.push(tempEnd ? +tempEnd : 0)
+    }
   }
-  return ret
+  return arr
 }
 
-function getSelectedDateRange({ data, options }) {
-  const arr = []
+function getSelectedDateRange(data: calendarData, options: calendarOptions): number[] {
+  const arr: number[] = []
   if (options.mode === MODE_RANGE) {
-    data.selected.forEach(item => {
-      arr.push(item ? item.value : null)
+    data.selected.forEach((item: calendarItem) => {
+      arr.push(item.value)
     })
   }
   return arr
 }
 
-function checkItemRange(current, start, end) {
+function checkItemRange(current: number, start?: number, end?: number): boolean {
   return (!!start && current < start) || (!!end && current > end)
 }
 
@@ -235,8 +283,8 @@ function checkItemRange(current, start, end) {
  * @param type
  * @returns {[]}
  */
-function initSelectedDates(defaultDate, { type, mode }) {
-  let arr = []
+function initSelectedDates(defaultDate: calendarDate | calendarDate[], { type, mode }: calendarOptions): calendarItem[] {
+  const arr: calendarItem[] = []
   if (defaultDate) {
     if (!Array.isArray(defaultDate)) {
       defaultDate = [defaultDate]
@@ -250,14 +298,17 @@ function initSelectedDates(defaultDate, { type, mode }) {
     }
     // handle date
     const fmt = VALUE_FORMAT[type]
-    let temp
-    defaultDate.forEach(item => {
-      temp = toDate(item)
-      if (temp) {
+    let tempDate, tempFullText
+    defaultDate.forEach((item: calendarDate) => {
+      tempDate = toDate(item)
+      if (tempDate) {
+        tempFullText = formatDate(tempDate, 'yyyy/MM/dd')
         arr.push({
-          value: toNumber(formatDate(temp, fmt)),
-          date: temp,
-          fullText: formatDate(temp, 'yyyy/MM/dd')
+          value: toNumber(formatDate(tempDate, fmt)),
+          date: tempDate,
+          text: tempFullText.split('/').pop(),
+          fullText: tempFullText,
+          week: toNumber(formatDate(tempDate, 'w'))
         })
       }
     })
@@ -267,26 +318,27 @@ function initSelectedDates(defaultDate, { type, mode }) {
   return arr
 }
 
-function isInvalidItem(timestamp, startRangeDate, endRangeDate) {
-  return (startRangeDate && startRangeDate > timestamp)
-    || (endRangeDate && endRangeDate < timestamp)
+function isInvalidItem(timestamp: number, startRangeDate: any, endRangeDate: any): boolean {
+  return (startRangeDate && startRangeDate > timestamp) ||
+    (endRangeDate && endRangeDate < timestamp)
 }
 
-function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
-  let invalidItem = []
+function isInvalidOfDateRange(items: calendarItem[], startRangeDate: any, endRangeDate: any, type: string): boolean {
+  const invalidItem = []
   switch (type) {
-    case MODE_RANGE:
+    case MODE_RANGE: {
       const [startItem, endItem] = items
-      if (startItem && isInvalidItem(+startItem.date, startRangeDate, endRangeDate)) {
+      if (startItem && isInvalidItem(+(startItem.date || 0), startRangeDate, endRangeDate)) {
         invalidItem.push(startItem)
       }
-      if (endItem && isInvalidItem(+endItem.date, startRangeDate, endRangeDate)) {
+      if (endItem && isInvalidItem(+(endItem.date || 0), startRangeDate, endRangeDate)) {
         invalidItem.push(endItem)
       }
       break
+    }
     default:
-      items.forEach(item => {
-        if (isInvalidItem(+item.date, startRangeDate, endRangeDate)) {
+      items.forEach((item: calendarItem) => {
+        if (isInvalidItem(+(item.date || 0), startRangeDate, endRangeDate)) {
           invalidItem.push(item)
         }
       })
@@ -298,39 +350,45 @@ function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
  * get current date
  * @returns {null}
  */
-function getCurrentDate(selectedItems) {
+function getCurrentDate(this: any, selectedItems: any): Date {
   const { options } = this
   let date = null
+  const time = new Date().getTime()
   // dateRange
   const [startRangeDate, endRangeDate] = getDateRange(options.dateRange)
   // after today
-  if (startRangeDate && +startRangeDate > +date) {
+  if (startRangeDate && +startRangeDate > time) {
     date = startRangeDate
   }
   // before today
-  if (endRangeDate && +endRangeDate < +date) {
+  if (endRangeDate && +endRangeDate < time) {
     date = endRangeDate
   }
   // check default date
   if (selectedItems.length) {
     if (isInvalidOfDateRange(selectedItems, startRangeDate, endRangeDate, options.type)) {
-      let timer = setTimeout(() => {
+      let timer: any = setTimeout(() => {
         this.emit('error', new Error(`The default date[${options.defaultDate}] is not within the range[${options.dateRange}].`))
         clearTimeout(timer)
         timer = null
       }, 0)
-    } else {
+    }
+    else {
       date = selectedItems[0].date
     }
   }
   return date
 }
 
-function isRangeSelectTemp(current, { data, options }) {
+function isRangeSelectTemp(current: number, { data, options }: any): boolean {
   if (options.mode === MODE_RANGE && data.selected.length === 1) {
     return current === data.selected[0].value
   }
   return false
+}
+
+function slice(arr: any[]): any[] {
+  return Array.prototype.slice.call(arr, 0)
 }
 
 export {
@@ -349,5 +407,6 @@ export {
   isString,
   toDate,
   toNumber,
-  toTwoDigits
+  toTwoDigits,
+  slice
 }

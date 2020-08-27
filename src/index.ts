@@ -1,52 +1,63 @@
 /**
  * Created by Capricorncd.
  * https://github.com/capricorncd
- * Date: 2020-08-08 15:49
+ * Date: 2020-08-23 22:17
  */
 import {
-  CLASS_NAME_IS_SELECTED,
-  HEADER_TITLE_FORMAT_DATE,
-  HEADER_TITLE_FORMAT_YEAR,
-  HEADER_TITLE_FORMAT_MONTH,
-  initConfig,
-  MODE_SINGLE,
-  MODE_RANGE,
-  MODE_MULTIPLE,
-  TYPE_YEAR,
-  TYPE_MONTH,
-  TYPE_DATE,
-  CLASS_NAME_DATE_ONLY,
+  calendarData, calendarDate,
+  calendarEls,
+  calendarEvents,
+  calendarItem,
+  calendarLangPackage,
+  calendarOptions,
+  TypesFn
+} from '../types/index'
+import {
   CLASS_NAME_PREV_BUTTON,
+  CLASS_NAME_CANCEL_BUTTON,
+  CLASS_NAME_CLEAR_BUTTON,
+  CLASS_NAME_CONFIRM_BUTTON,
+  CLASS_NAME_DATE_ONLY,
   CLASS_NAME_NEXT_BUTTON,
   CLASS_NAME_TITLE_WRAPPER,
   CLASS_NAME_ITEM_WEEK,
   CLASS_NAME_IS_DISABLED,
-  CLASS_NAME_CLEAR_BUTTON,
-  CLASS_NAME_CONFIRM_BUTTON,
-  CLASS_NAME_CANCEL_BUTTON
-} from './config/index'
+  CLASS_NAME_IS_SELECTED,
+  TYPE_DATE,
+  TYPE_YEAR,
+  TYPE_MONTH,
+  HEADER_TITLE_FORMAT_YEAR,
+  HEADER_TITLE_FORMAT_MONTH,
+  HEADER_TITLE_FORMAT_DATE,
+  MODE_SINGLE,
+  MODE_MULTIPLE,
+  MODE_RANGE
+} from './config/constants'
+import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
+import { calendarVNode, headerVNode, bodyVNode, getWeekDom, footerVNode, footerButtonsVNode } from './config/v-node'
+import { changeClassForSelectOneItem, createBodyDom, setHeaderBtnStatus } from './utils/private'
+import { initLangPackage } from './config/init-lang-package'
 import {
   checkItemRange,
   toDate,
   formatDate,
+  getCurrentDate,
   getDateRange,
   getDateInfo,
   getSelectedDateRange,
   getYearInfo,
   initSelectedDates,
+  isRangeSelectTemp,
   toNumber,
   toTwoDigits, isString, isFunction
 } from './utils/index'
-import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
-import { calendarVNode, headerVNode, bodyVNode, getWeekDom, footerVNode, footerButtonsVNode } from './config/v-node'
-import { changeClassForSelectOneItem, createBodyDom, setHeaderBtnStatus } from './utils/private'
+
 import './scss/index.scss'
-import { getCurrentDate, isRangeSelectTemp } from './utils'
 
 // default options
-const DEF_OPTIONS = {
+const DEF_OPTIONS: calendarOptions = {
   // document selector or Element
-  el: null,
+  el: '',
   // Restricted date range
   dateRange: [],
   // zh/jp/en
@@ -58,12 +69,12 @@ const DEF_OPTIONS = {
   isFullWeek: false,
   titleFormatter: HEADER_TITLE_FORMAT_DATE,
   // item suffix
-  itemSuffix: null,
+  itemSuffix: '',
   // default selected date
   defaultDate: [],
   // function, custom item handler
   // return object {}
-  itemFormatter: null,
+  itemFormatter: undefined,
   // Selection mode: single selection, multiple selection, range selection
   mode: MODE_SINGLE,
   // language package
@@ -73,99 +84,121 @@ const DEF_OPTIONS = {
   // justify-content
   footerButtonAlign: 'flex-end',
   // hide buttons of footer when mode is multiple/range
-  hideFooter: false,
+  hideFooter: false
 }
 
-function ZxCalendar(params = {}) {
-  const options = {
-    ...DEF_OPTIONS,
-    ...params
-  }
-  // check type
-  if (!params.titleFormatter) {
-    if (options.type === TYPE_YEAR) {
-      options.titleFormatter = HEADER_TITLE_FORMAT_YEAR
-    } else if (options.type === TYPE_MONTH) {
-      options.titleFormatter = HEADER_TITLE_FORMAT_MONTH
+class ZxCalendar {
+  options: calendarOptions
+  _eventList: calendarEvents
+  langPackage: calendarLangPackage
+  $els: calendarEls
+  data: calendarData
+  eventsHandler: any
+
+  constructor(params: calendarOptions) {
+    const options: calendarOptions = {
+      ...DEF_OPTIONS,
+      ...params
     }
+    // check type
+    if (!params.titleFormatter) {
+      if (options.type === TYPE_YEAR) {
+        options.titleFormatter = HEADER_TITLE_FORMAT_YEAR
+      }
+      else if (options.type === TYPE_MONTH) {
+        options.titleFormatter = HEADER_TITLE_FORMAT_MONTH
+      }
+    }
+    // check options
+    const $parent = $(options.el)
+    if (!$parent) {
+      throw new Error(`Initial parameter el[${options.el}] is invalid.`)
+    }
+    this.options = options
+    // on event list
+    this._eventList = {}
+    // config
+    const { langPackage } = initLangPackage(options)
+    this.langPackage = {
+      ...langPackage,
+      ...options.langPackage
+    }
+    // dom
+    this.$els = {
+      parent: $parent
+    }
+    // today
+    const date = new Date()
+    const today = formatDate(date, 'yyyy/MM/dd')
+    let selectedItems: calendarItem[] = []
+    try {
+      selectedItems = initSelectedDates(options.defaultDate, options)
+    }
+    catch (e) {
+      setTimeout(() => {
+        this.emit('error', e)
+      }, 0)
+    }
+    const currentDate = getCurrentDate.call(this, selectedItems) || date
+    const currentDay = formatDate(currentDate, 'yyyy/MM/dd')
+    this.data = {
+      today: today,
+      currentDate: currentDate,
+      currentDay,
+      current: currentDay.split('/'),
+      selected: selectedItems,
+      dates: [],
+      months: [],
+      years: []
+    }
+    // initial
+    this.eventsHandler = this._eventsHandler.bind(this)
+    this._initDom()
   }
-  // check options
-  if (!options.el || !$(options.el)) {
-    throw new Error(`Initial parameter el[${options.el}] is invalid.`)
-  }
-  this.options = options
-  // on event list
-  this._eventList = {}
-  // config
-  const { langPackage } = initConfig(this.options)
-  this.langPackage = {
-    ...options.langPackage,
-    ...langPackage
-  }
-  // dom
-  this.$els = {}
-  // today
-  let date = new Date()
-  const today = formatDate(date, 'yyyy/MM/dd')
-  let selectedItems = []
-  try {
-    selectedItems = initSelectedDates(options.defaultDate, options)
-  } catch (e) {
-    setTimeout(() => {
-      this.emit('error', e)
-    }, 0)
-  }
-  const currentDate = getCurrentDate.call(this, selectedItems) || date
-  const currentDay = formatDate(currentDate, 'yyyy/MM/dd')
-  this.data = {
-    today: today,
-    currentDate: currentDate,
-    currentDay,
-    current: currentDay.split('/'),
-    selected: selectedItems,
-    dates: [],
-    months: [],
-    years: []
-  }
-  // initial
-  this._initDom()
-}
 
-ZxCalendar.prototype = {
-  constructor: ZxCalendar,
-  formatDate,
-  toDate,
   /**
-   * event list
-   * @param args
+   * event emit
+   * @param eventName
    */
-  emit(...args) {
-    const eventName = args[0]
+  emit(...args: any[]): void {
+    const eventName: string = args[0]
+    const params: any[] = args.slice(1)
     if (this._eventList[eventName]) {
       this._eventList[eventName].forEach(fn => {
-        fn.apply(this, args.slice(1))
+        fn.apply(this, params)
       })
     }
-  },
-  on(eventName, fn) {
+  }
+
+  /**
+   * on
+   * @param eventName
+   * @param fn
+   */
+  on(eventName: string, fn: TypesFn): void {
     if (!isString(eventName) || !isFunction(fn)) return
     if (!this._eventList[eventName]) {
       this._eventList[eventName] = []
     }
     this._eventList[eventName].push(fn)
-  },
-  off(eventName) {
+  }
+
+  /**
+   * off
+   * @param eventName
+   */
+  off(eventName: string): void {
     if (!isString(eventName)) return
     if (!this._eventList[eventName]) return
     this._eventList[eventName].length = 0
-  },
+  }
+
   /**
    * init dom
    * @private
    */
-  _initDom() {
+  _initDom(): void {
     const options = this.options
-    const parent = $(options.el)
     // calendar
     const calendarVNodeCopy = JSON.parse(JSON.stringify(calendarVNode))
     // zx-calendar is-date is-month is-year
@@ -180,17 +213,23 @@ ZxCalendar.prototype = {
     const header = createDom(headerVNode)
     calendar.appendChild(header)
     // week
-    let week = getWeekDom(this.langPackage.weeks, options)
-    if (week) calendar.appendChild(week)
+    const week = getWeekDom(this.langPackage.weeks || [], options)
+    if (week) {
+      calendar.appendChild(week)
+      this.$els.week = week
+    }
     // body
     const body = createDom(bodyVNode)
     calendar.appendChild(body)
     // footer
     if (!options.hideFooter && (options.mode === MODE_MULTIPLE || options.mode === MODE_RANGE)) {
-      const footerVNodeCopy = JSON.parse(JSON.stringify(footerVNode))
-      options.footerButtons.forEach(btn => {
+      const footerVNodeCopy = Object.assign(footerVNode)
+      const footerButtons = options.footerButtons || []
+      footerButtons.forEach((btn: string) => {
         footerVNodeCopy.children.push({
+          // @ts-ignore
           ...footerButtonsVNode[btn],
+          // @ts-ignore
           children: [this.langPackage[btn + 'Button']]
         })
       })
@@ -202,24 +241,22 @@ ZxCalendar.prototype = {
       calendar.appendChild(footer)
     }
     // append to out wrapper
-    parent.appendChild(calendar)
-    this.$els = {
-      calendar,
-      header,
-      week,
-      body,
-      parent
-    }
+    this.$els.parent.appendChild(calendar)
+
+    this.$els.calendar = calendar
+    this.$els.header = header
+    this.$els.body = body
+
     this._updateDom()
     // init events
-    this.eventsHandler = this._eventsHandler.bind(this)
     this.$els.calendar.addEventListener('click', this.eventsHandler)
-  },
-  _eventsHandler(e) {
+  }
+
+  _eventsHandler(e: Event): void {
     e.stopPropagation()
-    const el = e.target
-    let className = el.className.split(' ')
-    let innerText = el.innerText
+    const el: any = e.target
+    const className: Array<string> = el.className.split(' ')
+    const innerText = el.innerText
     // console.log(el, className)
     // prev
     if (className.includes(CLASS_NAME_PREV_BUTTON)) {
@@ -256,23 +293,26 @@ ZxCalendar.prototype = {
         el,
         className
       })
-    } else {
+    }
+    else {
       // get item
       const item = getSelectItem(el, className, this.$els.calendar)
       if (item.el) {
         this._onItemClick(item)
       }
     }
-  },
-  _onTitleClick(item) {
+  }
+
+  _onTitleClick(item: any): void {
     this.emit('onTitleClick', item)
-  },
+  }
+
   /**
    * prev
    * @param isYear only type=date
    */
-  prev(isYear) {
-    let [year, month] = this.data.current
+  prev(isYear?: boolean): void {
+    let [year, month]: any[] = this.data.current
     switch (this.options.type) {
       case TYPE_DATE:
         if (isYear) {
@@ -284,7 +324,8 @@ ZxCalendar.prototype = {
             const [startMonth] = getDateRange(this.options.dateRange, 'MM')
             if (startMonth) month = startMonth
           }
-        } else {
+        }
+        else {
           month = toNumber(month) - 1
           if (month === 0) {
             year = toNumber(year) - 1
@@ -296,19 +337,21 @@ ZxCalendar.prototype = {
       case TYPE_MONTH:
         this.setCurrentDate(year - 1)
         break
-      case TYPE_YEAR:
+      case TYPE_YEAR: {
         const temp = this.data.years[0] || {}
         this.setCurrentDate(temp.value - 1)
         break
+      }
     }
-  },
+  }
+
   /**
    * handle next button on click
    * @param isYear
    * @private
    */
-  next(isYear) {
-    let [year, month] = this.data.current
+  next(isYear?: boolean): void {
+    let [year, month]: any = this.data.current
     switch (this.options.type) {
       case TYPE_DATE:
         if (isYear) {
@@ -320,7 +363,8 @@ ZxCalendar.prototype = {
             const [, endMonth] = getDateRange(this.options.dateRange, 'MM')
             if (endMonth) month = endMonth
           }
-        } else {
+        }
+        else {
           month = toNumber(month) + 1
           if (month === 13) {
             year = toNumber(year) + 1
@@ -332,16 +376,19 @@ ZxCalendar.prototype = {
       case TYPE_MONTH:
         this.setCurrentDate(toNumber(year) + 1)
         break
-      case TYPE_YEAR:
+      case TYPE_YEAR: {
         const years = this.data.years
         const temp = years[years.length - 1] || {}
         this.setCurrentDate(temp.value + 1)
         break
+      }
     }
-  },
-  _onWeekClick(item) {
+  }
+
+  _onWeekClick(item: any): void {
     this.emit('onWeekClick', item)
-  },
+  }
+
   /**
    * on item click
    * @param el
@@ -349,10 +396,11 @@ ZxCalendar.prototype = {
    * @param index
    * @private
    */
-  _onItemClick({ el, className, index }) {
+  _onItemClick({ el, className, index }: any): void {
     // disabled
     if (className.includes(CLASS_NAME_IS_DISABLED)) return
     // data item
+    // @ts-ignore
     const arr = this.data[this.options.type + 's'] || []
     const itemData = arr[index] || {}
     // handle select
@@ -360,13 +408,15 @@ ZxCalendar.prototype = {
     if (this.options.mode === MODE_RANGE) {
       const selectedItems = [...this.data.selected]
       const len = selectedItems.length
-      if (len === 0 || len >= 2 && selectedItems.every(item => !!item)) {
+      if ((len === 0 || len >= 2) && selectedItems.every(item => !!item)) {
         this.data.selected = [itemData]
         changeClassForSelectOneItem(el, this.$els, true)
-      } else if (len === 1) {
+      }
+      else if (len === 1) {
         if (selectedItems[0].value < itemData.value) {
           this.data.selected.push(itemData)
-        } else {
+        }
+        else {
           this.data.selected.unshift(itemData)
         }
         this._updateDom()
@@ -376,9 +426,10 @@ ZxCalendar.prototype = {
     else if (this.options.mode === MODE_MULTIPLE) {
       if (className.includes(CLASS_NAME_IS_SELECTED)) {
         removeClass(el, CLASS_NAME_IS_SELECTED)
-        let index = this.data.selected.findIndex(item => item.value === itemData.value)
+        const index = this.data.selected.findIndex((item: { value: any }) => item.value === itemData.value)
         this.data.selected.splice(index, 1)
-      } else {
+      }
+      else {
         addClass(el, CLASS_NAME_IS_SELECTED)
         itemData.selected = true
         this.data.selected.push(itemData)
@@ -387,32 +438,35 @@ ZxCalendar.prototype = {
     // mode=single
     else {
       if (!className.includes(CLASS_NAME_IS_SELECTED)) {
+        // @ts-ignore
         changeClassForSelectOneItem(el, this.$els)
         itemData.selected = true
         this.data.selected = [
           {
             ...itemData,
-            date: this.toDate(itemData.fullText)
+            date: toDate(itemData.fullText)
           }
         ]
         this.emit('change', [...this.data.selected])
       }
     }
-  },
+  }
+
   /**
    * set/change date range
    * @param start
    * @param end
    */
-  setDateRange(start, end) {
+  setDateRange(start: calendarDate, end: calendarDate): void {
     this.options.dateRange = [start, end]
     this._updateDom()
-  },
+  }
+
   /**
    * set selected date
    * @param str
    */
-  setDate(str) {
+  setDate(str?: calendarDate): void {
     try {
       this.data.selected = initSelectedDates(str, this.options)
       if (this.data.selected.length === 0) {
@@ -421,34 +475,42 @@ ZxCalendar.prototype = {
       }
       const item = this.data.selected[0]
       this.setCurrentDate(item.fullText)
-    } catch (e) {
+    }
+    catch (e) {
       this.emit('error', e)
     }
-  },
+  }
+
   /**
    * get selected date
    * @returns {*[]}
    */
-  getDate() {
+  getDate(): calendarItem[] {
     return this.data.selected.slice(0)
-  },
+  }
+
   /**
    * set current date
    * @param dateStr
    */
-  setCurrentDate(dateStr) {
+  setCurrentDate(dateStr: calendarDate): void {
     // yyyy -> yyyy/01/01
     // yyyy/MM -> yyyy/MM/01
     // yyyy/MM/dd -> yyyy/MM/dd
-    const date = this.toDate(dateStr)
+    const date = toDate(dateStr || '')
     if (!date) return
     const currentDay = formatDate(date, 'yyyy/MM/dd')
     this.data.currentDate = date
     this.data.currentDay = currentDay
     this.data.current = currentDay.split('/')
     this._updateDom()
-  },
-  _updateDom() {
+  }
+
+  /**
+   * update dom
+   * @private
+   */
+  _updateDom(): void {
     switch (this.options.type) {
       case 'date':
         this.createDays()
@@ -463,15 +525,19 @@ ZxCalendar.prototype = {
         createBodyDom('years', this.data, this.options, this.$els)
         break
     }
-  },
-  createYears() {
+  }
+
+  /**
+   * create years
+   */
+  createYears(): void {
     const [startRangeYear, endRangeYear] = getDateRange(this.options.dateRange, 'yyyy')
-    const [startSelectedRangeYear, endSelectedRangeYear] = getSelectedDateRange(this)
-    const years = []
+    const [startSelectedRangeYear, endSelectedRangeYear] = getSelectedDateRange(this.data, this.options)
+    const years: calendarItem[] = []
     const systemYear = this.data.today.substr(0, 4)
-    let { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
-    let tempText, tempFullText
-    for (let i = startFullYear; i <= endFullYear; i++) {
+    const { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
+    let tempText: string, tempFullText: string
+    for (let i: number = startFullYear; i <= endFullYear; i++) {
       tempText = i.toString()
       tempFullText = tempText + '/01/01'
       years.push({
@@ -480,8 +546,8 @@ ZxCalendar.prototype = {
         value: i,
         disabled: checkItemRange(i, startRangeYear, endRangeYear),
         // range
-        isRangeFirst: i === startSelectedRangeYear && endSelectedRangeYear,
-        isRangeLast: i === endSelectedRangeYear && startSelectedRangeYear,
+        isRangeFirst: i === startSelectedRangeYear && !!endSelectedRangeYear,
+        isRangeLast: i === endSelectedRangeYear && !!startSelectedRangeYear,
         isRangeTemp: isRangeSelectTemp(i, this),
         // selected
         selected: this._isSelected(i),
@@ -491,15 +557,15 @@ ZxCalendar.prototype = {
     this.data.years = years
     // check first page and last page
     setHeaderBtnStatus(years, startRangeYear, endRangeYear, this.$els.calendar)
-  },
+  }
+
   /**
    * create month list
-   * @returns {[]}
    */
-  createMonths() {
+  createMonths(): void {
     const [startRangeMonth, endRangeMonth] = getDateRange(this.options.dateRange, 'yyyyMM')
-    const [startSelectedRangeMonth, endSelectedRangeMonth] = getSelectedDateRange(this)
-    const months = []
+    const [startSelectedRangeMonth, endSelectedRangeMonth] = getSelectedDateRange(this.data, this.options)
+    const months: calendarItem[] = []
     const systemMonth = this.data.today.substr(0, 7)
     const prefix = this.data.current[0] + '/'
     const prefixNumber = toNumber(this.data.current[0]) * 100
@@ -514,8 +580,8 @@ ZxCalendar.prototype = {
         value: tempValue,
         disabled: checkItemRange(tempValue, startRangeMonth, endRangeMonth),
         // range
-        isRangeFirst: tempValue === startSelectedRangeMonth && endSelectedRangeMonth,
-        isRangeLast: tempValue === endSelectedRangeMonth && startSelectedRangeMonth,
+        isRangeFirst: tempValue === startSelectedRangeMonth && !!endSelectedRangeMonth,
+        isRangeLast: tempValue === endSelectedRangeMonth && !!startSelectedRangeMonth,
         isRangeTemp: isRangeSelectTemp(tempValue, this),
         // selected
         selected: this._isSelected(tempValue),
@@ -525,14 +591,14 @@ ZxCalendar.prototype = {
     this.data.months = months
     // check first page and last page
     setHeaderBtnStatus(months, startRangeMonth, endRangeMonth, this.$els.calendar)
-  },
+  }
+
   /**
    * create days
-   * @returns {any}
    */
-  createDays() {
+  createDays(): void {
     const [startRangeDay, endRangeDay] = getDateRange(this.options.dateRange, 'yyyyMMdd')
-    const [startSelectedRangeDay, endSelectedRangeDay] = getSelectedDateRange(this)
+    const [startSelectedRangeDay, endSelectedRangeDay] = getSelectedDateRange(this.data, this.options)
     // What day is the first day of the month
     // and last day of month
     const { firstDayOfWeek, lastDayOfMonth } = getDateInfo(this.data)
@@ -550,13 +616,13 @@ ZxCalendar.prototype = {
     // create days
     let weekIndex = 0
     let tempText, tempItem, tempValue
-    let prefix = this.data.current.slice(0, 2).join('/') + '/'
+    const prefix = this.data.current.slice(0, 2).join('/') + '/'
     const { itemFormatter } = this.options
     const dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
       tempText = day > 0 ? toTwoDigits(day) : ''
-      let tempFullText = prefix + tempText
+      const tempFullText = prefix + tempText
       tempValue = day > 0 ? +tempFullText.replace(/\//g, '') : 0
       tempItem = {
         text: tempText,
@@ -574,32 +640,52 @@ ZxCalendar.prototype = {
         current: this.data.today === tempFullText
       }
       // custom handler: itemFormatter
+      // @ts-ignore
       return isFunction(itemFormatter) ? itemFormatter(tempItem) : tempItem
     })
     this.data.dates = dates
     // check first page and last page
     setHeaderBtnStatus(dates, startRangeDay, endRangeDay, this.$els.calendar)
-  },
-  destroy() {
+  }
+
+  destroy(): void {
     this.$els.calendar.removeEventListener('click', this.eventsHandler)
     this.$els.parent.removeChild(this.$els.calendar)
-  },
-  _isSelected(current) {
+  }
+
+  /**
+   * is selected
+   * @param current
+   * @private
+   */
+  _isSelected(current: any): boolean {
     const selectedItems = this.data.selected
     switch (this.options.mode) {
       // case 'multiple':
       //   return selectedItems.some(item => item.value === current)
-      case MODE_RANGE:
+      case MODE_RANGE: {
         const [startItem, endItem] = selectedItems
         if (current && startItem && endItem) {
           return current >= startItem.value && current <= endItem.value
         }
         break
+      }
       // single, multiple
       default:
-        return selectedItems.some(item => item.value === current)
+        return selectedItems.some((item: { value: any }) => item.value === current)
     }
     return false
+  }
+
+  formatDate(d: calendarDate, fmt: string, langPackage?: calendarLangPackage): string {
+    if (!langPackage) {
+      langPackage = this.langPackage
+    }
+    return formatDate(d, fmt, langPackage)
+  }
+
+  toDate(srcDate: calendarDate): Date | undefined {
+    return toDate(srcDate)
   }
 }
 
