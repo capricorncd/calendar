@@ -3,8 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 16:14
  */
-import { MODE_RANGE, MODE_SINGLE } from '../config'
-import ZxCalendar from '../index'
+import { MODE_RANGE, MODE_SINGLE } from '../config/constants'
 
 const VALUE_FORMAT = {
   date: 'yyyyMMdd',
@@ -52,9 +51,10 @@ function toTwoDigits(n) {
  * format date
  * @param srcDate any
  * @param fmt yyyy-MM-dd hh:mm:ss
+ * @param langPackage
  * @returns {*}
  */
-function formatDate(srcDate, fmt) {
+function formatDate(srcDate, fmt, langPackage) {
   const date = toDate(srcDate)
   if (!date || !fmt) return srcDate
   let $1
@@ -75,18 +75,17 @@ function formatDate(srcDate, fmt) {
     'W+': date.getDay(),
     // am/pm
     'a+': date.getHours() < 12 ? 'am' : 'pm',
-    'A+': date.getHours() < 12 ? 'AM' : 'PM',
+    'A+': date.getHours() < 12 ? 'AM' : 'PM'
   }
 
-  if (this instanceof ZxCalendar) {
-    const { langPackage } = this
+  if (langPackage && Array.isArray(langPackage.w)) {
     obj['W+'] = langPackage.weeks[date.getDay()]
   }
 
-  for (let key in obj) {
+  for (const key in obj) {
     if (new RegExp('(' + key + ')').test(fmt)) {
       $1 = RegExp.$1
-      let str = obj[key] + ''
+      const str = obj[key] + ''
       fmt = fmt.replace($1, ($1.length === 1) ? str : toTwoDigits(str))
     }
   }
@@ -103,8 +102,8 @@ function toDate(str) {
   if (str instanceof Date) return str
   let date = null
   if (isNumberLike(str)) {
-    let s = str + ''
-    let len = s.length
+    const s = str + ''
+    const len = s.length
     // time stamp
     if (len === 13) {
       date = new Date(str)
@@ -119,19 +118,28 @@ function toDate(str) {
     } else if (len === 4) {
       date = new Date(s + '/01/01')
     }
-  } else if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(str)) {
-    date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
-  } else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
-    date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
-  } else {
-    date = new Date(str)
-    if (isNaN(date.getFullYear())) {
-      const err = new Error(`"${str}" is an invalid Date!`)
-      if (this && isFunction(this.emit)) {
-        this.emit('error', err)
+  } else if (isString(str)) {
+    // replace 年月日
+    str = str.replace(/[年月日]/g, (match) => {
+      return match === '日' ? '' : '/'
+    })
+    // remove cn/jp week, comment
+    // 2020/08/22(星期六) 11:56:21
+    // Sat Aug 22 2020 11:56:24 GMT+0900 (Japan Standard Time)
+    str = str.replace(/[(（（].*?[)））]/g, ' ')
+      .replace(/\bam|pm\b/ig, ' ')
+      .replace(/\s+/g, ' ')
+    /** yyyy/MM/dd yyyy-MM-dd */
+    if (/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(str)) {
+      date = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join('/'))
+    }
+    /** yyyy/MM yyyy-MM */
+    else if (/^(\d{4})[-/](\d{1,2})$/.test(str)) {
+      date = new Date([RegExp.$1, RegExp.$2, '01'].join('/'))
+    } else {
+      date = new Date(str)
+      if (isNaN(date.getFullYear())) {
         date = null
-      } else {
-        throw err
       }
     }
   }
@@ -147,7 +155,7 @@ function toDate(str) {
 function getDateInfo({ current, currentDate }) {
   // firstDayOfWeek
   // get first day of this month
-  let arr = current.slice(0, 2)
+  const arr = current.slice(0, 2)
   arr.push('01')
   const firstDayOfWeek = new Date(arr.join('/')).getDay()
   // lastDayOfMonth
@@ -185,8 +193,8 @@ function getYearInfo(currentFullYear) {
     prefix -= 1
     startYear = 81
   }
-  let startFullYear = prefix * 100 + startYear
-  let endFullYear = startFullYear + 19
+  const startFullYear = prefix * 100 + startYear
+  const endFullYear = startFullYear + 19
   return {
     startFullYear,
     endFullYear
@@ -202,7 +210,7 @@ function getYearInfo(currentFullYear) {
 function getDateRange(dateRange, fmt) {
   const ret = []
   if (Array.isArray(dateRange)) {
-    let [start, end] = dateRange
+    const [start, end] = dateRange
     let tempStart = toDate(start)
     let tempEnd = toDate(end)
     if (isString(fmt)) {
@@ -236,7 +244,7 @@ function checkItemRange(current, start, end) {
  * @returns {[]}
  */
 function initSelectedDates(defaultDate, { type, mode }) {
-  let arr = []
+  const arr = []
   if (defaultDate) {
     if (!Array.isArray(defaultDate)) {
       defaultDate = [defaultDate]
@@ -268,14 +276,14 @@ function initSelectedDates(defaultDate, { type, mode }) {
 }
 
 function isInvalidItem(timestamp, startRangeDate, endRangeDate) {
-  return (startRangeDate && startRangeDate > timestamp)
-    || (endRangeDate && endRangeDate < timestamp)
+  return (startRangeDate && startRangeDate > timestamp) ||
+    (endRangeDate && endRangeDate < timestamp)
 }
 
 function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
-  let invalidItem = []
+  const invalidItem = []
   switch (type) {
-    case MODE_RANGE:
+    case MODE_RANGE: {
       const [startItem, endItem] = items
       if (startItem && isInvalidItem(+startItem.date, startRangeDate, endRangeDate)) {
         invalidItem.push(startItem)
@@ -284,6 +292,7 @@ function isInvalidOfDateRange(items, startRangeDate, endRangeDate, type) {
         invalidItem.push(endItem)
       }
       break
+    }
     default:
       items.forEach(item => {
         if (isInvalidItem(+item.date, startRangeDate, endRangeDate)) {
