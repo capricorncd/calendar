@@ -158,12 +158,13 @@ if (date !== null) {
 } 
 ```
 
-### formatDate(date, formatter)
+### formatDate(date, formatter[, langPackage])
 
 |parameter|type|required|remark|
 |:--|:--|:--|:-|
 |date|`string/timestamp/Date`|yes||
-|formatter|`string`|yes|`yMdhmsaAwW`|
+|formatter|`string`|yes|`yMdhmsaAwW`||
+|langPackage|`object`|no|`{weeks: ['日', '月', '火', '水', '木', '金', '土']}`|
 
 formatter
 

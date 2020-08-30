@@ -8,7 +8,6 @@ import {
   HEADER_TITLE_FORMAT_DATE,
   HEADER_TITLE_FORMAT_YEAR,
   HEADER_TITLE_FORMAT_MONTH,
-  initConfig,
   MODE_SINGLE,
   MODE_RANGE,
   MODE_MULTIPLE,
@@ -24,7 +23,8 @@ import {
   CLASS_NAME_CLEAR_BUTTON,
   CLASS_NAME_CONFIRM_BUTTON,
   CLASS_NAME_CANCEL_BUTTON
-} from './config/index'
+} from './config/constants'
+import { initConfig } from './config/init-config'
 import {
   checkItemRange,
   toDate,
@@ -36,12 +36,12 @@ import {
   initSelectedDates,
   toNumber,
   toTwoDigits, isString, isFunction
+  , getCurrentDate, isRangeSelectTemp
 } from './utils/index'
 import { $, addClass, createDom, getSelectItem, removeClass } from './utils/dom'
 import { calendarVNode, headerVNode, bodyVNode, getWeekDom, footerVNode, footerButtonsVNode } from './config/v-node'
 import { changeClassForSelectOneItem, createBodyDom, setHeaderBtnStatus } from './utils/private'
 import './scss/index.scss'
-import { getCurrentDate, isRangeSelectTemp } from './utils'
 
 // default options
 const DEF_OPTIONS = {
@@ -73,7 +73,7 @@ const DEF_OPTIONS = {
   // justify-content
   footerButtonAlign: 'flex-end',
   // hide buttons of footer when mode is multiple/range
-  hideFooter: false,
+  hideFooter: false
 }
 
 function ZxCalendar(params = {}) {
@@ -105,7 +105,7 @@ function ZxCalendar(params = {}) {
   // dom
   this.$els = {}
   // today
-  let date = new Date()
+  const date = new Date()
   const today = formatDate(date, 'yyyy/MM/dd')
   let selectedItems = []
   try {
@@ -133,8 +133,19 @@ function ZxCalendar(params = {}) {
 
 ZxCalendar.prototype = {
   constructor: ZxCalendar,
-  formatDate,
-  toDate,
+  formatDate(str, fmt, langPackage) {
+    if (!langPackage) {
+      langPackage = this.langPackage
+    }
+    return formatDate(str, fmt, langPackage)
+  },
+  toDate(str) {
+    const date = toDate(str)
+    if (!date) {
+      this.emit('error', new Error(`"${str}" is an invalid Date!`))
+    }
+    return date
+  },
   /**
    * event list
    * @param args
@@ -170,17 +181,17 @@ ZxCalendar.prototype = {
     const calendarVNodeCopy = JSON.parse(JSON.stringify(calendarVNode))
     // zx-calendar is-date is-month is-year
     const calendarClassName = [
-      calendarVNodeCopy.attrs.class,
+      calendarVNodeCopy.a.class,
       'type-is-' + options.type,
       'mode-is-' + options.mode
     ]
-    calendarVNodeCopy.attrs.class = calendarClassName.join(' ')
+    calendarVNodeCopy.a.class = calendarClassName.join(' ')
     const calendar = createDom(calendarVNodeCopy)
     // header
     const header = createDom(headerVNode)
     calendar.appendChild(header)
     // week
-    let week = getWeekDom(this.langPackage.weeks, options)
+    const week = getWeekDom(this.langPackage.weeks, options)
     if (week) calendar.appendChild(week)
     // body
     const body = createDom(bodyVNode)
@@ -189,9 +200,9 @@ ZxCalendar.prototype = {
     if (!options.hideFooter && (options.mode === MODE_MULTIPLE || options.mode === MODE_RANGE)) {
       const footerVNodeCopy = JSON.parse(JSON.stringify(footerVNode))
       options.footerButtons.forEach(btn => {
-        footerVNodeCopy.children.push({
+        footerVNodeCopy.c.push({
           ...footerButtonsVNode[btn],
-          children: [this.langPackage[btn + 'Button']]
+          c: [this.langPackage[btn + 'Button']]
         })
       })
       const footer = createDom(footerVNodeCopy)
@@ -218,8 +229,8 @@ ZxCalendar.prototype = {
   _eventsHandler(e) {
     e.stopPropagation()
     const el = e.target
-    let className = el.className.split(' ')
-    let innerText = el.innerText
+    const className = el.className.split(' ')
+    const innerText = el.innerText
     // console.log(el, className)
     // prev
     if (className.includes(CLASS_NAME_PREV_BUTTON)) {
@@ -296,10 +307,11 @@ ZxCalendar.prototype = {
       case TYPE_MONTH:
         this.setCurrentDate(year - 1)
         break
-      case TYPE_YEAR:
+      case TYPE_YEAR: {
         const temp = this.data.years[0] || {}
         this.setCurrentDate(temp.value - 1)
         break
+      }
     }
   },
   /**
@@ -332,11 +344,12 @@ ZxCalendar.prototype = {
       case TYPE_MONTH:
         this.setCurrentDate(toNumber(year) + 1)
         break
-      case TYPE_YEAR:
+      case TYPE_YEAR: {
         const years = this.data.years
         const temp = years[years.length - 1] || {}
         this.setCurrentDate(temp.value + 1)
         break
+      }
     }
   },
   _onWeekClick(item) {
@@ -360,7 +373,7 @@ ZxCalendar.prototype = {
     if (this.options.mode === MODE_RANGE) {
       const selectedItems = [...this.data.selected]
       const len = selectedItems.length
-      if (len === 0 || len >= 2 && selectedItems.every(item => !!item)) {
+      if (len === 0 || (len >= 2 && selectedItems.every(item => !!item))) {
         this.data.selected = [itemData]
         changeClassForSelectOneItem(el, this.$els, true)
       } else if (len === 1) {
@@ -376,7 +389,7 @@ ZxCalendar.prototype = {
     else if (this.options.mode === MODE_MULTIPLE) {
       if (className.includes(CLASS_NAME_IS_SELECTED)) {
         removeClass(el, CLASS_NAME_IS_SELECTED)
-        let index = this.data.selected.findIndex(item => item.value === itemData.value)
+        const index = this.data.selected.findIndex(item => item.value === itemData.value)
         this.data.selected.splice(index, 1)
       } else {
         addClass(el, CLASS_NAME_IS_SELECTED)
@@ -469,7 +482,7 @@ ZxCalendar.prototype = {
     const [startSelectedRangeYear, endSelectedRangeYear] = getSelectedDateRange(this)
     const years = []
     const systemYear = this.data.today.substr(0, 4)
-    let { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
+    const { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
     let tempText, tempFullText
     for (let i = startFullYear; i <= endFullYear; i++) {
       tempText = i.toString()
@@ -550,13 +563,13 @@ ZxCalendar.prototype = {
     // create days
     let weekIndex = 0
     let tempText, tempItem, tempValue
-    let prefix = this.data.current.slice(0, 2).join('/') + '/'
+    const prefix = this.data.current.slice(0, 2).join('/') + '/'
     const { itemFormatter } = this.options
     const dates = days.map(day => {
       // check week
       if (weekIndex > 6) weekIndex = 0
       tempText = day > 0 ? toTwoDigits(day) : ''
-      let tempFullText = prefix + tempText
+      const tempFullText = prefix + tempText
       tempValue = day > 0 ? +tempFullText.replace(/\//g, '') : 0
       tempItem = {
         text: tempText,
@@ -589,12 +602,13 @@ ZxCalendar.prototype = {
     switch (this.options.mode) {
       // case 'multiple':
       //   return selectedItems.some(item => item.value === current)
-      case MODE_RANGE:
+      case MODE_RANGE: {
         const [startItem, endItem] = selectedItems
         if (current && startItem && endItem) {
           return current >= startItem.value && current <= endItem.value
         }
         break
+      }
       // single, multiple
       default:
         return selectedItems.some(item => item.value === current)

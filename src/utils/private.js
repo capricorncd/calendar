@@ -17,13 +17,13 @@ import {
   CLASS_NAME_IS_SELECTED,
   CLASS_NAME_TITLE_WRAPPER,
   TYPE_YEAR
-} from '../config'
+} from '../config/constants'
 
 function setHeaderBtnStatus(list, startNumber, endNumber, calendar) {
-  let isFirstPage = list.some(item => {
+  const isFirstPage = list.some(item => {
     return startNumber && item.value && item.value < startNumber
   })
-  let isLastPage = list.some(item => {
+  const isLastPage = list.some(item => {
     return endNumber && item.value && item.value > endNumber
   })
   if (isFirstPage) {

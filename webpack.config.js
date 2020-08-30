@@ -30,6 +30,16 @@ const baseConfig = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.(js|jsx?)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          extensions: ['js', 'vue', 'jsx'],
+          fix: true
+        }
+      },
+      {
         test: /\.js$/,
         exclude: '/node_modules/',
         use: [

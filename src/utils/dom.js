@@ -20,16 +20,16 @@ function createDom(vNode) {
   if (isString(vNode)) {
     return document.createTextNode(vNode)
   }
-  const el = document.createElement(vNode.tag || 'div')
+  const el = document.createElement(vNode.t || 'div')
   // attrs
-  const attrs = vNode.attrs
+  const attrs = vNode.a
   if (attrs && typeof attrs === 'object') {
     Object.keys(attrs).forEach(key => {
       el.setAttribute(key, attrs[key])
     })
   }
   // children
-  const children = vNode.children
+  const children = vNode.c
   if (Array.isArray(children) && children.length > 0) {
     children.forEach(child => {
       el.appendChild(createDom(child))
@@ -57,7 +57,7 @@ function $(s, context = document) {
 
 function getSelectItem(el, className, calendar) {
   const itemClassName = '__item'
-  let ret = {}
+  const ret = {}
   if (className.includes(itemClassName)) {
     ret.el = el
     ret.className = className

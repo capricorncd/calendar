@@ -168,7 +168,7 @@ if (date !== null) {
 } 
 ```
 
-### formatDate(date, formatter)
+### formatDate(date, formatter[, langPackage])
 
 格式化日期对象
 
@@ -176,6 +176,7 @@ if (date !== null) {
 |:--|:--|:--|:-|
 |date|`string/timestamp/Date`|yes||
 |formatter|`string`|yes|`yMdhmsaAwW`|
+|langPackage|`object`|no|`{weeks: ['日', '一', '二', '三', '四', '五', '六']}`|
 
 formatter
 
