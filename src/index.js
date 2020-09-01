@@ -403,10 +403,7 @@ ZxCalendar.prototype = {
         changeClassForSelectOneItem(el, this.$els)
         itemData.selected = true
         this.data.selected = [
-          {
-            ...itemData,
-            date: this.toDate(itemData.fullText)
-          }
+          { ...itemData }
         ]
         this.emit('change', [...this.data.selected])
       }
@@ -483,13 +480,12 @@ ZxCalendar.prototype = {
     const years = []
     const systemYear = this.data.today.substr(0, 4)
     const { startFullYear, endFullYear } = getYearInfo(this.data.current[0])
-    let tempText, tempFullText
+    let tempText
     for (let i = startFullYear; i <= endFullYear; i++) {
       tempText = i.toString()
-      tempFullText = tempText + '/01/01'
       years.push({
         text: tempText,
-        fullText: tempFullText,
+        fullText: tempText,
         value: i,
         disabled: checkItemRange(i, startRangeYear, endRangeYear),
         // range
@@ -498,7 +494,8 @@ ZxCalendar.prototype = {
         isRangeTemp: isRangeSelectTemp(i, this),
         // selected
         selected: this._isSelected(i),
-        current: systemYear === tempText
+        current: systemYear === tempText,
+        date: this.toDate(tempText)
       })
     }
     this.data.years = years
@@ -519,7 +516,7 @@ ZxCalendar.prototype = {
     let tempText, tempFullText, tempValue
     for (let i = 1; i <= 12; i++) {
       tempText = toTwoDigits(i)
-      tempFullText = prefix + tempText + '/01'
+      tempFullText = prefix + tempText
       tempValue = prefixNumber + i
       months.push({
         text: tempText,
@@ -532,7 +529,8 @@ ZxCalendar.prototype = {
         isRangeTemp: isRangeSelectTemp(tempValue, this),
         // selected
         selected: this._isSelected(tempValue),
-        current: tempFullText.startsWith(systemMonth)
+        current: tempFullText.startsWith(systemMonth),
+        date: this.toDate(tempFullText)
       })
     }
     this.data.months = months
@@ -584,7 +582,8 @@ ZxCalendar.prototype = {
         isRangeTemp: isRangeSelectTemp(tempValue, this),
         // selected
         selected: this._isSelected(tempValue),
-        current: this.data.today === tempFullText
+        current: this.data.today === tempFullText,
+        date: this.toDate(tempFullText)
       }
       // custom handler: itemFormatter
       return isFunction(itemFormatter) ? itemFormatter(tempItem) : tempItem

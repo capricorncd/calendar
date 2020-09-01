@@ -231,6 +231,23 @@ zxCalendar.on('onTitleClick', ({el, className, innerText) => {
 })
 ```
 
+|事件名称|参数|
+|:--|:--|
+|change|arr|
+
+arr数据结构：
+
+```javascript
+[
+  {
+    text: String,
+    fullText: String,
+    value: Number,
+    date: Date,
+    ...
+  }
+]
+
 ### emit(eventName[, parameters])
 
 ```javascript

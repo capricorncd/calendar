@@ -1,11 +1,11 @@
 {
-  "name": "zx-calendar",
-  "version": "0.5.1",
-  "description": "calendar",
-  "main": "dist/zx-calendar.min.js",
+  "name": "zx-vue-calendar",
+  "version": "0.0.1",
+  "description": "zx-vue-calendar",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --port 9999",
+    "dev": "webpack-dev-server --port 9001",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -13,8 +13,10 @@
     "url": "git+https://github.com/capricorncd/calendar.git"
   },
   "keywords": [
+    "vue-calendar",
+    "zx-vue-calendar",
     "calendar",
-    "zx-calendar"
+    "vue"
   ],
   "author": "Capricorncd",
   "license": "MIT",
@@ -22,33 +24,28 @@
     "url": "https://github.com/capricorncd/calendar/issues"
   },
   "homepage": "https://github.com/capricorncd/calendar#readme",
+  "dependencies": {
+    "zx-calendar": "^0.5.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.11.4",
     "@babel/plugin-transform-runtime": "^7.11.0",
     "@babel/preset-env": "^7.11.0",
-    "autoprefixer": "^9.8.6",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "css-loader": "^4.2.1",
+    "css-loader": "^4.2.2",
     "eslint": "^7.7.0",
-    "eslint-config-standard": "^14.1.1",
     "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
     "html-webpack-plugin": "^4.3.0",
-    "mini-css-extract-plugin": "^0.9.0",
+    "markdown-it-multimd-table": "^4.0.3",
     "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "replace-in-file": "^6.1.0",
-    "sass": "^1.26.10",
-    "sass-loader": "^9.0.3",
+    "sass-loader": "^10.0.1",
     "style-loader": "^1.2.1",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.12",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.1.1"
+    "webpack-merge": "^5.1.2"
   }
 }

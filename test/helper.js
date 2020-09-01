@@ -98,8 +98,11 @@ function createCalendar(options, title, el) {
   wrapper.appendChild(dd)
   el.appendChild(wrapper)
 
-  calendar.on('change', data => {
-    logStr(data)
+  calendar.on('change', res => {
+    logStr('change', res)
+    res.forEach(item => {
+      log(calendar.formatDate(item.date, 'yyyy-MM-dd hh:mm:ss'))
+    })
   })
   // cancel button on click
   calendar.on('cancel', () => {

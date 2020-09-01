@@ -1,0 +1,89 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+body {
+  overflow: hidden;
+}
+.test-zx-calendar-wrapper {
+  height: 100%;
+  overflow: hidden;
+  header {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #24292e;
+    h1 {
+      color: #fff;
+      line-height: 60px;
+      margin: 0 0 0 20px;
+      font-weight: 500;
+      font-size: 24px;
+      font-family: PingFang SC, Verdana, Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+    }
+    a {
+      display: inline-block;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      margin-top: -12px;
+      font-size: 0;
+      opacity: 0.6;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    svg {
+      fill: currentColor;
+      color: #fff;
+    }
+  }
+  main {
+    margin-top: 60px;
+    padding: 20px;
+    height: calc(100% - 100px);
+    overflow: auto;
+  }
+}
+.example-demo-wrapper {
+  .zx-vue-calendar {
+    width: 320px;
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    float: left;
+  }
+  pre {
+    margin: 0 0 0 340px;
+    code.hljs {
+      background: #f1f1f1;
+      border-radius: 4px;
+      padding: 0 20px 20px;
+    }
+  }
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+@media screen and (max-width: 640px){
+  .example-demo-wrapper {
+    .zx-vue-calendar {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      float: none;
+    }
+    pre {
+      margin: 20px 0;
+      background: #f1f1f1;
+      border-radius: 4px;
+      padding: 20px
+    }
+  }
+}

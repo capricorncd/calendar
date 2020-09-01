@@ -83,6 +83,29 @@ zxCalendar.on('error', err => {
 })
 ```
 
+### Vue
+
+```html
+<template>
+  <zx-vue-calendar v-model="value" />
+</template>
+
+<script>
+import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+
+export default {
+  components: {
+    ZxVueCalendar
+  },
+  data() {
+    return {
+      value: ''
+    }
+  }
+}
+</script>
+```
+
 ## Methods
 
 ### setDate(date)
@@ -217,6 +240,23 @@ zxCalendar.on('onWeekClick', ({el, className, innerText) => {
 zxCalendar.on('onTitleClick', ({el, className, innerText) => {
   console.log(innerText)
 })
+```
+
+|eventName|parameter|
+|:--|:--|
+|change|arr|
+
+arr
+
+```javascript
+[
+  {
+    text: String,
+    fullText: String,
+    value: Number,
+    date: Date
+  }
+]
 ```
 
 ### emit(eventName[, parameters])
