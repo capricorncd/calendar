@@ -1,11 +1,15 @@
+$background: #f1f1f1;
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-size: 16px;
 }
 body {
   overflow: hidden;
 }
+
 .test-zx-calendar-wrapper {
   height: 100%;
   overflow: hidden;
@@ -49,6 +53,30 @@ body {
     overflow: auto;
   }
 }
+
+pre {
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+}
+
+code {
+  margin: 0;
+  background: mix(#000, $background, 40);
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  &.hljs {
+    background: $background;
+    border-radius: 4px;
+    padding: 0 20px 20px;
+  }
+  &.custom {
+    padding-bottom: 0;
+  }
+}
+
 .example-demo-wrapper {
   .zx-vue-calendar {
     width: 320px;
@@ -59,11 +87,6 @@ body {
   }
   pre {
     margin: 0 0 0 340px;
-    code.hljs {
-      background: #f1f1f1;
-      border-radius: 4px;
-      padding: 0 20px 20px;
-    }
   }
   &:after {
     content: '';
@@ -81,9 +104,31 @@ body {
     }
     pre {
       margin: 20px 0;
-      background: #f1f1f1;
-      border-radius: 4px;
-      padding: 20px
+    }
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+table {
+  border: 0;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+  th {
+    background: $background;
+    height: 30px;
+  }
+  th, td {
+    padding: 10px;
+  }
+  td {
+    border-bottom: 1px solid $background;
+  }
+  tr:hover {
+    td {
+      background: mix(white, $background, 50);
     }
   }
 }

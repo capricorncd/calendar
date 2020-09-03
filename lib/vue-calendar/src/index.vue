@@ -61,7 +61,7 @@
       },
       footerButtonAlign: {
         type: String,
-        default: ''
+        default: 'flex-end'
       },
       hideFooter: Boolean
     },
