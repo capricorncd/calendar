@@ -43,8 +43,11 @@ function createTextObj(lang = 'en', isFullWeek) {
  * @param options
  * @returns {{weeks: (*|{abbr: string[], full: string[]}), holidays: (*|{})}}
  */
-export function initConfig({ lang, isFullWeek }) {
+export function initConfig({ lang, isFullWeek, langPackage }) {
   return {
-    langPackage: createTextObj(lang, isFullWeek)
+    langPackage: {
+      ...createTextObj(lang, isFullWeek),
+      ...langPackage
+    }
   }
 }

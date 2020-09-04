@@ -78,7 +78,7 @@ function formatDate(srcDate, fmt, langPackage) {
     'A+': date.getHours() < 12 ? 'AM' : 'PM'
   }
 
-  if (langPackage && Array.isArray(langPackage.w)) {
+  if (langPackage && Array.isArray(langPackage.weeks)) {
     obj['W+'] = langPackage.weeks[date.getDay()]
   }
 

@@ -67,7 +67,7 @@ const DEF_OPTIONS = {
   // Selection mode: single selection, multiple selection, range selection
   mode: MODE_SINGLE,
   // language package
-  langPackage: {},
+  langPackage: null,
   // footer buttons
   footerButtons: ['clear', 'cancel', 'confirm'],
   // justify-content
@@ -97,16 +97,13 @@ function ZxCalendar(params = {}) {
   // on event list
   this._eventList = {}
   // config
-  const { langPackage } = initConfig(this.options)
-  this.langPackage = {
-    ...options.langPackage,
-    ...langPackage
-  }
+  const { langPackage } = initConfig(options)
+  this.langPackage = langPackage
   // dom
   this.$els = {}
   // today
   const date = new Date()
-  const today = formatDate(date, 'yyyy/MM/dd')
+  const today = formatDate(date, 'yyyy/MM/dd', langPackage)
   let selectedItems = []
   try {
     selectedItems = initSelectedDates(options.defaultDate, options)
