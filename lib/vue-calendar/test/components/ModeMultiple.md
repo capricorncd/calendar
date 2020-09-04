@@ -1,10 +1,11 @@
+### mode:multiple
+
 ```html
 <p>value: {{value}}</p>
 <zx-vue-calendar
   v-model="value"
-  lang="jp"
-  title-formatter="yyyy年MM月"
-  format="yyyy年MM月dd日(W)"
+  mode="multiple" 
+  @cancel="handleCancel"
   @change="handleChange" />
 
 <script>
@@ -15,12 +16,15 @@ export default {
   },
   data() {
     return {
-      value: '2008年12月09日(火)'
+      value: []
     }
   },
   methods: {
     handleChange(res, original) {
       console.log('change', res, original)
+    },
+    handleCancel() {
+      alert('cancel on click!')
     }
   }
 }

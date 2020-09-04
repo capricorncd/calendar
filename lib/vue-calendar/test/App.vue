@@ -14,6 +14,8 @@ npm i -S zx-calendar
       <Docs />
       <h2>Example</h2>
       <Normal />
+      <ModeRangeDate />
+      <ModeMultiple />
     </main>
   </div>
 </template>
@@ -21,10 +23,14 @@ npm i -S zx-calendar
 <script>
   import Docs from './components/docs.md'
   import Normal from './components/Normal.md'
+  import ModeRangeDate from './components/ModeRangeDate.md'
+  import ModeMultiple from './components/ModeMultiple.md'
   export default {
     components: {
       Docs,
       Normal,
+      ModeRangeDate,
+      ModeMultiple,
     },
     data() {
       return {

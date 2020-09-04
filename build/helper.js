@@ -30,6 +30,12 @@ function toTwoDigits(n) {
   return n[1] ? n : '0' + n
 }
 
+function getArgvType(arr) {
+  const index = arr.findIndex(item => item === '--type')
+  return index > -1 ? arr[index + 1] : 'def'
+}
+
 module.exports = {
   formatDate,
+  getArgvType,
 }

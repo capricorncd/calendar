@@ -5,7 +5,7 @@
  */
 import './index.scss'
 import { $, createCalendar, log, logStr } from './helper'
-import ZxCalendar from '../src/index'
+// import ZxCalendar from '../src/index'
 
 /**
  * test calendar 1

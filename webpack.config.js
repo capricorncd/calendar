@@ -9,15 +9,34 @@ const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const rawArgs = process.argv.slice(2)
 const banner = require('./build/banner')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { getArgvType } = require('./build/helper')
 
 console.log(rawArgs)
 
 const isProduction = rawArgs[1] === 'production'
 
+const paths = {
+  def: {
+    test: resolve(__dirname, 'test/index.js'),
+    template: './index.html',
+  },
+  vue: {
+    test: resolve(__dirname, 'lib/vue-calendar/test/index.js'),
+    template: './index-vue.html',
+  },
+  react: {
+    test: resolve(__dirname, 'lib/react-calendar/test/index.js'),
+    template: './index-react.html',
+  }
+}
+
+const target = paths[getArgvType(rawArgs)]
+
 const baseConfig = {
   entry: {
     'zx-calendar.min': resolve(__dirname, 'src/index.js'),
-    test: resolve(__dirname, 'test/index.js')
+    test: target.test
   },
   output: {
     path: resolve(__dirname, 'dist'),
@@ -27,17 +46,44 @@ const baseConfig = {
     libraryExport: 'default',
     umdNamedDefine: true
   },
+  resolve: {
+    extensions: ['.js', '.vue', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      // 'vue$': 'vue/dist/vue.esm.js',
+      // '@': resolve('src'),
+    }
+  },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.(js|jsx?)$/,
+        test: /\.jsx?$/,
         loader: 'eslint-loader',
         exclude: /node_modules/,
         options: {
           extensions: ['js', 'vue', 'jsx'],
           fix: true
         }
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false
+              }
+            }
+          },
+          {
+            loader: resolve(__dirname, './build/md-loader/index.js')
+          }
+        ]
       },
       {
         test: /\.js$/,
@@ -76,9 +122,10 @@ const baseConfig = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: target.template,
       filename: 'index.html',
-    })
+    }),
+    new VueLoaderPlugin(),
   ]
 }
 

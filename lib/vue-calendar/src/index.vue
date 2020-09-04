@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import ZxCalendar from 'zx-calendar'
+  import ZxCalendar from '../../../src/index'
   import { MODE_SINGLE, TYPE_DATE, DEF_OPTIONS } from './constants'
 
   export default {
@@ -105,7 +105,12 @@
         this.$emit('error', err)
       })
 
+      calendar.on('cancel', () => {
+        this.$emit('cancel')
+      })
+
       this.calendar = calendar
+      this.$emit('instance', calendar)
     },
     methods: {
       setDate(str) {
