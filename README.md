@@ -13,6 +13,53 @@ npm install zx-calendar -S
 ```javascript
 import ZxCalendar from 'zx-calendar'
 
+const options = {}
+
+// create an instance
+const zxCalendar = new ZxCanlendar(options)
+
+// on change
+zxCalendar.on('change', data => {
+  console.log(data)
+})
+
+// cancel button on click
+zxCalendar.on('cancel', () => {
+  // ...
+})
+
+// on error
+zxCalendar.on('error', err => {
+  console.error(err)
+})
+```
+
+### Vue
+
+```html
+<template>
+  <zx-vue-calendar v-model="value" />
+</template>
+
+<script>
+import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+
+export default {
+  components: {
+    ZxVueCalendar
+  },
+  data() {
+    return {
+      value: ''
+    }
+  }
+}
+</script>
+```
+
+## Options
+
+```javascript
 // options
 const options = {
   // element selector or element  
@@ -63,47 +110,6 @@ const options = {
   // hide buttons of footer when mode is multiple/range
   hideFooter: false,
 }
-
-// create an instance
-const zxCalendar = new ZxCanlendar(options)
-
-// on change
-zxCalendar.on('change', data => {
-  console.log(data)
-})
-
-// cancel button on click
-zxCalendar.on('cancel', () => {
-  // ...
-})
-
-// on error
-zxCalendar.on('error', err => {
-  console.error(err)
-})
-```
-
-### Vue
-
-```html
-<template>
-  <zx-vue-calendar v-model="value" />
-</template>
-
-<script>
-import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
-
-export default {
-  components: {
-    ZxVueCalendar
-  },
-  data() {
-    return {
-      value: ''
-    }
-  }
-}
-</script>
 ```
 
 ## Methods
