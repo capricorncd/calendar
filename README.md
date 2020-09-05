@@ -75,10 +75,10 @@ export default {
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
 |v-model/value|`string, number, array`|`''`||
-|type|`string`|`date`|Optional values: `date|month|years`|
-|mode|`string`|`single`|Optional values: `single|mutiple|range`|
+|type|`string`|`date`|Optional values: `date/month/years`|
+|mode|`string`|`single`|Optional values: `single/mutiple/range`|
 |format|`string`|`''`|Example: `yyyy/MM/dd`|
-|lang|`string`|`en`|Optional values: `en|zh|jp`|
+|lang|`string`|`en`|Optional values: `en/zh/jp`|
 |is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
 |title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
 |item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
