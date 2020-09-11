@@ -1,4 +1,6 @@
 build
 node_modules/
-test
+# test
 dist
+*.md
+*.mdx

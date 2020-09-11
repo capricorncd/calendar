@@ -26,7 +26,7 @@ const paths = {
     template: './index-vue.html',
   },
   react: {
-    test: resolve(__dirname, 'lib/react-calendar/test/index.js'),
+    test: resolve(__dirname, 'lib/react-calendar/test/index.jsx'),
     template: './index-react.html',
   }
 }
@@ -81,12 +81,21 @@ const baseConfig = {
             }
           },
           {
-            loader: resolve(__dirname, './build/md-loader/index.js')
+            loader: resolve(__dirname, './build/md-loader/vue.js')
           }
         ]
       },
       {
-        test: /\.js$/,
+        test: /\.mdx$/,
+        use: [
+          'babel-loader',
+          {
+            loader: resolve(__dirname, './build/md-loader/react.js')
+          }
+        ]
+      },
+      {
+        test: /\.jsx?$/,
         exclude: '/node_modules/',
         use: [
           'babel-loader'

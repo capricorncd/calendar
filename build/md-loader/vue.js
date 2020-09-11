@@ -10,6 +10,7 @@
  */
 const md = require('markdown-it')()
   .use(require('markdown-it-multimd-table'))
+const { replaceFrom, escapeTag } = require('./helper')
 
 module.exports = function(source) {
   const lines = []
@@ -85,12 +86,3 @@ module.exports = function(source) {
   return arr.join('\n')
 }
 
-function escapeTag(str) {
-  return str.replace(/<(\/?\w+)/g, '&lt;$1').replace(/(\w+)>/g, '$1&gt;')
-}
-
-function replaceFrom(str) {
-  return str
-    .replace('from \'../../index\'', 'from \'zx-calendar/lib/vue-calendar\'')
-    // .replace(/\{\{(.*?)\}\}/g, '&#123;&#123;$1&#125;&#125;')
-}
