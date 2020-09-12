@@ -11,15 +11,18 @@ import { ZxReactCalendar } from '../index'
 class App extends Component {
   constructor(props) {
     super(props)
+    this.calendar = null
     this.state = {
       date: '2020/09/05'
     }
     this._handleChange = this.handleChange.bind(this)
   }
 
-  handleChange() {
-    console.log.apply(null, arguments)
-    console.log(this.state.date)
+  handleChange(res, original) {
+    console.log(res, original)
+    this.setState({
+      date: res
+    })
   }
 
   render() {
@@ -34,8 +37,10 @@ class App extends Component {
         </a>
       </header>
       <main>
+        <div>value: {this.state.date}</div>
         <ZxReactCalendar
-          currentDate={this.state.date}
+          value={this.state.date}
+          instance={calendar => { this.calendar = calendar }}
           change={this._handleChange}/>
       </main>
     </div>

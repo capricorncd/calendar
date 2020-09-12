@@ -14,33 +14,42 @@ const { getArgvType } = require('./build/helper')
 
 console.log(rawArgs)
 
-const isProduction = rawArgs[1] === 'production'
+const isProduction = rawArgs.includes('production')
 
 const paths = {
   def: {
-    test: resolve(__dirname, 'test/index.js'),
+    name: 'test',
+    entry: resolve(__dirname, 'test/index.js'),
     template: './index.html',
-    filename: './index.html',
+    filename: './index.html'
   },
   vue: {
-    test: resolve(__dirname, 'lib/vue-calendar/test/index.js'),
+    name: 'vue',
+    entry: resolve(__dirname, 'lib/vue-calendar/test/index.js'),
     template: './index-vue.html',
-    filename: './vue.html',
+    filename: './vue.html'
   },
   react: {
-    test: resolve(__dirname, 'lib/react-calendar/test/index.jsx'),
+    name: 'react',
+    entry: resolve(__dirname, 'lib/react-calendar/test/index.jsx'),
     template: './index-react.html',
-    filename: './react.html',
+    filename: './react.html'
   }
 }
 
 const target = paths[getArgvType(rawArgs)]
 
 const baseConfig = {
+  entry: {
+    'zx-calendar.min': resolve(__dirname, 'src/index.js'),
+    test: paths.def.entry,
+    vue: paths.vue.entry,
+    react: paths.react.entry
+  },
   output: {
     path: resolve(__dirname, 'dist'),
     filename: '[name].js',
-    libraryTarget: 'umd',
+    libraryTarget: 'umd'
     // library: 'ZxCalendar',
     // libraryExport: 'default',
     // umdNamedDefine: true
@@ -118,56 +127,59 @@ const baseConfig = {
                 return [
                   // remove: false
                   // -webkit-box-orient: vertical;
-                  require('autoprefixer')({remove: false})
+                  require('autoprefixer')({ remove: false })
                 ]
               }
             }
           },
           'sass-loader'
         ]
-      },
+      }
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: target.template,
-      filename: target.filename,
-      inject: false
-    }),
-    new VueLoaderPlugin(),
+    new VueLoaderPlugin()
   ]
 }
 
-let webpackConfig = {}
+let webpackConfig
 
 if (isProduction) {
   webpackConfig = merge(baseConfig, {
-    entry: {
-      'zx-calendar.min': resolve(__dirname, 'src/index.js'),
-      test: paths.def.test,
-      vue: paths.vue.test,
-      react: paths.react.test,
-    },
     plugins: [
+      new HtmlWebpackPlugin({
+        template: paths.def.template,
+        filename: paths.def.filename,
+        chunks: ['zx-calendar.min', 'test']
+      }),
       new HtmlWebpackPlugin({
         template: paths.vue.template,
         filename: paths.vue.filename,
-        inject: false
+        chunks: ['vue']
       }),
       new HtmlWebpackPlugin({
         template: paths.react.template,
         filename: paths.react.filename,
-        inject: false
+        chunks: ['react']
       }),
       new webpack.BannerPlugin(banner)
     ]
   })
 } else {
+  const chunks = [target.name]
+
+  if (target.name === 'test') {
+    chunks.push('zx-calendar.min')
+  }
+
   webpackConfig = merge(baseConfig, {
-    entry: {
-      'zx-calendar.min': resolve(__dirname, 'src/index.js'),
-      test: target.test
-    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: target.template,
+        filename: 'index.html',
+        chunks: chunks,
+      })
+    ]
   })
 }
 

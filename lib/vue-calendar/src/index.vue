@@ -8,7 +8,7 @@
 
 <script>
   import ZxCalendar from '../../../src/index'
-  import { MODE_SINGLE, TYPE_DATE, DEF_OPTIONS } from './constants'
+  import { MODE_SINGLE, TYPE_DATE, DEF_OPTIONS } from '../../constants'
 
   export default {
     name: 'ZxVueCalendar',
@@ -117,10 +117,10 @@
         this.calendar.setDate(str)
       },
       toDate(str) {
-        this.calendar.toDate(str)
+        return this.calendar.toDate(str)
       },
       formatDate(date, formatter, langPackage) {
-        this.calendar.toDate(date, formatter, langPackage)
+        return this.calendar.formatDate(date, formatter, langPackage)
       },
       setCurrentDate(str) {
         this.calendar.setCurrentDate(str)

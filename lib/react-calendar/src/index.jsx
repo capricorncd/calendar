@@ -6,19 +6,47 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ZxCalendar from '../../../src/index'
-import { DEF_OPTIONS, MODE_SINGLE } from '../../vue-calendar/src/constants'
+import { DEF_OPTIONS, MODE_SINGLE, TYPE_DATE } from '../../constants'
+import { isFunction } from './helper'
 
 class ZxReactCalendar extends Component {
   constructor(props) {
     super(props)
     this.el = React.createRef()
+    this.calendar = null
+    this.options = this._initOptions()
+    console.log(this.options)
     this.state = {
-      date: props.currentDate
+      date: props.value
     }
   }
 
   setDate(str) {
     this.calendar.setDate(str)
+  }
+
+  toDate(str) {
+    return this.calendar.toDate(str)
+  }
+
+  formatDate(date, formatter, langPackage) {
+    return this.calendar.formatDate(date, formatter, langPackage)
+  }
+
+  setCurrentDate(str) {
+    this.calendar.setCurrentDate(str)
+  }
+
+  setDateRange(startDate, endDate) {
+    this.calendar.setDateRange(startDate, endDate)
+  }
+
+  prev(isYear) {
+    this.calendar.prev(isYear)
+  }
+
+  next(isYear) {
+    this.calendar.next(isYear)
   }
 
   getDate() {
@@ -34,7 +62,7 @@ class ZxReactCalendar extends Component {
     return this.props.mode === MODE_SINGLE ? arr[0] : arr
   }
 
-  options() {
+  _initOptions() {
     const ret = {}
     let val
     Object.keys(DEF_OPTIONS).forEach(key => {
@@ -45,6 +73,7 @@ class ZxReactCalendar extends Component {
         }
       }
     })
+    ret.defaultDate = this.props.value
     return ret
   }
 
@@ -53,10 +82,10 @@ class ZxReactCalendar extends Component {
   }
 
   componentDidMount() {
+    const { instance, change, cancel, error } = this.props
     const calendar = new ZxCalendar({
-      ...this.options(),
-      el: this.el.current,
-      defaultDate: this.state.date
+      ...this.options,
+      el: this.el.current
     })
 
     calendar.on('change', list => {
@@ -64,20 +93,28 @@ class ZxReactCalendar extends Component {
       this.setState({
         date: date
       })
-      const { change } = this.props
-      if (typeof change === 'function') {
+      if (isFunction(change)) {
         change(date, list)
       }
     })
 
     calendar.on('error', err => {
-      console.error('error', err)
+      if (isFunction(error)) {
+        error(err)
+      }
     })
 
     calendar.on('cancel', () => {
+      if (isFunction(cancel)) {
+        cancel()
+      }
     })
 
     this.calendar = calendar
+
+    if (isFunction(instance)) {
+      instance(calendar)
+    }
   }
 
   render() {
@@ -88,14 +125,29 @@ class ZxReactCalendar extends Component {
 }
 
 ZxReactCalendar.propTypes = {
-  currentDate: PropTypes.string,
-  format: PropTypes.string,
   type: PropTypes.string,
+  mode: PropTypes.string,
+  lang: PropTypes.string,
+  isFullWeek: PropTypes.bool,
+  titleFormatter: PropTypes.string,
+  itemSuffix: PropTypes.string,
+  dateRange: PropTypes.array,
+  showHoliday: PropTypes.bool,
+  itemFormatter: PropTypes.func,
+  langPackage: PropTypes.object,
+  footerButtons: PropTypes.array,
+  footerButtonAlign: PropTypes.string,
+  hideFooter: PropTypes.bool,
+  value: PropTypes.string,
+  format: PropTypes.string,
   change: PropTypes.func,
-  mode: PropTypes.string
+  cancel: PropTypes.func,
+  error: PropTypes.func,
+  instance: PropTypes.func
 }
 
 ZxReactCalendar.defaultProps = {
+  type: TYPE_DATE,
   mode: MODE_SINGLE
 }
 

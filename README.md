@@ -180,7 +180,7 @@ class App extends Component {
   render() {
     return <div>
       <ZxReactCalendar
-        currentDate={this.state.date} 
+        value={this.state.date} 
         change={(...args) => this.handleChange(...args)}/>
     </div>
   }
