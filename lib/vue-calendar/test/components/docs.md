@@ -19,6 +19,15 @@
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
 
+## Events
+
+|Name|Parameters|Description|
+|:--|:--|:--|
+|change|(data, originalArrayData)||
+|instance|(calendarInstance)||
+|error|(err)||
+|cancel|()||
+
 ## Methods
 
 |Name|Parameters|Description|
@@ -30,7 +39,4 @@
 |next|(isYear)|-|
 |toDate|(date)|-|
 |formatDate|(date, formatter[, langPackage])|-|
-|on|(eventName, fn)|-|
-|emit|(eventName[, parameters])|-|
-|off|(eventName)|-|
 |getDate|-|-|

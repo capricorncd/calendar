@@ -116,6 +116,24 @@
       setDate(str) {
         this.calendar.setDate(str)
       },
+      toDate(str) {
+        this.calendar.toDate(str)
+      },
+      formatDate(date, formatter, langPackage) {
+        this.calendar.toDate(date, formatter, langPackage)
+      },
+      setCurrentDate(str) {
+        this.calendar.setCurrentDate(str)
+      },
+      setDateRange(startDate, endDate) {
+        this.calendar.setDateRange(startDate, endDate)
+      },
+      prev(isYear) {
+        this.calendar.prev(isYear)
+      },
+      next(isYear) {
+        this.calendar.next(isYear)
+      },
       getDate() {
         return this.calendar.getDate()
       },
