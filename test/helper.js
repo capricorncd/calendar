@@ -5,7 +5,7 @@
  */
 // import ZxCalendar from '../src'
 
-function $(s,  context = document) {
+function $(s, context = document) {
   return context.querySelector(s)
 }
 
@@ -85,8 +85,9 @@ function createCalendar(options, title, el) {
   const dt = createEl('dt', { html: title })
   wrapper.appendChild(dt)
   const dd = createEl('dd', {})
-  const calendarWrapper = createEl('div', { attrs: {class: 'calendar-wrapper'}})
+  const calendarWrapper = createEl('div', { attrs: { class: 'calendar-wrapper' } })
   dd.appendChild(calendarWrapper)
+  /* eslint-disable */
   const calendar = new ZxCalendar({
     ...options,
     el: calendarWrapper

@@ -614,3 +614,7 @@ ZxCalendar.prototype = {
 }
 
 export default ZxCalendar
+
+export {
+  ZxCalendar
+}

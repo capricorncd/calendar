@@ -1,14 +1,40 @@
 body {
   font-family: "Microsoft YaHei", 微软雅黑, 'Arial';
-  margin: 20px;
+  margin: 0 20px 20px;
+  padding-top: 60px;
 }
 
 button {
   outline: none;
 }
 
+header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  .l {
+    margin-left: 20px;
+    h1 {
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      font-size: 24px;
+    }
+    a {
+      font-size: 12px;
+    }
+  }
+  > a {
+    margin-right: 20px;
+  }
+}
+
 header, footer {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,6 +50,10 @@ header, footer {
       opacity: 1;
     }
   }
+}
+
+footer {
+  position: relative;
 }
 
 .container {

@@ -4,6 +4,7 @@
  * Date: 2020-08-08 15:58
  */
 import './index.scss'
+/* eslint-disable */
 import { $, createCalendar, log, logStr } from './helper'
 // import ZxCalendar from '../src/index'
 
@@ -11,6 +12,7 @@ import { $, createCalendar, log, logStr } from './helper'
  * test calendar 1
  * @type {ZxCalendar}
  */
+/* eslint-disable */
 const testCalendar = new ZxCalendar({
   el: '#testCalendar .test-wrapper',
   // defaultDate: 'undefined/09/02',
@@ -18,7 +20,7 @@ const testCalendar = new ZxCalendar({
   // -> Sun Sep 02 2001 00:00:00 GMT+0900 (Japan Standard Time)
   // defaultDate: 'undefined/undefined/undefined',
   defaultDate: '2020/02/21',
-  hideFooter: true,
+  hideFooter: true
 })
 
 console.log('testCalendar', testCalendar)
@@ -46,7 +48,6 @@ $('#testCalendar .test-footer')
     }
   })
 
-
 testCalendar.on('error', err => {
   console.error(err)
 })
@@ -69,7 +70,6 @@ setTimeout(function () {
   log(testCalendar.getDate())
 }, 3000)
 
-
 /**
  * test 2 ~ n
  */
@@ -83,7 +83,7 @@ const jpCalendar = createCalendar({
     item.holiday = item.value % 3 === 1 ? 'hello world' : false
     item.disabled = item.disabled || item.value % 5 === 0
     return item
-  },
+  }
 }, 'Show Holiday, custom options.itemFormatter')
 
 console.warn(jpCalendar.formatDate('2020/08/19 22:12:09', 'yyyy年MM月dd日（W） hh:mm:ss A a ww'))
@@ -115,13 +115,13 @@ createCalendar({
 createCalendar({
   el: '.container',
   mode: 'multiple',
-  defaultDate: ['2020/08/01', '2020/08/19'],
+  defaultDate: ['2020/08/01', '2020/08/19']
 }, 'mode[multiple],  defaultDate')
 
 createCalendar({
   el: '.container',
   mode: 'range',
-  defaultDate: ['2020/08/03', '2020/08/19'],
+  defaultDate: ['2020/08/03', '2020/08/19']
 }, 'mode[range],  defaultDate')
 
 createCalendar({
@@ -129,14 +129,14 @@ createCalendar({
   lang: 'en',
   type: 'month',
   mode: 'range',
-  defaultDate: ['2010/08/03', '2020/08/19'],
+  defaultDate: ['2010/08/03', '2020/08/19']
 }, 'mode[range], type[month],  defaultDate')
 
 createCalendar({
   el: '.container',
   type: 'year',
   mode: 'range',
-  defaultDate: ['2010/08/03', '2020/08/19'],
+  defaultDate: ['2010/08/03', '2020/08/19']
 }, 'mode[range], type[year],  defaultDate')
 
 createCalendar({
@@ -144,7 +144,7 @@ createCalendar({
   mode: 'range',
   defaultDate: ['2020/08/03', '2020/08/19'],
   dateRange: ['2020/08/07'],
-  hideFooter: true,
+  hideFooter: true
 }, 'mode[range],  hideFooter[true]')
 
 export default ZxCalendar

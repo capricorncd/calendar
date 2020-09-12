@@ -20,31 +20,30 @@ const paths = {
   def: {
     test: resolve(__dirname, 'test/index.js'),
     template: './index.html',
+    filename: './index.html',
   },
   vue: {
     test: resolve(__dirname, 'lib/vue-calendar/test/index.js'),
     template: './index-vue.html',
+    filename: './vue.html',
   },
   react: {
     test: resolve(__dirname, 'lib/react-calendar/test/index.jsx'),
     template: './index-react.html',
+    filename: './react.html',
   }
 }
 
 const target = paths[getArgvType(rawArgs)]
 
 const baseConfig = {
-  entry: {
-    'zx-calendar.min': resolve(__dirname, 'src/index.js'),
-    test: target.test
-  },
   output: {
     path: resolve(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'ZxCalendar',
-    libraryExport: 'default',
-    umdNamedDefine: true
+    // library: 'ZxCalendar',
+    // libraryExport: 'default',
+    // umdNamedDefine: true
   },
   resolve: {
     extensions: ['.js', '.vue', '.jsx', '.ts', '.tsx', '.json'],
@@ -132,7 +131,8 @@ const baseConfig = {
   plugins: [
     new HtmlWebpackPlugin({
       template: target.template,
-      filename: 'index.html',
+      filename: target.filename,
+      inject: false
     }),
     new VueLoaderPlugin(),
   ]
@@ -142,12 +142,32 @@ let webpackConfig = {}
 
 if (isProduction) {
   webpackConfig = merge(baseConfig, {
+    entry: {
+      'zx-calendar.min': resolve(__dirname, 'src/index.js'),
+      test: paths.def.test,
+      vue: paths.vue.test,
+      react: paths.react.test,
+    },
     plugins: [
+      new HtmlWebpackPlugin({
+        template: paths.vue.template,
+        filename: paths.vue.filename,
+        inject: false
+      }),
+      new HtmlWebpackPlugin({
+        template: paths.react.template,
+        filename: paths.react.filename,
+        inject: false
+      }),
       new webpack.BannerPlugin(banner)
     ]
   })
 } else {
   webpackConfig = merge(baseConfig, {
+    entry: {
+      'zx-calendar.min': resolve(__dirname, 'src/index.js'),
+      test: target.test
+    },
   })
 }
 

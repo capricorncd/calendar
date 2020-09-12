@@ -8,6 +8,20 @@ https://capricorncd.github.io/calendar/dist/index.html
 npm install zx-calendar -S
 ```
 
+### Setup and Dev
+
+```bash
+# setup
+npm install
+
+# start default demo
+npm run dev
+# start vue demo
+npm run vue
+# start react demo
+npm run react
+```
+
 ## Usage
 
 ```javascript
@@ -34,7 +48,62 @@ zxCalendar.on('error', err => {
 })
 ```
 
-### Vue
+#### Options
+
+```javascript
+// options
+const options = {
+  // element selector or element  
+  el: '#app',
+  // date/month/year
+  type: 'date',
+  // zh/jp/en that week and button text
+  lang: 'zh',
+  // 星期一(省略形式: 一)
+  isFullWeek: false,
+  // title formatter of header
+  // type date: yyyy/MM
+  // type month: yyyy
+  // type year: yyyy-yyyy
+  titleFormatter: 'yyyy/MM',
+  // item suffix, 日/月/年
+  itemSuffix: null,
+  // default selected date
+  // yyyy-MM-dd, yyyy/MM/dd, yyyy, timestamp, Array
+  defaultDate: null,
+  // selectable date range array
+  // [startDate, endDate]
+  dateRange: [],
+  // show holiday info
+  showHoliday: false,
+  // function, custom item handler
+  // return object {text: string, value: number, fullText: string, disabled: boolean, ...}
+  itemFormatter: null,
+  // Selection mode: single/multiple/range
+  mode: 'single',
+  // language package
+  langPackage: {
+    confirmButton: 'ok',
+    cancelButton: 'cancel',
+    clearButton: 'clear',
+    weeks: ["日", "一", "二", "三", "四", "五", "六"]
+  },
+  // footer buttons
+  // show clear, cancle and confirm button when mode=multiple/range
+  footerButtons: ['clear', 'cancel', 'confirm'],
+  // only show confirm button
+  // footerButtons: ['confirm'],
+  // change button display order
+  // footerButtons: ['confirm', 'clear', 'cancel'],
+  // ...
+  // justify-content
+  footerButtonAlign: 'flex-end',
+  // hide buttons of footer when mode is multiple/range
+  hideFooter: false,
+}
+```
+
+## Vue
 
 ```html
 <template>
@@ -90,58 +159,31 @@ export default {
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
 
-## Options
+## React
 
-```javascript
-// options
-const options = {
-  // element selector or element  
-  el: '#app',
-  // date/month/year
-  type: 'date',
-  // zh/jp/en that week and button text
-  lang: 'zh',
-  // 星期一(省略形式: 一)
-  isFullWeek: false,
-  // title formatter of header
-  // type date: yyyy/MM
-  // type month: yyyy
-  // type year: yyyy-yyyy
-  titleFormatter: 'yyyy/MM',
-  // item suffix, 日/月/年
-  itemSuffix: null,
-  // default selected dat
-  // yyyy-MM-dd, yyyy/MM/dd, yyyy, timestamp
-  defaultDate: null,
-  // selectable date range
-  // [startDate, endDate]
-  dateRange: [],
-  // show holiday info
-  showHoliday: false,
-  // function, custom item handler
-  // return object {text: string, value: number, fullText: string, disabled: boolean, ...}
-  itemFormatter: null,
-  // Selection mode: single/multiple/range
-  mode: 'single',
-  // language package
-  langPackage: {
-    confirmButton: 'ok',
-    cancelButton: 'cancel',
-    clearButton: 'clear',
-    weeks: ["日", "一", "二", "三", "四", "五", "六"]
-  },
-  // footer buttons
-  // show clear, cancle and confirm button when mode=multiple/range
-  footerButtons: ['clear', 'cancel', 'confirm'],
-  // only show confirm button
-  // footerButtons: ['confirm'],
-  // change button display order
-  // footerButtons: ['confirm', 'clear', 'cancel'],
-  // ...
-  // justify-content
-  footerButtonAlign: 'flex-end',
-  // hide buttons of footer when mode is multiple/range
-  hideFooter: false,
+```jsx
+import React, { Component } from 'react'
+import { ZxReactCalendar } from 'zx-calendar/lib/react-calendar'
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      date: '2020/09/05'
+    }
+  }
+
+  handleChange() {
+    console.log.apply(null, arguments)
+  }
+
+  render() {
+    return <div>
+      <ZxReactCalendar
+        currentDate={this.state.date} 
+        change={(...args) => this.handleChange(...args)}/>
+    </div>
+  }
 }
 ```
 
