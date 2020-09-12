@@ -271,3 +271,87 @@ zxCalendar.off('customEvent')
 ```javascript
 zxCalendar.destroy()
 ```
+
+## Vue
+
+```html
+<template>
+  <zx-vue-calendar 
+    v-model="value" 
+    @change="handleChange"
+    @cancel="handleCancel"
+    @error="handleError" />
+</template>
+
+<script>
+import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+
+export default {
+  components: {
+    ZxVueCalendar
+  },
+  data() {
+    return {
+      value: ''
+    }
+  },
+  methods: {
+    handleChange(value, orignal) {
+      console.log(value, orignal)
+    },
+    handleCancel() {
+      console.log('button cancel on click!')
+    },
+    handleError(err) {
+      console.error(err)
+    }
+  }
+}
+</script>
+```
+
+|Props|类型|默认值|说明|
+|:--|:--|:--|:--|
+|v-model/value|`string, number, array`|`''`||
+|type|`string`|`date`|可选值: `date/month/years`|
+|mode|`string`|`single`|可选值: `single/mutiple/range`|
+|format|`string`|`''`|Example: `yyyy/MM/dd`|
+|lang|`string`|`en`|Optional values: `en/zh/jp`|
+|is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
+|title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
+|item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
+|date-range|`array`|`[]`|Set selectable date range, `[startDate, endDate]`|
+|show-holiday|`boolean`|`false`|show holiday info|
+|item-formatter|`function`|`undefined`|custom item handler, return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
+|lang-package|`object`|`undefined`||
+|footer-buttons|`array`|`undefined`||
+|footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
+|hide-footer|`boolean`|`false`|hide footer button wrapper|
+
+## React
+
+```jsx
+import React, { Component } from 'react'
+import { ZxReactCalendar } from 'zx-calendar/lib/react-calendar'
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      date: '2020/09/05'
+    }
+  }
+
+  handleChange(res, originalArray) {
+    console.log(res, originalArray)
+  }
+
+  render() {
+    return <div>
+      <ZxReactCalendar
+        value={this.state.date} 
+        change={(...args) => this.handleChange(...args)}/>
+    </div>
+  }
+}
+```
