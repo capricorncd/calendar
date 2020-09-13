@@ -4,31 +4,24 @@
  * Date: 2020-09-11 22:44
  */
 import React, { Component } from 'react'
-// import Docs from './components/docs.mdx'
-// import Test from './components/Test.mdx'
-import { ZxReactCalendar } from '../index'
+import Docs from './components/docs.mdx'
+import Test from './components/Test.mdx'
+import Timestamp from './components/Timestamp.mdx'
+import TypeMonth from './components/TypeMonth.mdx'
+import ModeRange from './components/ModeRange.mdx'
+import NodeFooter from './components/NodeFooter.mdx'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.calendar = null
-    this.state = {
-      date: '2020/09/05'
-    }
-    this._handleChange = this.handleChange.bind(this)
-  }
-
-  handleChange(res, original) {
-    console.log(res, original)
-    this.setState({
-      date: res
+  componentDidMount() {
+    document.querySelectorAll('pre code').forEach(block => {
+      window.hljs.highlightBlock(block)
     })
   }
 
   render() {
     return <div className="test-zx-calendar-wrapper">
       <header>
-        <h1>zx-react-calendar</h1>
+        <h1>zx-calendar (React)</h1>
         <a href="https://github.com/capricorncd/calendar"
           target="_blank" rel="noreferrer">
           <svg height="24" viewBox="0 0 16 16" version="1.1" width="24" aria-hidden="true">
@@ -37,11 +30,26 @@ class App extends Component {
         </a>
       </header>
       <main>
-        <div>value: {this.state.date}</div>
-        <ZxReactCalendar
-          value={this.state.date}
-          instance={calendar => { this.calendar = calendar }}
-          change={this._handleChange}/>
+        <h2>Setup</h2>
+        <pre>
+          <code className="bash custom pt15 pb15">
+npm i -S zx-calendar
+          </code>
+        </pre>
+        <h2>Usage</h2>
+        <pre>
+          <code className="javascript custom pt15 pb15">
+            {'import { ZxVueCalendar } from \'zx-calendar/lib/vue-calendar\''}
+          </code>
+        </pre>
+        <Docs />
+        <h2>Example</h2>
+        <Test />
+        <Timestamp />
+        <TypeMonth />
+        <ModeRange />
+        <NodeFooter />
+
       </main>
     </div>
   }

@@ -1,0 +1,42 @@
+```jsx
+import React, { Component } from 'react'
+import { ZxReactCalendar } from '../../index'
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      date: ['1999/09/09', '2000/01/03']
+    }
+  }
+
+  handleChange(res, original) {
+    console.log(res, original)
+    this.setState({
+      date: res
+    })
+  }
+
+  handleCancel() {
+    alert('cancel button on click')
+  }
+
+  render() {
+    return <>
+      <h2>mode: range</h2>
+      <p>value: {this.state.date.join(' ~ ')}</p>
+      <div className="example-demo-wrapper">
+        <ZxReactCalendar
+          mode="range"
+          value={this.state.date}
+          change={(res, original) => { this.handleChange(res, original) }}
+          cancel={() => this.handleCancel()}
+        />
+        INJECT_CODE
+      </div>
+    </>
+  }
+}
+
+export default App
+```
