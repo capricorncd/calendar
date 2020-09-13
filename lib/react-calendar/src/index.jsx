@@ -15,7 +15,6 @@ class ZxReactCalendar extends Component {
     this.el = React.createRef()
     this.calendar = null
     this.options = this._initOptions()
-    console.log(this.options)
     this.state = {
       date: props.value
     }
@@ -54,16 +53,19 @@ class ZxReactCalendar extends Component {
   }
 
   _fmtValue(list) {
+    const fmt = this.fmt()
     const arr = list.map(item => {
-      return this.fmt()
-        ? this.calendar.formatDate(item.fullText, this.fmt())
+      return fmt
+        ? this.calendar.formatDate(item.fullText, fmt)
         : item.fullText
     })
     return this.props.mode === MODE_SINGLE ? arr[0] : arr
   }
 
   _initOptions() {
-    const ret = {}
+    const ret = {
+      ...this.props.option
+    }
     let val
     Object.keys(DEF_OPTIONS).forEach(key => {
       val = this.props[key]
@@ -73,12 +75,15 @@ class ZxReactCalendar extends Component {
         }
       }
     })
-    ret.defaultDate = this.props.value
+    if (this.props.value) {
+      ret.defaultDate = this.props.value
+    }
     return ret
   }
 
   fmt() {
-    return typeof this.props.format === 'string' ? this.props.format : null
+    const { format } = this.props
+    return format && typeof format === 'string' ? format : null
   }
 
   componentDidMount() {
@@ -119,7 +124,9 @@ class ZxReactCalendar extends Component {
 
   render() {
     return <div className="zx-react-calendar">
+      {this.props.header}
       <div ref={this.el} className="zx-calendar-wrapper"></div>
+      {this.props.footer}
     </div>
   }
 }
@@ -138,17 +145,25 @@ ZxReactCalendar.propTypes = {
   footerButtons: PropTypes.array,
   footerButtonAlign: PropTypes.string,
   hideFooter: PropTypes.bool,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.array
+  ]),
   format: PropTypes.string,
   change: PropTypes.func,
   cancel: PropTypes.func,
   error: PropTypes.func,
-  instance: PropTypes.func
+  instance: PropTypes.func,
+  option: PropTypes.object,
+  header: PropTypes.node,
+  footer: PropTypes.node
 }
 
 ZxReactCalendar.defaultProps = {
   type: TYPE_DATE,
-  mode: MODE_SINGLE
+  mode: MODE_SINGLE,
+  option: {}
 }
 
 export default ZxReactCalendar
