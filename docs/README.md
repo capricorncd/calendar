@@ -4,6 +4,14 @@
 
 https://capricorncd.github.io/calendar/dist/index.html
 
+#### Vue
+
+https://capricorncd.github.io/calendar/dist/vue.html
+
+#### React
+
+https://capricorncd.github.io/calendar/dist/react.html
+
 安装：
 
 ```bash
@@ -247,6 +255,7 @@ arr数据结构：
     ...
   }
 ]
+```
 
 ### emit(eventName[, parameters])
 
@@ -273,6 +282,8 @@ zxCalendar.destroy()
 ```
 
 ## Vue
+
+文档及DEMO：https://capricorncd.github.io/calendar/dist/vue.html
 
 ```html
 <template>
@@ -312,23 +323,25 @@ export default {
 
 |Props|类型|默认值|说明|
 |:--|:--|:--|:--|
-|v-model/value|`string, number, array`|`''`||
-|type|`string`|`date`|可选值: `date/month/years`|
-|mode|`string`|`single`|可选值: `single/mutiple/range`|
-|format|`string`|`''`|Example: `yyyy/MM/dd`|
-|lang|`string`|`en`|Optional values: `en/zh/jp`|
-|is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
-|title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
-|item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
-|date-range|`array`|`[]`|Set selectable date range, `[startDate, endDate]`|
-|show-holiday|`boolean`|`false`|show holiday info|
-|item-formatter|`function`|`undefined`|custom item handler, return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
-|lang-package|`object`|`undefined`||
-|footer-buttons|`array`|`undefined`||
-|footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
-|hide-footer|`boolean`|`false`|hide footer button wrapper|
+|v-model/value|`string, number, array`|`''`|默认选中的日期|
+|type|`string`|`date`|日历类型，可选值: `date/month/years`|
+|mode|`string`|`single`|选择模式，可选值: `single/multiple/range`|
+|format|`string/timestamp`|`''`|返回日期格式，Example: `yyyy/MM/dd`|
+|lang|`string`|`en`|日历周等信息语言，可选值: `en/zh/jp`|
+|is-full-week|`boolean`|`false`|是否显示星期全名。如周一，isFullName为true时`Monday`,false时显示为`Mon`|
+|title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|设置标题显示格式|
+|item-suffix|`string`|`''`|日历每个元素显示后缀。如type=date时`09日`为空则显示为`09`；以下同理month: `12月`, year: `2009年`|
+|date-range|`array`|`[]`|设置可选日期范围，格式 `[startDate, endDate]`|
+|show-holiday|`boolean`|`false`|是否显示假日信息，假日内容需要自己实现(使用`item-formatter`函数)|
+|item-formatter|`function`|`undefined`|自定义元素处理函数，返回一个对象{text: string, value: number, fullText: string, disabled: boolean, ...}|
+|lang-package|`object`|`undefined`|语言包|
+|footer-buttons|`array`|`undefined`|底部按钮组，决定显示哪些按钮和显示顺序|
+|footer-button-align|`string`|`flex-end`|可选值: flex的justify-content的任意值|
+|hide-footer|`boolean`|`false`|为true时，不创建底部按钮组元素|
 
 ## React
+
+文档及DEMO：https://capricorncd.github.io/calendar/dist/react.html
 
 ```jsx
 import React, { Component } from 'react'

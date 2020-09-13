@@ -2,6 +2,10 @@
 
 https://capricorncd.github.io/calendar/dist/index.html
 
+https://capricorncd.github.io/calendar/dist/vue.html
+
+https://capricorncd.github.io/calendar/dist/react.html
+
 [简体中文](docs/)
 
 ```bash
@@ -105,6 +109,8 @@ const options = {
 
 ## Vue
 
+https://capricorncd.github.io/calendar/dist/vue.html
+
 ```html
 <template>
   <zx-vue-calendar 
@@ -143,9 +149,9 @@ export default {
 
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
-|v-model/value|`string, number, array`|`''`||
+|v-model/value|`string, timestamp, array`|`''`|Date selected by default|
 |type|`string`|`date`|Optional values: `date/month/years`|
-|mode|`string`|`single`|Optional values: `single/mutiple/range`|
+|mode|`string`|`single`|Optional values: `single/multiple/range`|
 |format|`string`|`''`|Example: `yyyy/MM/dd`|
 |lang|`string`|`en`|Optional values: `en/zh/jp`|
 |is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
@@ -160,6 +166,8 @@ export default {
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
 
 ## React
+
+https://capricorncd.github.io/calendar/dist/react.html
 
 ```jsx
 import React, { Component } from 'react'
