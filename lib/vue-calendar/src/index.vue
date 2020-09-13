@@ -63,7 +63,11 @@
         type: String,
         default: 'flex-end'
       },
-      hideFooter: Boolean
+      hideFooter: Boolean,
+      option: {
+        type: Object,
+        default:() => {}
+      }
     },
     data() {
       return {
@@ -73,7 +77,9 @@
     },
     computed: {
       options() {
-        const ret = {}
+        const ret = {
+          ...this.option
+        }
         let val
         Object.keys(DEF_OPTIONS).forEach(key => {
           val = this[key]
@@ -138,8 +144,9 @@
         return this.calendar.getDate()
       },
       _fmtValue(list) {
+        const fmt = this.fmt
         const arr = list.map(item => {
-          return this.fmt ? this.calendar.formatDate(item.fullText, this.fmt) : item.fullText
+          return fmt ? this.calendar.formatDate(item.fullText, fmt) : item.fullText
         })
         return this.mode === MODE_SINGLE ? arr[0] : arr
       }
