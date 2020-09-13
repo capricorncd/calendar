@@ -96,6 +96,9 @@ const baseConfig = {
       {
         test: /\.mdx$/,
         use: [
+          {
+            loader: resolve(__dirname, './build/md-loader/react-end.js')
+          },
           'babel-loader',
           {
             loader: resolve(__dirname, './build/md-loader/react.js')

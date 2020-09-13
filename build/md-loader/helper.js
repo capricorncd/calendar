@@ -7,10 +7,9 @@ function escapeTag(str) {
   return str.replace(/<(\/?\w+)/g, '&lt;$1').replace(/(\w+)>/g, '$1&gt;')
 }
 
-function replaceFrom(str) {
+function replaceFrom(str, type = 'vue') {
   return str
-    .replace('from \'../../index\'', 'from \'zx-calendar/lib/vue-calendar\'')
-  // .replace(/\{\{(.*?)\}\}/g, '&#123;&#123;$1&#125;&#125;')
+    .replace('from \'../../index\'', `from 'zx-calendar/lib/${type}-calendar'`)
 }
 
 module.exports = {

@@ -3,42 +3,34 @@
  * https://github.com/capricorncd
  * Date: 2020-09-01 00:21
  */
-/**
- * HTML escape characters
- * @param str
- * @returns {string}
- */
 const md = require('markdown-it')()
   .use(require('markdown-it-multimd-table'))
-const { escapeTag } = require('./helper')
+const { escapeTag, replaceFrom } = require('./helper')
 
 module.exports = function(source) {
   const lines = []
-  const codes = []
   const tables = []
-  let hasCode = false
   let isCode = false
   source.split(/[\n\r]/).forEach(line => {
     if (!line) return
     // check code
-    if (/^```/.test(line)) {
-      hasCode = true
-      isCode = line.length > 3
+    if (/^```/.test(line.trim())) {
+      if (!isCode) {
+        isCode = line.length > 3
+      }
       return
     }
-    if (isCode) {
-      codes.push(line)
+    // check table
+    if (/\s*\|.*\|/.test(line)) {
+      tables.push(line)
     } else {
-      // check table
-      if (/\s*\|.*\|/.test(line)) {
-        tables.push(line)
-      } else {
-        if (tables.length) {
-          lines.push(md.render(tables.join('\n')).replace(/\bcolspan\b/ig, 'colSpan'))
-          tables.length = 0
-        }
-        lines.push(md.render(line))
+      if (tables.length) {
+        lines.push('<div className="table-wrapper">')
+        lines.push(md.render(tables.join('\n')).replace(/\bcolspan\b/ig, 'colSpan'))
+        lines.push('</div>')
+        tables.length = 0
       }
+      lines.push(isCode ? line : md.render(line))
     }
   })
 
@@ -50,35 +42,56 @@ module.exports = function(source) {
     tables.length = 0
   }
 
-  const arr = ['']
-  lines.forEach(line => {
-    arr.push(line)
-  })
+  // console.log('isCode', isCode)
 
-  // create pre
-  const pres = ['<pre><code className="jsx">']
-  codes.forEach(line => {
-    pres.push(escapeTag(line))
-  })
-  pres.push('</code></pre>')
+  if (isCode) {
+    // create pre
+    const pres = []
+    pres.push('<pre><code className="jsx">')
+    lines.forEach(line => {
+      if (/INJECT_CODE/.test(line)) {
+        return
+      }
+      // add blank line
+      if (/(class|export)\s/.test(line.trim())) {
+        pres.push('')
+      }
+      // import XX from xxx
+      if (/import\s/.test(line)) {
+        line = replaceFrom(line, 'react')
+      }
+      pres.push(escapeTag(line).replace(/[{}]/g, match => {
+        return match === '{' ? '__L__' : '__R__'
+      }))
+    })
+    pres.push('</code></pre>')
 
-  // codes
-  codes.forEach(line => {
-    arr.push(line)
-  })
-
-  if (!hasCode) {
-    arr.push('</div>')
+    return lines.map(line => {
+      if (/INJECT_CODE/.test(line)) {
+        return pres.join('__WRAP__')
+      }
+      return line
+    }).join('\n')
   }
 
-  console.log(arr.join('\n'))
+  const arr = lines.map(line => {
+    if (/style="(.+?)"/g.test(line)) {
+      line = line.replace(/style="(.+?)"/g, (match, $1) => {
+        // console.log(match, $1)
+        return ''
+      })
+    }
+    return line
+  })
 
   return `
 import React, { Component } from 'react'
 
 class App extends Component {
   render() {
-    return (${arr.join('\n')})
+    return <>
+      ${arr.join('\n')}
+    </>
   }
 }
 

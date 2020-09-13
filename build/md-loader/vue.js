@@ -3,11 +3,6 @@
  * https://github.com/capricorncd
  * Date: 2020-09-01 00:21
  */
-/**
- * HTML escape characters
- * @param str
- * @returns {string}
- */
 const md = require('markdown-it')()
   .use(require('markdown-it-multimd-table'))
 const { replaceFrom, escapeTag } = require('./helper')
