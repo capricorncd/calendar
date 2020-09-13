@@ -11,11 +11,19 @@
 npm i -S zx-calendar
         </code>
       </pre>
+      <h2>Usage</h2>
+      <pre>
+        <code class="javascript custom">
+import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+        </code>
+      </pre>
+
       <Docs />
       <h2>Example</h2>
       <Normal />
       <ModeRangeDate />
       <ModeMultiple />
+      <Timestamp />
     </main>
   </div>
 </template>
@@ -25,12 +33,14 @@ npm i -S zx-calendar
   import Normal from './components/Normal.md'
   import ModeRangeDate from './components/ModeRangeDate.md'
   import ModeMultiple from './components/ModeMultiple.md'
+  import Timestamp from './components/Timestamp.md'
   export default {
     components: {
       Docs,
       Normal,
       ModeRangeDate,
       ModeMultiple,
+      Timestamp,
     },
     data() {
       return {

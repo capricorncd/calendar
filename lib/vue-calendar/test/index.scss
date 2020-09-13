@@ -3,16 +3,10 @@ $background: #f1f1f1;
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
   font-size: 16px;
-}
-body {
-  overflow: hidden;
 }
 
 .test-zx-calendar-wrapper {
-  height: 100%;
-  overflow: hidden;
   header {
     position: fixed;
     z-index: 10;
@@ -47,7 +41,7 @@ body {
     }
   }
   main {
-    margin-top: 60px;
+    margin-top: 40px;
     padding: 20px;
     height: calc(100% - 100px);
     overflow: auto;
@@ -78,7 +72,7 @@ code {
 }
 
 .example-demo-wrapper {
-  .zx-vue-calendar {
+  .zx-vue-calendar, .zx-react-calendar {
     width: 320px;
     max-width: 100%;
     border: 1px solid #ddd;
@@ -96,7 +90,7 @@ code {
 }
 @media screen and (max-width: 640px){
   .example-demo-wrapper {
-    .zx-vue-calendar {
+    .zx-vue-calendar, .zx-react-calendar {
       width: 100%;
       border: 1px solid #ddd;
       border-radius: 4px;
@@ -131,4 +125,34 @@ table {
       background: mix(white, $background, 50);
     }
   }
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+
+.pt10 {
+  padding-top: 10px !important;
+}
+.pt15 {
+  padding-top: 15px !important;
+}
+.pt20 {
+  padding-top: 20px !important;
+}
+
+.pb10 {
+  padding-bottom: 10px !important;
+}
+.pb15 {
+  padding-bottom: 15px !important;
+}
+.pb20 {
+  padding-bottom: 20px !important;
 }

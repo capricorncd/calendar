@@ -3,10 +3,10 @@
 
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
-|v-model/value|`string, number, array`|`''`||
+|v-model/value|`string, timestamp, array`|`''`|Date selected by default|
 |type|`string`|`date`|Optional values: `date|month|years`|
-|mode|`string`|`single`|Optional values: `single|mutiple|range`|
-|format|`string`|`''`|Example: `yyyy/MM/dd`|
+|mode|`string`|`single`|Optional values: `single|multiple|range`|
+|format|`string/timestamp`|`''`|Example: `yyyy/MM/dd`|
 |lang|`string`|`en`|Optional values: `en|zh|jp`|
 |is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
 |title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
@@ -18,14 +18,15 @@
 |footer-buttons|`array`|`undefined`||
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
+|option|`object`|`{}`|See the basic usage parameter 'options' for details|
 
 ## Events
 
 |Name|Parameters|Description|
 |:--|:--|:--|
 |change|(data, originalArrayData)||
-|instance|(calendarInstance)||
-|error|(err)||
+|instance|(calendarInstance)|callback calendar instance|
+|error|(err)|callback Error|
 |cancel|()||
 
 ## Methods
@@ -40,3 +41,10 @@
 |toDate|(date)|-|
 |formatDate|(date, formatter[, langPackage])|-|
 |getDate|-|-|
+
+## Slots
+
+|Name|Description|
+|:--|:--|
+|header||
+|footer||
