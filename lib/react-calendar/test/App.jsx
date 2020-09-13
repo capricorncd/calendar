@@ -30,7 +30,7 @@ class App extends Component {
         </a>
       </header>
       <main>
-        <h2>Setup</h2>
+        <h2>Install</h2>
         <pre>
           <code className="bash custom pt15 pb15">
 npm i -S zx-calendar
@@ -39,7 +39,7 @@ npm i -S zx-calendar
         <h2>Usage</h2>
         <pre>
           <code className="javascript custom pt15 pb15">
-            {'import { ZxVueCalendar } from \'zx-calendar/lib/vue-calendar\''}
+            {'import { ZxReactCalendar } from \'zx-calendar/lib/react-calendar\''}
           </code>
         </pre>
         <Docs />
