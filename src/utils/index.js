@@ -57,6 +57,8 @@ function toTwoDigits(n) {
 function formatDate(srcDate, fmt, langPackage) {
   const date = toDate(srcDate)
   if (!date || !fmt) return srcDate
+  // timestamp
+  if (fmt === 'timestamp') return +date
   let $1
   if (/(y+)/i.test(fmt)) {
     $1 = RegExp.$1
@@ -104,19 +106,21 @@ function toDate(str) {
   if (isNumberLike(str)) {
     const s = str + ''
     const len = s.length
-    // time stamp
-    if (len === 13) {
-      date = new Date(str)
-    }
     // yyyyMMdd
-    else if (len === 8) {
+    if (len === 8) {
       date = new Date([s.substr(0, 4), s.substr(4, 2), s.substr(6, 2)].join('/'))
     }
     // yyyyMM
     else if (len === 6) {
       date = new Date([s.substr(0, 4), s.substr(4, 2), '01'].join('/'))
-    } else if (len === 4) {
+    }
+    // yyyy
+    else if (len === 4) {
       date = new Date(s + '/01/01')
+    }
+    // timestamp
+    else {
+      date = new Date(str)
     }
   } else if (isString(str)) {
     // replace 年月日
