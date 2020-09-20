@@ -12,8 +12,18 @@ https://capricorncd.github.io/calendar/dist/react.html
 
 [简体中文](docs/)
 
+<p align="left">
+  <a href="https://npmcharts.com/compare/zx-calendar?minimal=true"><img src="https://img.shields.io/npm/dm/zx-calendar.svg?sanitize=true" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/v/zx-calendar.svg?sanitize=true" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/l/zx-calendar.svg?sanitize=true" alt="License"></a>
+</p>
+
 ```bash
+# npm
 npm install zx-calendar -S
+
+# yarn
+yarn add zx-calendar
 ```
 
 ### Setup and Dev
