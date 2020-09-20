@@ -56,7 +56,7 @@ function toTwoDigits(n) {
  */
 function formatDate(srcDate, fmt, langPackage) {
   const date = toDate(srcDate)
-  if (!date || !fmt) return srcDate
+  if (!date || !fmt) return isString(srcDate) ? srcDate : (srcDate + '')
   // timestamp
   if (fmt === 'timestamp') return +date
   let $1

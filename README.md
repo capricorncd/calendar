@@ -2,7 +2,11 @@
 
 https://capricorncd.github.io/calendar/dist/index.html
 
+#### Vue docs and example
+
 https://capricorncd.github.io/calendar/dist/vue.html
+
+#### React docs and example
 
 https://capricorncd.github.io/calendar/dist/react.html
 

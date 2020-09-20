@@ -1,8 +1,9 @@
 {
   "name": "zx-calendar",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "calendar",
   "main": "dist/zx-calendar.min.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --port 9999",
