@@ -24,6 +24,7 @@ import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
       <ModeRangeDate />
       <ModeMultiple />
       <Timestamp />
+      <ItemFormatter />
     </main>
   </div>
 </template>
@@ -34,6 +35,7 @@ import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
   import ModeRangeDate from './components/ModeRangeDate.md'
   import ModeMultiple from './components/ModeMultiple.md'
   import Timestamp from './components/Timestamp.md'
+  import ItemFormatter from './components/ItemFormatter.md'
   export default {
     components: {
       Docs,
@@ -41,6 +43,7 @@ import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
       ModeRangeDate,
       ModeMultiple,
       Timestamp,
+      ItemFormatter,
     },
     data() {
       return {

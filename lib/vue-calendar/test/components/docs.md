@@ -13,7 +13,7 @@
 |item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
 |date-range|`array`|`[]`|Set selectable date range, `[startDate, endDate]`|
 |show-holiday|`boolean`|`false`|show holiday info|
-|item-formatter|`function`|`undefined`|custom item handler, return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
+|item-formatter|`function`|`undefined`|custom item handler, parameter: (item: object), return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
 |lang-package|`object`|`undefined`||
 |footer-buttons|`array`|`undefined`||
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
