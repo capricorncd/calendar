@@ -4,7 +4,13 @@ https://capricorncd.github.io/calendar/dist/index.html
 
 #### Vue docs and example
 
+Vue 2.x.x
+
 https://capricorncd.github.io/calendar/dist/vue.html
+
+Vue 3.x.x
+
+https://capricorncd.github.io/calendar/dist/vue3.html
 
 #### React docs and example
 
@@ -135,6 +141,7 @@ https://capricorncd.github.io/calendar/dist/vue.html
 </template>
 
 <script>
+/** Vue 2.x.x */
 import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
 
 export default {
@@ -161,9 +168,35 @@ export default {
 </script>
 ```
 
+### Vue 3.x.x
+
+```javascript
+/** Vue 3.x.x */
+import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
+
+const App = {
+  components: {
+    ZxVueCalendar
+  },
+  data() {
+    return {
+      date: '1990/09/12'
+    }
+  },
+  template: `
+    <div>
+      <h2>{{ date }}</h2>
+      <ZxVueCalendar v-model="date"></ZxVueCalendar>
+    </div>
+  `
+}
+
+Vue.createApp(App).mount('#app')
+```
+
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
-|v-model/value|`string, timestamp, array`|`''`|Date selected by default|
+|v-model/value/model-value(Vue3.x.x)|`string, timestamp, array`|`''`|Date selected by default|
 |type|`string`|`date`|Optional values: `date/month/years`|
 |mode|`string`|`single`|Optional values: `single/multiple/range`|
 |format|`string`|`''`|Example: `yyyy/MM/dd`|

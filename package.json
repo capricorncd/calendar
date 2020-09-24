@@ -1,13 +1,14 @@
 {
   "name": "zx-calendar",
-  "version": "0.5.6",
-  "description": "calendar",
+  "version": "0.6.0",
+  "description": "calendar, vue-calendar, vue3-calendar, react-calendar",
   "main": "dist/zx-calendar.min.js",
   "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --port 9999",
     "vue": "webpack-dev-server --port 9999 --type vue",
+    "vue3": "webpack-dev-server --port 9999 --type vue3",
     "react": "webpack-dev-server --port 9999 --type react",
     "build": "webpack --mode production"
   },
@@ -17,6 +18,8 @@
   },
   "keywords": [
     "calendar",
+    "vue3.x.x",
+    "vue2.x.x",
     "vue-calendar",
     "react-calendar",
     "zx-vue-calendar",

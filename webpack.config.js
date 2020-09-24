@@ -29,6 +29,12 @@ const paths = {
     template: './index-vue.html',
     filename: './vue.html'
   },
+  vue3: {
+    name: 'vue3',
+    entry: resolve(__dirname, 'lib/vue3-calendar/test/index.js'),
+    template: resolve(__dirname, 'lib/vue3-calendar/index.html'),
+    filename: './vue3.html'
+  },
   react: {
     name: 'react',
     entry: resolve(__dirname, 'lib/react-calendar/test/index.jsx'),
@@ -44,6 +50,7 @@ const baseConfig = {
     'zx-calendar.min': resolve(__dirname, 'src/index.js'),
     test: paths.def.entry,
     vue: paths.vue.entry,
+    vue3: paths.vue3.entry,
     react: paths.react.entry
   },
   output: {
@@ -159,6 +166,11 @@ if (isProduction) {
         template: paths.vue.template,
         filename: paths.vue.filename,
         chunks: ['vue']
+      }),
+      new HtmlWebpackPlugin({
+        template: paths.vue3.template,
+        filename: paths.vue3.filename,
+        chunks: ['vue3']
       }),
       new HtmlWebpackPlugin({
         template: paths.react.template,
