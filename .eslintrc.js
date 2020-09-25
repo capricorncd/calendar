@@ -23,7 +23,8 @@ module.exports = {
   ],
   plugins: [],
   rules: {
-    'space-before-function-paren': 0,
+    'space-before-function-paren': ["error", "never"],
+    // 'space-before-function-paren': 0,
     // 'brace-style': [2, 'stroustrup', { allowSingleLine: true }],
     'brace-style': 0
   }
