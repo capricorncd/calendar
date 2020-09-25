@@ -1,5 +1,13 @@
 # zx-calendar
 
+zx-calendar, zx-vue-calendar (Vue2.x.x and Vue3.x.x), zx-react-calendar
+
+<p align="left">
+  <a href="https://npmcharts.com/compare/zx-calendar?minimal=true"><img src="https://img.shields.io/npm/dm/zx-calendar.svg?sanitize=true" alt="Downloads"></a>
+  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/v/zx-calendar.svg?sanitize=true" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/l/zx-calendar.svg?sanitize=true" alt="License"></a>
+</p>
+
 https://capricorncd.github.io/calendar/dist/index.html
 
 #### Vue docs and example
@@ -18,12 +26,6 @@ https://capricorncd.github.io/calendar/dist/react.html
 
 [简体中文](docs/)
 
-<p align="left">
-  <a href="https://npmcharts.com/compare/zx-calendar?minimal=true"><img src="https://img.shields.io/npm/dm/zx-calendar.svg?sanitize=true" alt="Downloads"></a>
-  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/v/zx-calendar.svg?sanitize=true" alt="Version"></a>
-  <a href="https://www.npmjs.com/package/zx-calendar"><img src="https://img.shields.io/npm/l/zx-calendar.svg?sanitize=true" alt="License"></a>
-</p>
-
 ```bash
 # npm
 npm install zx-calendar -S
@@ -40,8 +42,10 @@ npm install
 
 # start default demo
 npm run dev
-# start vue demo
+# start vue2.x.x demo
 npm run vue
+# start vue3.x.x demo
+npm run vue3
 # start react demo
 npm run react
 ```
@@ -196,21 +200,23 @@ Vue.createApp(App).mount('#app')
 
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
-|v-model/value/model-value(Vue3.x.x)|`string, timestamp, array`|`''`|Date selected by default|
-|type|`string`|`date`|Optional values: `date/month/years`|
-|mode|`string`|`single`|Optional values: `single/multiple/range`|
-|format|`string`|`''`|Example: `yyyy/MM/dd`|
-|lang|`string`|`en`|Optional values: `en/zh/jp`|
-|is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
-|title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
-|item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
+|v-model|`string, timestamp, array`|`''`|Date selected by default|
+|* value|`string, timestamp, array`|`''`|(Only for Vue2.x.x), Date selected by default|
+|* model-value|`string, timestamp, array`|`''`|(Only for Vue3.x.x), Date selected by default|
 |date-range|`array`|`[]`|Set selectable date range, `[startDate, endDate]`|
-|show-holiday|`boolean`|`false`|show holiday info|
-|item-formatter|`function`|`undefined`|custom item handler, return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
-|lang-package|`object`|`undefined`||
 |footer-buttons|`array`|`undefined`||
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
+|format|`string`|`''`|Example: `yyyy/MM/dd`|
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
+|is-full-week|`boolean`|`false`|Monday: isFullName: `Monday`, default: `Mon`|
+|item-formatter|`function`|`undefined`|custom item handler, return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
+|item-suffix|`string`|`''`|Example: date `日` month: `月`, year: `年`|
+|lang|`string`|`en`|Optional values: `en/zh/jp`|
+|lang-package|`object`|`undefined`||
+|mode|`string`|`single`|Optional values: `single/multiple/range`|
+|show-holiday|`boolean`|`false`|show holiday info|
+|type|`string`|`date`|Optional values: `date/month/years`|
+|title-formatter|`string`|date `yyyy/MM` month: `yyyy`, year: `yyyy-yyyy`|Set title display format|
 
 ## React
 
