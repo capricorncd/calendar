@@ -1,12 +1,9 @@
 ## timestamp
 
-```html
-<p>value: {{value}}</p>
-<zx-vue-calendar
-  v-model="value"
-  format="timestamp"
-  @change="handleChange" />
+value: {{value}}
 
+```html
+<zx-vue-calendar v-model="value" format="timestamp" @change="handleChange" />
 <script>
 import { ZxVueCalendar } from '../../index'
 export default {

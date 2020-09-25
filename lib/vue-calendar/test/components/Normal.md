@@ -1,12 +1,11 @@
+value: {{value}}
+
 ```html
-<p>value: {{value}}</p>
 <zx-vue-calendar
   v-model="value"
   lang="jp"
   title-formatter="yyyy年MM月"
-  format="yyyy年MM月dd日(W)"
-  @change="handleChange" />
-
+  format="yyyy年MM月dd日(W)" />
 <script>
 import { ZxVueCalendar } from '../../index'
 export default {
@@ -16,11 +15,6 @@ export default {
   data() {
     return {
       value: '2008年12月09日(火)'
-    }
-  },
-  methods: {
-    handleChange(res, original) {
-      console.log('change', res, original)
     }
   }
 }

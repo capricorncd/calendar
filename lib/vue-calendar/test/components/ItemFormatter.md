@@ -17,13 +17,13 @@ item-formatter(item: object)
 |value | number | 20160925 |
 |week | number | `0 - 6 `|
 
+value: {{value}}
+
 ```html
-<p>value: {{value}}</p>
 <zx-vue-calendar
   v-model="value"
   show-holiday
   :item-formatter="itemFormatter" />
-
 <script>
 import { ZxVueCalendar } from '../../index'
 export default {

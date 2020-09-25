@@ -9,20 +9,39 @@ const { replaceFrom, escapeTag } = require('./helper')
 
 module.exports = function(source) {
   const lines = []
+  // vue code
   const codes = []
+  // other codes
+  const otherCodes = []
   const tables = []
-  let hasCode = false
   let isCode = false
+  let isVueCode = false
+  let codeType = ''
   source.split(/[\n\r]/).forEach(line => {
-    if (!line) return
+    if (!line && !isCode) return
     // check code
-    if (/^```/.test(line)) {
-      hasCode = true
+    if (/^```(\w*)/.test(line.trim())) {
       isCode = line.length > 3
+      if (isCode) {
+        codeType = RegExp.$1
+        isVueCode = codeType === 'html'
+      }
+      // code end
+      if (!isCode && otherCodes.length) {
+        lines.push(`<pre><code class="${codeType}">`)
+        lines.push(...otherCodes)
+        lines.push('</code></pre>')
+        otherCodes.length = 0
+      }
       return
     }
     if (isCode) {
-      codes.push(line)
+      if (isVueCode) {
+        codes.push(line)
+      } else {
+        otherCodes.push(line)
+      }
+
     } else {
       // check table
       if (/\s*\|.*\|/.test(line)) {
@@ -50,31 +69,31 @@ module.exports = function(source) {
     arr.push(line)
   })
 
-  // create pre
-  let isTemplate = true
-  const pres = ['<pre><code class="html">', escapeTag('<template>')]
-  pres.push(escapeTag('  <div>'))
-  codes.forEach(line => {
-    if (/^<script/.test(line)) {
-      pres.push(escapeTag('  </div>'))
-      pres.push(escapeTag('</template>'))
-      pres.push('')
-      isTemplate = false
-    }
-    pres.push((isTemplate ? '    ' : '') + escapeTag(replaceFrom(line)))
-  })
-  pres.push('</code></pre>')
+  if (codes.length) {
+    // create pre
+    let isTemplate = true
+    const pres = ['<pre class="html-hook"><code class="html">', escapeTag('<template>')]
+    pres.push(escapeTag('  <div>'))
+    codes.forEach(line => {
+      if (/^<script/.test(line)) {
+        pres.push(escapeTag('  </div>'))
+        pres.push(escapeTag('</template>'))
+        pres.push('')
+        isTemplate = false
+      }
+      pres.push((isTemplate ? '    ' : '') + escapeTag(replaceFrom(line)))
+    })
+    pres.push('</code></pre>')
 
-  // codes
-  codes.forEach(line => {
-    if (/^<script/.test(line)) {
-      arr.push(pres.join('\n'))
-      arr.push('</div></template>')
-    }
-    arr.push(line)
-  })
-
-  if (!hasCode) {
+    // codes
+    codes.forEach(line => {
+      if (/^<script/.test(line)) {
+        arr.push(pres.join('\n'))
+        arr.push('</div></template>')
+      }
+      arr.push(line)
+    })
+  } else {
     arr.push('</div></template>')
   }
 

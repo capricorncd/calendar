@@ -1,9 +1,30 @@
+## Install
+
+```shell script
+# npm
+npm i -S zx-calendar
+
+# yarn
+yarn add zx-calendar
+```
+
+## Usage
+
+```javascript
+// Vue 2.x.x
+import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+
+// Vue 3.x.x
+import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
+```
 
 ## Properties
 
 |Props|Type|Default|Description|
 |:--|:--|:--|:--|
-|v-model/value|`string, timestamp, array`|`''`|Date selected by default|
+|v-model|`string, timestamp, array`|`''`|Date selected by default|
+|* value|`string, timestamp, array`|`''`|Only for Vue2.x.x, Date selected by default|
+|* model-value|`string, timestamp, array`|`''`|Only for Vue3.x.x, Date selected by default|
 |type|`string`|`date`|Optional values: `date|month|years`|
 |mode|`string`|`single`|Optional values: `single|multiple|range`|
 |format|`string/timestamp`|`''`|Example: `yyyy/MM/dd`|
@@ -14,8 +35,8 @@
 |date-range|`array`|`[]`|Set selectable date range, `[startDate, endDate]`|
 |show-holiday|`boolean`|`false`|show holiday info|
 |item-formatter|`function`|`undefined`|custom item handler, parameter: (item: object), return an object {text: string, value: number, fullText: string, disabled: boolean, ...}|
-|lang-package|`object`|`undefined`||
-|footer-buttons|`array`|`undefined`||
+|lang-package|`object`|`undefined`|-|
+|footer-buttons|`array`|`undefined`|-|
 |footer-button-align|`string`|`flex-end`|Optional values: flex justify-content values|
 |hide-footer|`boolean`|`false`|hide footer button wrapper|
 |option|`object`|`{}`|See the basic usage parameter 'options' for details|
@@ -24,10 +45,10 @@
 
 |Name|Parameters|Description|
 |:--|:--|:--|
-|change|(data, originalArrayData)||
+|change|(data, originalArrayData)|-|
 |instance|(calendarInstance)|callback calendar instance|
 |error|(err)|callback Error|
-|cancel|()||
+|cancel|()|-|
 
 ## Methods
 
@@ -46,5 +67,5 @@
 
 |Name|Description|
 |:--|:--|
-|header||
-|footer||
+|header|-|
+|footer|-|

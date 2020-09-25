@@ -1,4 +1,5 @@
-$background: #f1f1f1;
+$background: #f6f8fa;
+$border: #dfe2e5;
 
 html, body {
   margin: 0;
@@ -72,6 +73,7 @@ code {
 }
 
 .example-demo-wrapper {
+  max-width: 1000px;
   .zx-vue-calendar, .zx-react-calendar {
     width: 320px;
     max-width: 100%;
@@ -79,7 +81,7 @@ code {
     border-radius: 4px;
     float: left;
   }
-  pre {
+  pre.html-hook {
     margin: 0 0 0 340px;
   }
   &:after {
@@ -96,7 +98,7 @@ code {
       border-radius: 4px;
       float: none;
     }
-    pre {
+    pre.html-hook {
       margin: 20px 0;
     }
   }
@@ -106,24 +108,23 @@ code {
   overflow-x: auto;
 }
 table {
-  border: 0;
+  border: 1px solid $border;
   border-collapse: collapse;
   width: 100%;
   font-size: 0.875rem;
   th {
     background: $background;
-    height: 30px;
+    // height: 30px;
   }
   th, td {
     padding: 10px;
+    border: 1px solid $border;
   }
   td {
-    border-bottom: 1px solid $background;
+    height: 30px;
   }
-  tr:hover {
-    td {
-      background: mix(white, $background, 50);
-    }
+  tr:nth-child(2n )td {
+    background: $background;
   }
 }
 

@@ -1,13 +1,13 @@
 ### mode:multiple
 
+value: {{value}}
+
 ```html
-<p>value: {{value}}</p>
 <zx-vue-calendar
   v-model="value"
   mode="multiple" 
   @cancel="handleCancel"
   @change="handleChange" />
-
 <script>
 import { ZxVueCalendar } from '../../index'
 export default {

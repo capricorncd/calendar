@@ -1,13 +1,13 @@
 ### mode:range
 
+value: {{value}}
+
 ```html
-<p>value: {{value}}</p>
 <zx-vue-calendar
   v-model="value"
   mode="range" 
   @cancel="handleCancel"
   @change="handleChange" />
-
 <script>
 import { ZxVueCalendar } from '../../index'
 export default {
