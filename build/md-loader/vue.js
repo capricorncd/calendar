@@ -72,7 +72,7 @@ module.exports = function(source) {
   if (codes.length) {
     // create pre
     let isTemplate = true
-    const pres = ['<pre class="html-hook"><code class="html">', escapeTag('<template>')]
+    const pres = ['<pre class="code-hook"><code class="html">', escapeTag('<template>')]
     pres.push(escapeTag('  <div>'))
     codes.forEach(line => {
       if (/^<script/.test(line)) {

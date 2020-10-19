@@ -19,15 +19,25 @@ function logStr() {
   }
 }
 
-function createEl(tag, { html, attrs }) {
+function createEl(tag, { html, attrs }, isAddInstance = false) {
   const el = document.createElement(tag)
   if (attrs) {
     if (attrs.class) el.className = attrs.class
   }
   if (html) {
-    el.innerHTML = html
+    el.innerHTML = isAddInstance
+      ? `<span class="hljs-keyword">new</span> <span class="hljs-name">ZxCalendar</span>(${fmtCode(html)})`
+      : html
   }
   return el
+}
+
+function fmtCode(html) {
+  return html.replace(/'(.+)'/g, (match, $1) => {
+    return `'<span class="hljs-string">${$1}</span>'`
+  }).replace(/function|true|false|return/g, (match) => {
+    return `<span class="hljs-keyword">${match}</span>`
+  })
 }
 
 function arrToString(array, space) {
@@ -94,7 +104,7 @@ function createCalendar(options, title, el) {
   })
   const pre = createEl('pre', {
     html: toString(options)
-  })
+  }, true)
   dd.appendChild(pre)
   wrapper.appendChild(dd)
   el.appendChild(wrapper)

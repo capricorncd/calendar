@@ -4,9 +4,10 @@
  * Date: 2020-08-08 15:31
  */
 const { resolve } = require('path')
-const webpack = require('webpack')
+const { BannerPlugin, ProgressPlugin } = require('webpack')
 const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const rawArgs = process.argv.slice(2)
 const banner = require('./build/banner')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -46,6 +47,7 @@ const paths = {
 const target = paths[getArgvType(rawArgs)]
 
 const baseConfig = {
+  mode: isProduction ? 'production' : 'development',
   entry: {
     'zx-calendar.min': resolve(__dirname, 'src/index.js'),
     test: paths.def.entry,
@@ -148,7 +150,8 @@ const baseConfig = {
     ]
   },
   plugins: [
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new ProgressPlugin()
   ]
 }
 
@@ -157,6 +160,7 @@ let webpackConfig
 if (isProduction) {
   webpackConfig = merge(baseConfig, {
     plugins: [
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: paths.def.template,
         filename: paths.def.filename,
@@ -177,7 +181,7 @@ if (isProduction) {
         filename: paths.react.filename,
         chunks: ['react']
       }),
-      new webpack.BannerPlugin(banner)
+      new BannerPlugin(banner)
     ]
   })
 } else {

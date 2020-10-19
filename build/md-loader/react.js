@@ -47,7 +47,7 @@ module.exports = function(source) {
   if (isCode) {
     // create pre
     const pres = []
-    pres.push('<pre><code className="jsx">')
+    pres.push('<pre className="code-hook"><code className="jsx">')
     lines.forEach(line => {
       if (/INJECT_CODE/.test(line)) {
         return
