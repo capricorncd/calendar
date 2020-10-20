@@ -65,9 +65,9 @@ testCalendar.on('onTitleClick', item => {
 })
 
 setTimeout(function () {
-  log('setDate', '2020年08月19日（水） 22:12:09 PM')
+  log('setDate')
   testCalendar.setDate('2020年08月19日（水） 22:12:09 PM')
-  log(testCalendar.getDate())
+  log('getDate', testCalendar.getDate())
 }, 3000)
 
 /**

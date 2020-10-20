@@ -34,11 +34,21 @@
         </div>
       </div>
       <pre>
-<span class="hljs-keyword">new</span> <span class="hljs-name">ZxCalendar</span>({
+<span class="hljs-keyword">const</span> testCalendar = <span class="hljs-keyword">new</span> <span class="hljs-name">ZxCalendar</span>({
   el: '<span class="hljs-string">#testCalendar .test-wrapper</span>',
   defaultDate: '<span class="hljs-string">2020/02/21</span>',
   hideFooter: <span class="hljs-keyword">true</span>,
 })
+
+testCalendar.on('<span class="hljs-string">change</span>', <span class="hljs-params">list</span> => {
+  <span class="hljs-built_in">console</span>.log(JSON.stringify(<span class="hljs-params">list</span>, <span class="hljs-keyword">null</span>, <span class="hljs-params">2</span>))
+})
+
+setTimeout(<span class="hljs-keyword">function</span> () {
+  <span class="hljs-built_in">console</span>.log('<span class="hljs-string">setDate</span>')
+  testCalendar.setDate('<span class="hljs-string">2020年08月19日（水） 22:12:09 PM</span>')
+  <span class="hljs-built_in">console</span>.log('<span class="hljs-string">getDate</span>', testCalendar.getDate())
+}, 3000)
       </pre>
     </dd>
   </dl>
