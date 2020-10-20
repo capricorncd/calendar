@@ -74,7 +74,7 @@ setTimeout(function () {
  * test 2 ~ n
  */
 const jpCalendar = createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   lang: 'jp',
   titleFormatter: 'yyyy年MM月',
   showHoliday: true,
@@ -89,14 +89,14 @@ const jpCalendar = createCalendar({
 console.warn(jpCalendar.formatDate('2020/08/19 22:12:09', 'yyyy年MM月dd日（W） hh:mm:ss A a ww'))
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   lang: 'en',
   dateRange: ['2009/12/09', '2019/12/09'],
   defaultDate: '2019/12/02'
 }, 'dateRange, defaultDate')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   type: 'year',
   // titleFormatter: 'yyyy年-yyyy年',
   dateRange: ['2009/12/09', '2019/12/09'],
@@ -104,7 +104,7 @@ createCalendar({
 }, 'type[year], dateRange, itemSuffix[年]')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   type: 'month',
   // titleFormatter: 'yyyy年',
   itemSuffix: '月',
@@ -113,19 +113,19 @@ createCalendar({
 }, 'type[month], dateRange, defaultDate, itemSuffix[月]')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   mode: 'multiple',
   defaultDate: ['2020/08/01', '2020/08/19']
 }, 'mode[multiple],  defaultDate')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   mode: 'range',
   defaultDate: ['2020/08/03', '2020/08/19']
 }, 'mode[range],  defaultDate')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   lang: 'en',
   type: 'month',
   mode: 'range',
@@ -133,14 +133,14 @@ createCalendar({
 }, 'mode[range], type[month],  defaultDate')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   type: 'year',
   mode: 'range',
   defaultDate: ['2010/08/03', '2020/08/19']
 }, 'mode[range], type[year],  defaultDate')
 
 createCalendar({
-  el: '.container',
+  el: '.calendar-wrapper',
   mode: 'range',
   defaultDate: ['2020/08/03', '2020/08/19'],
   dateRange: ['2020/08/07'],
