@@ -580,7 +580,8 @@ ZxCalendar.prototype = {
         // selected
         selected: this._isSelected(tempValue),
         current: this.data.today === tempFullText,
-        date: this.toDate(tempFullText)
+        // fix: `Error "yyyy/MM/" is an invalid Date!` in firefox
+        date: day > 0 ? this.toDate(tempFullText) : null
       }
       // custom handler: itemFormatter
       return isFunction(itemFormatter) ? itemFormatter(tempItem) : tempItem

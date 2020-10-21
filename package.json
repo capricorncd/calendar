@@ -1,6 +1,6 @@
 {
   "name": "zx-calendar",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "calendar, vue-calendar, vue3-calendar, react-calendar",
   "main": "dist/zx-calendar.min.js",
   "types": "src/index.d.ts",

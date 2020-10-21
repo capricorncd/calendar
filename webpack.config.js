@@ -196,11 +196,10 @@ if (isProduction) {
       new HtmlWebpackPlugin({
         template: target.template,
         filename: 'index.html',
-        chunks: chunks,
+        chunks: chunks
       })
     ]
   })
 }
 
 module.exports = webpackConfig
-
