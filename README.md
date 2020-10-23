@@ -26,6 +26,12 @@ https://capricorncd.github.io/calendar/dist/react.html
 
 [简体中文](docs/)
 
+### Browser Support
+
+IE10+ (When it is used in IE browser, Polyfill needs to be introduced)
+
+## Install
+
 ```bash
 # npm
 npm install zx-calendar -S
