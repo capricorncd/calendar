@@ -17,29 +17,29 @@
 </template>
 
 <script>
-  import Docs from '../../../docs/vue-calendar.md'
-  import Normal from './components/Normal.md'
-  import ModeRangeDate from './components/ModeRangeDate.md'
-  import ModeMultiple from './components/ModeMultiple.md'
-  import Timestamp from './components/Timestamp.md'
-  import ItemFormatter from './components/ItemFormatter.md'
-  export default {
-    components: {
-      Docs,
-      Normal,
-      ModeRangeDate,
-      ModeMultiple,
-      Timestamp,
-      ItemFormatter,
-    },
-    mounted() {
-      this.$nextTick(() => {
-        // https://highlightjs.org/usage/
-        document.querySelectorAll('pre code').forEach(block => {
-          window.hljs.highlightBlock(block)
-        })
-        // window.hljs.initHighlightingOnLoad()
+import Docs from '../../../docs/vue-calendar.md'
+import Normal from './components/Normal.md'
+import ModeRangeDate from './components/ModeRangeDate.md'
+import ModeMultiple from './components/ModeMultiple.md'
+import Timestamp from './components/Timestamp.md'
+import ItemFormatter from './components/ItemFormatter.md'
+export default {
+  components: {
+    Docs,
+    Normal,
+    ModeRangeDate,
+    ModeMultiple,
+    Timestamp,
+    ItemFormatter
+  },
+  mounted() {
+    this.$nextTick(() => {
+      // https://highlightjs.org/usage/
+      document.querySelectorAll('pre code').forEach(block => {
+        window.hljs.highlightBlock(block)
       })
-    }
+      // window.hljs.initHighlightingOnLoad()
+    })
   }
+}
 </script>
