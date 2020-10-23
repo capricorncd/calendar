@@ -19,6 +19,7 @@ module.exports = {
   },
   extends: [
     'standard',
+    'plugin:vue/essential',
     'plugin:react/recommended'
   ],
   plugins: [],

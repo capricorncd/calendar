@@ -8,6 +8,7 @@ const { BannerPlugin, ProgressPlugin } = require('webpack')
 const { merge } = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const EslintWebpackPlugin = require('eslint-webpack-plugin')
 const rawArgs = process.argv.slice(2)
 const banner = require('./build/banner')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
@@ -72,16 +73,6 @@ const baseConfig = {
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.jsx?$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/,
-        options: {
-          extensions: ['js', 'vue', 'jsx'],
-          fix: true
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'vue-loader'
@@ -193,6 +184,10 @@ if (isProduction) {
 
   webpackConfig = merge(baseConfig, {
     plugins: [
+      new EslintWebpackPlugin({
+        extensions: ['js', 'vue', 'jsx'],
+        fix: true
+      }),
       new HtmlWebpackPlugin({
         template: target.template,
         filename: 'index.html',
