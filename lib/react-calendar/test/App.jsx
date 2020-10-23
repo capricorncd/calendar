@@ -13,7 +13,9 @@ import NodeFooter from './components/NodeFooter.mdx'
 
 class App extends Component {
   componentDidMount() {
-    document.querySelectorAll('pre code').forEach(block => {
+    // fix: Object doesn't support property or method 'forEach' in Edge browser
+    slice(document.querySelectorAll('pre code')).forEach(block => {
+      console.log('hljs', window.hljs)
       window.hljs.highlightBlock(block)
     })
   }
@@ -53,6 +55,10 @@ npm i -S zx-calendar
       </main>
     </div>
   }
+}
+
+function slice(arrayLike) {
+  return Array.prototype.slice.call(arrayLike)
 }
 
 export default App
