@@ -15,7 +15,6 @@ class App extends Component {
   componentDidMount() {
     // fix: Object doesn't support property or method 'forEach' in Edge browser
     slice(document.querySelectorAll('pre code')).forEach(block => {
-      console.log('hljs', window.hljs)
       window.hljs.highlightBlock(block)
     })
   }
