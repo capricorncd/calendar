@@ -3,7 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2020-08-10 14:56
  */
-const { formatDate } = require('./helper')
+const { formatDate } = require('date-utils-2020')
 const pkg = require('../package.json');
 
 module.exports = `${pkg.name} v${pkg.version}
