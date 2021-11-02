@@ -1,8 +1,9 @@
 {
   "name": "zx-calendar",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "calendar, vue-calendar, vue3-calendar, react-calendar",
   "main": "dist/zx-calendar.min.js",
+  "module": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,8 +19,8 @@
   },
   "keywords": [
     "calendar",
-    "vue3.x.x",
-    "vue2.x.x",
+    "vue3.x",
+    "vue2.x",
     "vue-calendar",
     "react-calendar",
     "zx-vue-calendar",
@@ -42,7 +43,7 @@
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^4.2.1",
-    "date-utils-2020": "0.0.2",
+    "date-utils-2020": "^0.0.2",
     "eslint": "^7.7.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
