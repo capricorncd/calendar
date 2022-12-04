@@ -30,7 +30,8 @@
     "build:demo": "cd packages/demo && pnpm run build",
     "build": "cd packages/calendar && pnpm run build",
     "docs": "cd packages/calendar && pnpm run docs",
-    "lint": "eslint . --fix --ext .js,.cjs,.ts"
+    "lint": "eslint . --fix --ext .js,.cjs,.ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
