@@ -1,0 +1,37 @@
+```jsx
+import React, { Component, Fragment } from 'react'
+import { ZxReactCalendar } from '@zx-calendar/react'
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      date: +new Date('1999/09/09')
+    }
+  }
+
+  handleChange(res, original) {
+    this.setState({
+      date: res
+    })
+  }
+
+  render() {
+    return <Fragment>
+      <h2>format: timestamp</h2>
+      <p>value: {this.state.date}</p>
+      <div className="example-demo-wrapper">
+        <ZxReactCalendar
+          lang="jp"
+          format="timestamp"
+          value={this.state.date}
+          change={(res, original) => { this.handleChange(res, original) }}
+        />
+        INJECT_CODE
+      </div>
+    </Fragment>
+  }
+}
+
+export default App
+```

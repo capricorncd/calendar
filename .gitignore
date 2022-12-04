@@ -77,5 +77,3 @@ sw.*
 # Vim swap files
 *.swp
 
-package-lock.json
-yarn.lock

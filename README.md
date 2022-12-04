@@ -10,6 +10,8 @@ zx-calendar, zx-vue-calendar (Vue2.x.x and Vue3.x.x), zx-react-calendar
 
 https://capricorncd.github.io/calendar/dist/index.html
 
+![zx-calendar](./snapshot.png)
+
 #### Vue docs and example
 
 Vue 2.x.x

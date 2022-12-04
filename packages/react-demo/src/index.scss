@@ -1,0 +1,159 @@
+$background: #f6f8fa;
+$border: #dfe2e5;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.test-zx-calendar-wrapper {
+  header {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #24292e;
+    h1 {
+      color: #fff;
+      line-height: 60px;
+      margin: 0 0 0 20px;
+      font-weight: 500;
+      font-size: 24px;
+      font-family: PingFang SC, Verdana, Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+    }
+    a {
+      display: inline-block;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      margin-top: -12px;
+      font-size: 0;
+      opacity: 0.6;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    svg {
+      fill: currentColor;
+      color: #fff;
+    }
+  }
+  main {
+    margin-top: 40px;
+    padding: 20px;
+    height: calc(100% - 100px);
+    overflow: auto;
+  }
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+}
+
+code {
+  margin: 0;
+  background: mix(#000, $background, 40%);
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  &.hljs {
+    background: $background;
+    border-radius: 4px;
+    padding: 0 20px 20px;
+  }
+  &.custom {
+    padding-bottom: 0;
+  }
+}
+
+.example-demo-wrapper {
+  max-width: 1000px;
+  .zx-vue-calendar, .zx-react-calendar {
+    width: 320px;
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    float: left;
+  }
+  pre.code-hook {
+    margin: 0 0 0 340px;
+  }
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+@media screen and (max-width: 640px){
+  .example-demo-wrapper {
+    .zx-vue-calendar, .zx-react-calendar {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      float: none;
+    }
+    pre.code-hook {
+      margin: 20px 0;
+    }
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+table {
+  border: 1px solid $border;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+  th {
+    background: $background;
+    // height: 30px;
+  }
+  th, td {
+    padding: 10px;
+    border: 1px solid $border;
+  }
+  td {
+    height: 30px;
+  }
+  tr:nth-child(2n )td {
+    background: $background;
+  }
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+.mt15 {
+  margin-top: 15px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+
+.pt10 {
+  padding-top: 10px !important;
+}
+.pt15 {
+  padding-top: 15px !important;
+}
+.pt20 {
+  padding-top: 20px !important;
+}
+
+.pb10 {
+  padding-bottom: 10px !important;
+}
+.pb15 {
+  padding-bottom: 15px !important;
+}
+.pb20 {
+  padding-bottom: 20px !important;
+}

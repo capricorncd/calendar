@@ -1,0 +1,23 @@
+{
+  "name": "@zx-calendar/react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.jsx",
+  "scripts": {
+    "dev": "vite --port=8002",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@zx-calendar/core": "workspace:*",
+    "obj2str": "^0.1.2",
+    "react": "^18.2.0",
+    "zx-sml": "*"
+  },
+  "devDependencies": {
+    "prop-types": "^15.8.1"
+  }
+}

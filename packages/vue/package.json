@@ -1,0 +1,19 @@
+{
+  "name": "@zx-calendar/vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "vite --port=8003",
+    "build": "vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@zx-calendar/core": "workspace:*",
+    "obj2str": "^0.1.2",
+    "zx-sml": "*"
+  }
+}

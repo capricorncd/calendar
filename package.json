@@ -1,17 +1,36 @@
 {
   "name": "zx-calendar",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "calendar, vue-calendar, vue3-calendar, react-calendar",
-  "main": "dist/zx-calendar.min.js",
-  "module": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/zx-calendar.umd.js",
+  "module": "dist/zx-calendar.es.js",
+  "types": "./types",
+  "exports": {
+    ".": {
+      "types": "./types",
+      "import": "./dist/zx-calendar.es.js",
+      "require": "./dist/zx-calendar.umd.js"
+    },
+    "./lib/vue3-calendar": {
+      "import": "./dist/zx-vue-calendar.es.js",
+      "require": "./dist/zx-vue-calendar.umd.js"
+    },
+    "./lib/vue-calendar": {
+      "import": "./dist/zx-vue2-calendar.es.js",
+      "require": "./dist/zx-vue2-calendar.umd.js"
+    },
+    "./lib/react-calendar": {
+      "import": "./dist/zx-react-calendar.es.js",
+      "require": "./dist/zx-react-calendar.umd.js"
+    }
+  },
+  "packageManager": "pnpm@7.5.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --port 9999",
-    "vue": "webpack-dev-server --port 9999 --type vue",
-    "vue3": "webpack-dev-server --port 9999 --type vue3",
-    "react": "webpack-dev-server --port 9999 --type react",
-    "build": "webpack --mode production"
+    "dev": "cd packages/demo && pnpm run dev",
+    "build:demo": "cd packages/demo && pnpm run build",
+    "build": "cd packages/calendar && pnpm run build",
+    "docs": "cd packages/calendar && pnpm run docs",
+    "lint": "eslint . --fix --ext .js,.cjs,.ts"
   },
   "repository": {
     "type": "git",
@@ -27,52 +46,29 @@
     "zxReactCalendar",
     "zx-calendar"
   ],
-  "author": "Capricorncd",
-  "license": "MIT",
+  "dependencies": {
+    "zx-sml": "^0.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "inquirer": "^9.1.4",
+    "pnpm": "^7.17.0",
+    "prettier": "^2.8.0",
+    "typescript": "^4.9.3",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.3"
+  },
+  "homepage": "https://github.com/capricorncd/calendar#readme",
   "bugs": {
     "url": "https://github.com/capricorncd/calendar/issues"
   },
-  "homepage": "https://github.com/capricorncd/calendar#readme",
-  "devDependencies": {
-    "@babel/core": "^7.11.1",
-    "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-react": "^7.10.4",
-    "autoprefixer": "^9.8.6",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^4.2.1",
-    "date-utils-2020": "^0.0.2",
-    "eslint": "^7.7.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-standard": "^4.0.1",
-    "eslint-plugin-vue": "^7.1.0",
-    "eslint-webpack-plugin": "^2.1.0",
-    "html-webpack-plugin": "^4.3.0",
-    "markdown-it": "^11.0.0",
-    "markdown-it-multimd-table": "^4.0.3",
-    "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.14.1",
-    "obj2str": "0.0.5",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "postcss-loader": "^3.0.0",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "replace-in-file": "^6.1.0",
-    "sass": "^1.26.10",
-    "sass-loader": "^9.0.3",
-    "style-loader": "^1.2.1",
-    "vue-loader": "^15.9.3",
-    "vue-template-compiler": "^2.6.12",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.1.1"
-  }
+  "author": "Xing Zhong <capricorncd@qq.com, zx198401@gmail.com>",
+  "license": "MIT"
 }
