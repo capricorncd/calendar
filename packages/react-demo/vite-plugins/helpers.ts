@@ -4,8 +4,6 @@
  * Date: 2022/12/04 18:08:38 (GMT+0900)
  */
 import mdIt from 'markdown-it'
-import * as babel from '@babel/core'
-import * as fs from 'fs'
 import { EOL } from 'os'
 
 const md = mdIt().use(require('markdown-it-multimd-table'))
@@ -15,10 +13,7 @@ export function escapeTag(str) {
 }
 
 export function replaceFrom(str, type = 'vue') {
-  return str.replace(
-    "from '../../index'",
-    `from 'zx-calendar/lib/${type}-calendar'`
-  )
+  return str.replace(`@zx-calendar/${type}`, `zx-calendar/lib/${type}-calendar`)
 }
 
 export function formatMdx(source) {
