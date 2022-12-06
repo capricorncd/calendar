@@ -11,6 +11,7 @@
       "import": "./dist/zx-calendar.es.js",
       "require": "./dist/zx-calendar.umd.js"
     },
+    "./css": "./dist/zx-calendar.min.css",
     "./lib/vue3-calendar": {
       "import": "./dist/zx-vue-calendar.es.js",
       "require": "./dist/zx-vue-calendar.umd.js"

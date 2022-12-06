@@ -12,24 +12,25 @@ export default defineConfig({
   base: './',
   build: {
     outDir: resolve(__dirname, '../../dist'),
-    lib: {
-      entry: resolve(__dirname, 'src/index.js'),
-      name: 'ZxVueCalendar',
-      fileName: (format) => `zx-vue-calendar.${format}.js`,
-    },
     rollupOptions: {
-      external: ['vue'],
+      input: {
+        vue3: resolve(__dirname, './vue3.html'),
+      },
       output: {
-        globals: {
-          vue: 'Vue',
+        entryFileNames: (chunkInfo) => {
+          // default `assets/[name].[hash].js`
+          // return '[name].[hash].js';
+          return '[name].min.js'
         },
-        assetFileNames: (assetInfo) => {
-          console.log(assetInfo.name)
-          if (assetInfo.name === 'style.css') return 'zx-vue-calendar.min.css'
-          return assetInfo.name as string
+        assetFileNames: (chunkInfo) => {
+          console.log('assetFileNames', chunkInfo.name, chunkInfo.type)
+          return '[name].min.[ext]'
         },
       },
     },
+  },
+  server: {
+    open: '/vue3.html',
   },
   plugins: [vue()],
 })
