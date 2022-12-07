@@ -36,7 +36,7 @@ IE10+ (When it is used in IE browser, Polyfill needs to be introduced)
 
 ```bash
 # npm
-npm install zx-calendar -S
+npm install zx-calendar
 
 # yarn
 yarn add zx-calendar
@@ -62,6 +62,7 @@ npm run react
 
 ```javascript
 import ZxCalendar from 'zx-calendar'
+import 'zx-calendar/css'
 
 const options = {}
 

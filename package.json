@@ -30,7 +30,7 @@
     "dev": "cd packages/demo && pnpm run dev",
     "build:demo": "cd packages/demo && pnpm run build",
     "build": "cd packages/calendar && pnpm run build",
-    "docs": "cd packages/calendar && pnpm run docs",
+    "after-build": "node scripts/after-build.js",
     "lint": "eslint . --fix --ext .js,.cjs,.ts",
     "prepare": "husky install"
   },

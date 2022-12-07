@@ -104,14 +104,10 @@ importers:
     specifiers:
       '@vitejs/plugin-vue': ^3.2.0
       '@zx-calendar/core': workspace:*
-      obj2str: ^0.1.2
       vue: ^3.2.45
-      zx-sml: '*'
     dependencies:
       '@zx-calendar/core': link:../calendar
-      obj2str: 0.1.2
       vue: 3.2.45
-      zx-sml: 0.6.4
     devDependencies:
       '@vitejs/plugin-vue': 3.2.0_vue@3.2.45
 
@@ -122,9 +118,20 @@ importers:
       vue: ^3.2.45
     dependencies:
       '@zx-calendar/vue': link:../vue
+      vue: 3.2.45
     devDependencies:
       '@vitejs/plugin-vue': 3.2.0_vue@3.2.45
-      vue: 3.2.45
+
+  packages/vue2:
+    specifiers:
+      '@vitejs/plugin-vue2': ^2.1.0
+      '@zx-calendar/core': workspace:*
+      vue: ^2.6.14
+    dependencies:
+      '@zx-calendar/core': link:../calendar
+      vue: 2.7.14
+    devDependencies:
+      '@vitejs/plugin-vue2': 2.1.0_vue@2.7.14
 
 packages:
   /@ampproject/remapping/2.2.0:
@@ -938,6 +945,19 @@ packages:
       vue: 3.2.45
     dev: true
 
+  /@vitejs/plugin-vue2/2.1.0_vue@2.7.14:
+    resolution:
+      {
+        integrity: sha512-9glD5jLWRjdj+SpH7cQo+n/kZlZBaTjQwTe3aUxsWr9uU7aOnlhG319ywJT5175mHWIyNz8g5QG6NPdgKwwYDA==,
+      }
+    engines: { node: ^14.18.0 || >= 16.0.0 }
+    peerDependencies:
+      vite: ^3.0.0
+      vue: ^2.7.0-0
+    dependencies:
+      vue: 2.7.14
+    dev: true
+
   /@vue/compiler-core/3.2.45:
     resolution:
       {
@@ -957,6 +977,16 @@ packages:
     dependencies:
       '@vue/compiler-core': 3.2.45
       '@vue/shared': 3.2.45
+
+  /@vue/compiler-sfc/2.7.14:
+    resolution:
+      {
+        integrity: sha512-aNmNHyLPsw+sVvlQFQ2/8sjNuLtK54TC6cuKnVzAY93ks4ZBrvwQSnkkIh7bsbNhum5hJBS00wSDipQ937f5DA==,
+      }
+    dependencies:
+      '@babel/parser': 7.20.5
+      postcss: 8.4.19
+      source-map: 0.6.1
 
   /@vue/compiler-sfc/3.2.45:
     resolution:
@@ -1449,6 +1479,12 @@ packages:
     resolution:
       {
         integrity: sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==,
+      }
+
+  /csstype/3.1.1:
+    resolution:
+      {
+        integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==,
       }
 
   /date-utils-2020/1.0.3:
@@ -4262,6 +4298,15 @@ packages:
       - supports-color
       - terser
     dev: true
+
+  /vue/2.7.14:
+    resolution:
+      {
+        integrity: sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ==,
+      }
+    dependencies:
+      '@vue/compiler-sfc': 2.7.14
+      csstype: 3.1.1
 
   /vue/3.2.45:
     resolution:
