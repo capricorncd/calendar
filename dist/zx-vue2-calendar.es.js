@@ -2,10 +2,9 @@
  * zx-calendar version 0.7.0
  * Author: Xing Zhong <capricorncd@qq.com, zx198401@gmail.com>
  * Repository: https://github.com/capricorncd/calendar#readme
- * Released on: 2022-12-07 20:48:01 (GMT+0900)
+ * Released on: 2022-12-07 20:56:38 (GMT+0900)
  */
-import { openBlock as ce, createElementBlock as ue, renderSlot as H, createElementVNode as de } from "vue";
-const he = "yyyy/MM", fe = "yyyy-yyyy", pe = "yyyy", g = "is-selected", q = "is-disabled", ye = "is-holiday", _e = "is-current", Q = "is-range-first", ee = "is-range-last", te = "is-range-first-last", se = "is-range-temp", W = "is-first-page", z = "is-last-page", ge = "is-weekend", R = "date-only", O = "__prev-button", j = "__next-button", P = "__title-wrapper", ne = "__item-week", ae = "__confirm-button", ie = "__clear-button", oe = "__cancel-button", G = "multiple", E = "range", re = "single", b = "date", B = "month", x = "year", U = {
+const le = "yyyy/MM", ce = "yyyy-yyyy", ue = "yyyy", E = "is-selected", Z = "is-disabled", de = "is-holiday", he = "is-current", q = "is-range-first", Q = "is-range-last", ee = "is-range-first-last", te = "is-range-temp", H = "is-first-page", V = "is-last-page", fe = "is-weekend", M = "date-only", O = "__prev-button", j = "__next-button", P = "__title-wrapper", se = "__item-week", ne = "__confirm-button", ae = "__clear-button", ie = "__cancel-button", z = "multiple", S = "range", re = "single", C = "date", Y = "month", b = "year", U = {
   en: {
     full: [
       "Sunday",
@@ -42,47 +41,47 @@ const he = "yyyy/MM", fe = "yyyy-yyyy", pe = "yyyy", g = "is-selected", q = "is-
     ],
     abbr: ["\u65E5", "\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D"]
   }
-}, me = ["confirmButton", "cancelButton", "clearButton"], J = {
+}, pe = ["confirmButton", "cancelButton", "clearButton"], G = {
   en: ["ok", "cancel", "clear"],
   jp: ["\u9078\u629E", "\u30AD\u30E3\u30F3\u30BB\u30EB", "\u30AF\u30EA\u30A2\u30FC"],
   zh: ["\u786E\u5B9A", "\u53D6\u6D88", "\u6E05\u9664"]
 };
-function Ee(e = "en", t) {
-  const s = J[e] || J.en, n = me.reduce((i, o, c) => (i[o] = s[c], i), {}), a = U[e] || U.en;
+function ye(e = "en", t) {
+  const s = G[e] || G.en, n = pe.reduce((i, r, d) => (i[r] = s[d], i), {}), a = U[e] || U.en;
   return n.weeks = t ? a.full : a.abbr, n;
 }
-function Se({ lang: e, isFullWeek: t, langPackage: s }) {
+function _e({ lang: e, isFullWeek: t, langPackage: s }) {
   return {
     langPackage: {
-      ...Ee(e, t),
+      ...ye(e, t),
       ...s
     }
   };
 }
-const De = {
+const ge = {
   date: "yyyyMMdd",
   month: "yyyyMM",
   year: "yyyy"
 };
-function f(e) {
+function p(e) {
   return e >> 0;
 }
-function Ae(e) {
+function me(e) {
   return /^-?\d+\.?\d+$/.test(e);
 }
-function S(e) {
+function D(e) {
   return typeof e == "string";
 }
-function K(e) {
+function J(e) {
   return typeof e == "function";
 }
-function C(e) {
+function v(e) {
   return e += "", e[1] ? e : "0" + e;
 }
-function p(e, t, s) {
+function _(e, t, s) {
   const n = T(e);
   if (!n || !t)
-    return S(e) ? e : e + "";
+    return D(e) ? e : e + "";
   if (t === "timestamp")
     return +n;
   let a;
@@ -99,11 +98,11 @@ function p(e, t, s) {
     "A+": n.getHours() < 12 ? "AM" : "PM"
   };
   s && Array.isArray(s.weeks) && (i["W+"] = s.weeks[n.getDay()]);
-  for (const o in i)
-    if (new RegExp("(" + o + ")").test(t)) {
+  for (const r in i)
+    if (new RegExp("(" + r + ")").test(t)) {
       a = RegExp.$1;
-      const c = i[o] + "";
-      t = t.replace(a, a.length === 1 ? c : C(c));
+      const d = i[r] + "";
+      t = t.replace(a, a.length === 1 ? d : v(d));
     }
   return t;
 }
@@ -113,82 +112,82 @@ function T(e) {
   if (e instanceof Date)
     return e;
   let t = null;
-  if (Ae(e)) {
+  if (me(e)) {
     const s = e + "", n = s.length;
     n === 8 ? t = new Date(
       [s.substr(0, 4), s.substr(4, 2), s.substr(6, 2)].join("/")
     ) : n === 6 ? t = new Date([s.substr(0, 4), s.substr(4, 2), "01"].join("/")) : n === 4 ? t = new Date(s + "/01/01") : t = new Date(e);
   } else
-    S(e) && (e = e.replace(/[年月日]/g, (s) => s === "\u65E5" ? "" : "/"), e = e.replace(/[(（（].*?[)））]/g, " ").replace(/\bam|pm\b/gi, " ").replace(/\s+/g, " "), /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(e) ? t = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join("/")) : /^(\d{4})[-/](\d{1,2})$/.test(e) ? t = new Date([RegExp.$1, RegExp.$2, "01"].join("/")) : (t = new Date(e), isNaN(t.getFullYear()) && (t = null)));
+    D(e) && (e = e.replace(/[年月日]/g, (s) => s === "\u65E5" ? "" : "/"), e = e.replace(/[(（（].*?[)））]/g, " ").replace(/\bam|pm\b/gi, " ").replace(/\s+/g, " "), /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.test(e) ? t = new Date([RegExp.$1, RegExp.$2, RegExp.$3].join("/")) : /^(\d{4})[-/](\d{1,2})$/.test(e) ? t = new Date([RegExp.$1, RegExp.$2, "01"].join("/")) : (t = new Date(e), isNaN(t.getFullYear()) && (t = null)));
   return t;
 }
-function Te({ current: e, currentDate: t }) {
+function Ee({ current: e, currentDate: t }) {
   const s = e.slice(0, 2);
   s.push("01");
   const n = new Date(s.join("/")).getDay();
   let a = t.getFullYear(), i = t.getMonth() + 1;
   i === 12 ? (a += 1, i = 1) : i += 1;
-  const o = new Date(
-    `${a}/${C(i)}/01`
-  ).getTime(), c = new Date(o - 1);
+  const r = new Date(
+    `${a}/${v(i)}/01`
+  ).getTime(), d = new Date(r - 1);
   return {
     firstDayOfWeek: n,
-    lastDayOfMonth: c.getDate()
+    lastDayOfMonth: d.getDate()
   };
 }
-function Me(e) {
-  const t = f(e.substr(2)), s = t % 20 === 0, n = Math.floor(t / 20);
-  let a = (s ? n - 1 : n) * 20 + 1, i = f(e.substr(0, 2));
+function Se(e) {
+  const t = p(e.substr(2)), s = t % 20 === 0, n = Math.floor(t / 20);
+  let a = (s ? n - 1 : n) * 20 + 1, i = p(e.substr(0, 2));
   n === 0 && t === 0 && (i -= 1, a = 81);
-  const o = i * 100 + a, c = o + 19;
+  const r = i * 100 + a, d = r + 19;
   return {
-    startFullYear: o,
-    endFullYear: c
+    startFullYear: r,
+    endFullYear: d
   };
 }
-function _(e, t) {
+function m(e, t) {
   const s = [];
   if (Array.isArray(e)) {
     const [n, a] = e;
-    let i = T(n), o = T(a);
-    S(t) && (i = i ? +p(i, t) : null, o = o ? +p(o, t) : null), s.push(i), s.push(o);
+    let i = T(n), r = T(a);
+    D(t) && (i = i ? +_(i, t) : null, r = r ? +_(r, t) : null), s.push(i), s.push(r);
   }
   return s;
 }
-function v({ data: e, options: t }) {
+function x({ data: e, options: t }) {
   const s = [];
-  return t.mode === E && e.selected.forEach((n) => {
+  return t.mode === S && e.selected.forEach((n) => {
     s.push(n ? n.value : null);
   }), s;
 }
 function L(e, t, s) {
   return !!t && e < t || !!s && e > s;
 }
-function le(e, { type: t, mode: s }) {
+function oe(e, { type: t, mode: s }) {
   const n = [];
   if (e) {
-    Array.isArray(e) || (e = [e]), s === re && e.length > 1 && (e = e.slice(0, 1)), s === E && e.length > 2 && (e = e.slice(0, 2));
-    const a = De[t];
+    Array.isArray(e) || (e = [e]), s === re && e.length > 1 && (e = e.slice(0, 1)), s === S && e.length > 2 && (e = e.slice(0, 2));
+    const a = ge[t];
     let i;
-    e.forEach((o) => {
-      i = T(o), i && n.push({
-        value: f(p(i, a)),
+    e.forEach((r) => {
+      i = T(r), i && n.push({
+        value: p(_(i, a)),
         date: i,
-        fullText: p(i, "yyyy/MM/dd")
+        fullText: _(i, "yyyy/MM/dd")
       });
-    }), n.sort((o, c) => o.value - c.value);
+    }), n.sort((r, d) => r.value - d.value);
   }
   return n;
 }
 function $(e, t, s) {
   return t && t > e || s && s < e;
 }
-function Re(e, t, s, n) {
+function De(e, t, s, n) {
   const a = [];
   switch (n) {
-    case E: {
-      const [i, o] = e;
-      i && $(+i.date, t, s) && a.push(i), o && $(+o.date, t, s) && a.push(o);
+    case S: {
+      const [i, r] = e;
+      i && $(+i.date, t, s) && a.push(i), r && $(+r.date, t, s) && a.push(r);
       break;
     }
     default:
@@ -198,12 +197,12 @@ function Re(e, t, s, n) {
   }
   return a.length > 0;
 }
-function be(e) {
+function Ae(e) {
   const { options: t } = this;
   let s = null;
-  const [n, a] = _(t.dateRange);
+  const [n, a] = m(t.dateRange);
   if (n && +n > +s && (s = n), a && +a < +s && (s = a), e.length)
-    if (Re(
+    if (De(
       e,
       n,
       a,
@@ -222,10 +221,10 @@ function be(e) {
   return s;
 }
 function k(e, { data: t, options: s }) {
-  return s.mode === E && t.selected.length === 1 ? e === t.selected[0].value : !1;
+  return s.mode === S && t.selected.length === 1 ? e === t.selected[0].value : !1;
 }
 function A(e) {
-  if (typeof e > "u" && (e = "undefined"), e === null && (e = "null"), S(e))
+  if (typeof e > "u" && (e = "undefined"), e === null && (e = "null"), D(e))
     return document.createTextNode(e);
   const t = document.createElement(e.t || "div"), s = e.a;
   s && typeof s == "object" && Object.keys(s).forEach((a) => {
@@ -236,13 +235,13 @@ function A(e) {
     t.appendChild(A(a));
   }), t;
 }
-function V(e, t = document) {
+function W(e, t = document) {
   if (!e)
     return null;
   let s = null;
-  return S(e) ? s = t.querySelector(e) : typeof e == "object" && e.nodeType === 1 && (s = e), s;
+  return D(e) ? s = t.querySelector(e) : typeof e == "object" && e.nodeType === 1 && (s = e), s;
 }
-function xe(e, t, s) {
+function Te(e, t, s) {
   const n = "__item", a = {};
   if (t.includes(n))
     a.el = e, a.className = t;
@@ -256,9 +255,9 @@ function xe(e, t, s) {
       i = i.parentElement;
     }
   }
-  return a.el && (a.index = f(a.el.getAttribute("data-index"))), a;
+  return a.el && (a.index = p(a.el.getAttribute("data-index"))), a;
 }
-function M(...e) {
+function R(...e) {
   const t = e[0], s = e.slice(1), n = [];
   t.className.split(" ").forEach((a) => {
     s.includes(a) || n.push(a);
@@ -270,11 +269,11 @@ function N(...e) {
     s.includes(n) || s.push(n);
   }), t.className = s.join(" ");
 }
-const Ce = {
+const Re = {
   a: {
     class: "zx-calendar"
   }
-}, Ne = {
+}, Me = {
   a: {
     class: "zx-calendar-header-wrapper"
   },
@@ -295,7 +294,7 @@ const Ce = {
           t: "button",
           a: {
             type: "button",
-            class: [O, R].join(" ")
+            class: [O, M].join(" ")
           }
         }
       ]
@@ -314,7 +313,7 @@ const Ce = {
           t: "button",
           a: {
             type: "button",
-            class: [j, R].join(" ")
+            class: [j, M].join(" ")
           }
         },
         {
@@ -327,89 +326,89 @@ const Ce = {
       ]
     }
   ]
-}, ve = {
+}, Ce = {
   a: {
     class: "zx-calendar-week-wrapper"
   },
   c: []
-}, Le = {
+}, be = {
   a: {
     class: "zx-calendar-body-wrapper"
   }
-}, $e = {
+}, ve = {
   a: {
     class: "zx-calender-footer-wrapper"
   },
   c: []
-}, ke = {
+}, Ne = {
   confirm: {
     t: "button",
     a: {
-      class: ae
+      class: ne
     }
   },
   clear: {
     t: "button",
     a: {
-      class: ie
+      class: ae
     }
   },
   cancel: {
     t: "button",
     a: {
-      class: oe
+      class: ie
     }
   }
 };
-function we(e, t) {
-  if (t.type !== b)
+function xe(e, t) {
+  if (t.type !== C)
     return null;
-  const s = JSON.parse(JSON.stringify(ve));
+  const s = JSON.parse(JSON.stringify(Ce));
   return e.forEach((n, a) => {
     const i = a === 0 || a === 6;
     s.c.push({
       a: {
-        class: ne + (i ? " " + ge : "")
+        class: se + (i ? " " + fe : "")
       },
       c: [n]
     });
   }), A(s);
 }
 function w(e, t, s, n) {
-  const a = e.some((o) => t && o.value && o.value < t), i = e.some((o) => s && o.value && o.value > s);
-  a ? N(n, W) : M(n, W), i ? N(n, z) : M(n, z);
+  const a = e.some((r) => t && r.value && r.value < t), i = e.some((r) => s && r.value && r.value > s);
+  a ? N(n, H) : R(n, H), i ? N(n, V) : R(n, V);
 }
-function I(e, t, { titleFormatter: s, type: n, itemSuffix: a, showHoliday: i }, { header: o, body: c }) {
-  const d = t[e] || [];
-  let u = null;
-  if (n === x) {
-    const m = d[0], l = d[d.length - 1];
-    let y = 0;
-    u = s.replace(/(y+)/g, () => y++ === 0 ? m.text : l.text);
+function I(e, t, { titleFormatter: s, type: n, itemSuffix: a, showHoliday: i }, { header: r, body: d }) {
+  const o = t[e] || [];
+  let l = null;
+  if (n === b) {
+    const y = o[0], c = o[o.length - 1];
+    let g = 0;
+    l = s.replace(/(y+)/g, () => g++ === 0 ? y.text : c.text);
   } else
-    u = p(t.currentDate, s);
-  V("." + P, o).innerText = u;
-  let r, h, D;
-  c.innerHTML = d.reduce((m, l, y) => (r = ["__item"], l.disabled && r.push(q), l.value > 0 ? (D = "", l.holiday && (r.push(ye), D = ` title="${l.holiday}"`), l.selected && r.push(g), l.current && r.push(_e), l.isRangeFirst && l.isRangeLast ? r.push(te) : (l.isRangeFirst && r.push(Q), l.isRangeLast && r.push(ee)), l.isRangeTemp && r.push(se), h = [
-    `<div class="${r.join(" ")}" data-index="${y}"${D}>`
-  ], h.push('<div class="__inner">'), h.push(`<p class="__text">${l.text}`), a && h.push(`<span class="__suffix">${a}</span>`), i && l.holiday && h.push(`<span class="__holiday">${l.holiday}</span>`), h.push("</p></div></div>")) : h = [
-    `<div class="${r.join(
+    l = _(t.currentDate, s);
+  W("." + P, r).innerText = l;
+  let u, h, f;
+  d.innerHTML = o.reduce((y, c, g) => (u = ["__item"], c.disabled && u.push(Z), c.value > 0 ? (f = "", c.holiday && (u.push(de), f = ` title="${c.holiday}"`), c.selected && u.push(E), c.current && u.push(he), c.isRangeFirst && c.isRangeLast ? u.push(ee) : (c.isRangeFirst && u.push(q), c.isRangeLast && u.push(Q)), c.isRangeTemp && u.push(te), h = [
+    `<div class="${u.join(" ")}" data-index="${g}"${f}>`
+  ], h.push('<div class="__inner">'), h.push(`<p class="__text">${c.text}`), a && h.push(`<span class="__suffix">${a}</span>`), i && c.holiday && h.push(`<span class="__holiday">${c.holiday}</span>`), h.push("</p></div></div>")) : h = [
+    `<div class="${u.join(
       " "
     )}"><div class="__inner"></div></div>`
-  ], m.push(h.join("")), m), []).join("");
+  ], y.push(h.join("")), y), []).join("");
 }
 function X(e, { body: t }, s) {
-  const [...n] = t.querySelectorAll("." + g);
+  const [...n] = t.querySelectorAll("." + E);
   n.forEach((a) => {
-    M(a, g), s && M(
+    R(a, E), s && R(
       a,
+      q,
       Q,
-      ee,
-      te
+      ee
     );
-  }), N(e, s ? se : g);
+  }), N(e, s ? te : E);
 }
-const Z = "single", Ie = "date", F = {
+const K = "single", Le = "date", F = {
   type: ["date", "month", "year"],
   lang: ["jp", "zh", "en"],
   isFullWeek: !1,
@@ -424,14 +423,14 @@ const Z = "single", Ie = "date", F = {
   footerButtons: null,
   footerButtonAlign: null,
   hideFooter: !1
-}, Fe = {
+}, $e = {
   el: null,
   dateRange: [],
   lang: "zh",
   showHoliday: !1,
-  type: b,
+  type: C,
   isFullWeek: !1,
-  titleFormatter: he,
+  titleFormatter: le,
   itemSuffix: null,
   defaultDate: [],
   itemFormatter: null,
@@ -441,41 +440,41 @@ const Z = "single", Ie = "date", F = {
   footerButtonAlign: "flex-end",
   hideFooter: !1
 };
-function Y(e = {}) {
+function B(e = {}) {
   const t = {
-    ...Fe,
+    ...$e,
     ...e
   };
-  if (e.titleFormatter || (t.type === x ? t.titleFormatter = fe : t.type === B && (t.titleFormatter = pe)), !t.el || !V(t.el))
+  if (e.titleFormatter || (t.type === b ? t.titleFormatter = ce : t.type === Y && (t.titleFormatter = ue)), !t.el || !W(t.el))
     throw new Error(`Initial parameter el[${t.el}] is invalid.`);
   this.options = t, this._eventList = {};
-  const { langPackage: s } = Se(t);
+  const { langPackage: s } = _e(t);
   this.langPackage = s, this.$els = {};
-  const n = new Date(), a = p(n, "yyyy/MM/dd", s);
+  const n = new Date(), a = _(n, "yyyy/MM/dd", s);
   let i = [];
   try {
-    i = le(t.defaultDate, t);
-  } catch (d) {
+    i = oe(t.defaultDate, t);
+  } catch (o) {
     setTimeout(() => {
-      this.emit("error", d);
+      this.emit("error", o);
     }, 0);
   }
-  const o = be.call(this, i) || n, c = p(o, "yyyy/MM/dd");
+  const r = Ae.call(this, i) || n, d = _(r, "yyyy/MM/dd");
   this.data = {
     today: a,
-    currentDate: o,
-    currentDay: c,
-    current: c.split("/"),
+    currentDate: r,
+    currentDay: d,
+    current: d.split("/"),
     selected: i,
     dates: [],
     months: [],
     years: []
   }, this._initDom();
 }
-Y.prototype = {
-  constructor: Y,
+B.prototype = {
+  constructor: B,
   formatDate(e, t, s) {
-    return s || (s = this.langPackage), p(e, t, s);
+    return s || (s = this.langPackage), _(e, t, s);
   },
   toDate(e) {
     const t = T(e);
@@ -488,39 +487,39 @@ Y.prototype = {
     });
   },
   on(e, t) {
-    !S(e) || !K(t) || (this._eventList[e] || (this._eventList[e] = []), this._eventList[e].push(t));
+    !D(e) || !J(t) || (this._eventList[e] || (this._eventList[e] = []), this._eventList[e].push(t));
   },
   off(e) {
-    !S(e) || !this._eventList[e] || (this._eventList[e].length = 0);
+    !D(e) || !this._eventList[e] || (this._eventList[e].length = 0);
   },
   _initDom() {
-    const e = this.options, t = V(e.el), s = JSON.parse(JSON.stringify(Ce)), n = [
+    const e = this.options, t = W(e.el), s = JSON.parse(JSON.stringify(Re)), n = [
       s.a.class,
       "type-is-" + e.type,
       "mode-is-" + e.mode
     ];
     s.a.class = n.join(" ");
-    const a = A(s), i = A(Ne);
+    const a = A(s), i = A(Me);
     a.appendChild(i);
-    const o = we(this.langPackage.weeks, e);
-    o && a.appendChild(o);
-    const c = A(Le);
-    if (a.appendChild(c), !e.hideFooter && (e.mode === G || e.mode === E)) {
-      const d = JSON.parse(JSON.stringify($e));
-      e.footerButtons.forEach((r) => {
-        d.c.push({
-          ...ke[r],
-          c: [this.langPackage[r + "Button"]]
+    const r = xe(this.langPackage.weeks, e);
+    r && a.appendChild(r);
+    const d = A(be);
+    if (a.appendChild(d), !e.hideFooter && (e.mode === z || e.mode === S)) {
+      const o = JSON.parse(JSON.stringify(ve));
+      e.footerButtons.forEach((u) => {
+        o.c.push({
+          ...Ne[u],
+          c: [this.langPackage[u + "Button"]]
         });
       });
-      const u = A(d);
-      e.footerButtonAlign && (u.style.justifyContent = e.footerButtonAlign), a.appendChild(u);
+      const l = A(o);
+      e.footerButtonAlign && (l.style.justifyContent = e.footerButtonAlign), a.appendChild(l);
     }
     t.appendChild(a), this.$els = {
       calendar: a,
       header: i,
-      week: o,
-      body: c,
+      week: r,
+      body: d,
       parent: t
     }, this._updateDom(), this.eventsHandler = this._eventsHandler.bind(this), this.$els.calendar.addEventListener("click", this.eventsHandler);
   },
@@ -528,14 +527,14 @@ Y.prototype = {
     e.stopPropagation();
     const t = e.target, s = t.className.split(" "), n = t.innerText;
     if (s.includes(O))
-      this.prev(!s.includes(R));
+      this.prev(!s.includes(M));
     else if (s.includes(j))
-      this.next(!s.includes(R));
-    else if (s.includes(ae))
+      this.next(!s.includes(M));
+    else if (s.includes(ne))
       this.emit("change", [...this.data.selected]);
-    else if (s.includes(oe))
-      this.emit("cancel");
     else if (s.includes(ie))
+      this.emit("cancel");
+    else if (s.includes(ae))
       this.setDate();
     else if (s.includes(P))
       this._onTitleClick({
@@ -543,14 +542,14 @@ Y.prototype = {
         el: t,
         className: s
       });
-    else if (s.includes(ne))
+    else if (s.includes(se))
       this._onWeekClick({
         innerText: n,
         el: t,
         className: s
       });
     else {
-      const a = xe(t, s, this.$els.calendar);
+      const a = Te(t, s, this.$els.calendar);
       a.el && this._onItemClick(a);
     }
   },
@@ -560,23 +559,23 @@ Y.prototype = {
   prev(e) {
     let [t, s] = this.data.current;
     switch (this.options.type) {
-      case b:
+      case C:
         if (e) {
-          t = f(t) - 1;
-          const [n] = _(this.options.dateRange, "yyyy");
+          t = p(t) - 1;
+          const [n] = m(this.options.dateRange, "yyyy");
           if (n && t <= n) {
             t = n;
-            const [a] = _(this.options.dateRange, "MM");
+            const [a] = m(this.options.dateRange, "MM");
             a && (s = a);
           }
         } else
-          s = f(s) - 1, s === 0 && (t = f(t) - 1, s = 12);
+          s = p(s) - 1, s === 0 && (t = p(t) - 1, s = 12);
         this.setCurrentDate([t, s, "01"].join("/"));
         break;
-      case B:
+      case Y:
         this.setCurrentDate(t - 1);
         break;
-      case x: {
+      case b: {
         const n = this.data.years[0] || {};
         this.setCurrentDate(n.value - 1);
         break;
@@ -586,23 +585,23 @@ Y.prototype = {
   next(e) {
     let [t, s] = this.data.current;
     switch (this.options.type) {
-      case b:
+      case C:
         if (e) {
-          t = f(t) + 1;
-          const [, n] = _(this.options.dateRange, "yyyy");
+          t = p(t) + 1;
+          const [, n] = m(this.options.dateRange, "yyyy");
           if (n && t >= n) {
             t = n;
-            const [, a] = _(this.options.dateRange, "MM");
+            const [, a] = m(this.options.dateRange, "MM");
             a && (s = a);
           }
         } else
-          s = f(s) + 1, s === 13 && (t = f(t) + 1, s = 1);
+          s = p(s) + 1, s === 13 && (t = p(t) + 1, s = 1);
         this.setCurrentDate([t, s, "01"].join("/"));
         break;
-      case B:
-        this.setCurrentDate(f(t) + 1);
+      case Y:
+        this.setCurrentDate(p(t) + 1);
         break;
-      case x: {
+      case b: {
         const n = this.data.years, a = n[n.length - 1] || {};
         this.setCurrentDate(a.value + 1);
         break;
@@ -613,30 +612,30 @@ Y.prototype = {
     this.emit("onWeekClick", e);
   },
   _onItemClick({ el: e, className: t, index: s }) {
-    if (t.includes(q))
+    if (t.includes(Z))
       return;
     const a = (this.data[this.options.type + "s"] || [])[s] || {};
-    if (this.options.mode === E) {
-      const i = [...this.data.selected], o = i.length;
-      o === 0 || o >= 2 && i.every((c) => !!c) ? (this.data.selected = [a], X(e, this.$els, !0)) : o === 1 && (i[0].value < a.value ? this.data.selected.push(a) : this.data.selected.unshift(a), this._updateDom());
-    } else if (this.options.mode === G)
-      if (t.includes(g)) {
-        M(e, g);
+    if (this.options.mode === S) {
+      const i = [...this.data.selected], r = i.length;
+      r === 0 || r >= 2 && i.every((d) => !!d) ? (this.data.selected = [a], X(e, this.$els, !0)) : r === 1 && (i[0].value < a.value ? this.data.selected.push(a) : this.data.selected.unshift(a), this._updateDom());
+    } else if (this.options.mode === z)
+      if (t.includes(E)) {
+        R(e, E);
         const i = this.data.selected.findIndex(
-          (o) => o.value === a.value
+          (r) => r.value === a.value
         );
         this.data.selected.splice(i, 1);
       } else
-        N(e, g), a.selected = !0, this.data.selected.push(a);
+        N(e, E), a.selected = !0, this.data.selected.push(a);
     else
-      t.includes(g) || (X(e, this.$els), a.selected = !0, this.data.selected = [{ ...a }], this.emit("change", [...this.data.selected]));
+      t.includes(E) || (X(e, this.$els), a.selected = !0, this.data.selected = [{ ...a }], this.emit("change", [...this.data.selected]));
   },
   setDateRange(e, t) {
     this.options.dateRange = [e, t], this._updateDom();
   },
   setDate(e) {
     try {
-      if (this.data.selected = le(e, this.options), this.data.selected.length === 0) {
+      if (this.data.selected = oe(e, this.options), this.data.selected.length === 0) {
         this._updateDom();
         return;
       }
@@ -653,7 +652,7 @@ Y.prototype = {
     const t = this.toDate(e);
     if (!t)
       return;
-    const s = p(t, "yyyy/MM/dd");
+    const s = _(t, "yyyy/MM/dd");
     this.data.currentDate = t, this.data.currentDay = s, this.data.current = s.split("/"), this._updateDom();
   },
   _updateDom() {
@@ -670,44 +669,44 @@ Y.prototype = {
     }
   },
   createYears() {
-    const [e, t] = _(
+    const [e, t] = m(
       this.options.dateRange,
       "yyyy"
-    ), [s, n] = v(this), a = [], i = this.data.today.substr(0, 4), { startFullYear: o, endFullYear: c } = Me(this.data.current[0]);
-    let d;
-    for (let u = o; u <= c; u++)
-      d = u.toString(), a.push({
-        text: d,
-        fullText: d,
+    ), [s, n] = x(this), a = [], i = this.data.today.substr(0, 4), { startFullYear: r, endFullYear: d } = Se(this.data.current[0]);
+    let o;
+    for (let l = r; l <= d; l++)
+      o = l.toString(), a.push({
+        text: o,
+        fullText: o,
+        value: l,
+        disabled: L(l, e, t),
+        isRangeFirst: l === s && n,
+        isRangeLast: l === n && s,
+        isRangeTemp: k(l, this),
+        selected: this._isSelected(l),
+        current: i === o,
+        date: this.toDate(o)
+      });
+    this.data.years = a, w(a, e, t, this.$els.calendar);
+  },
+  createMonths() {
+    const [e, t] = m(
+      this.options.dateRange,
+      "yyyyMM"
+    ), [s, n] = x(this), a = [], i = this.data.today.substr(0, 7), r = this.data.current[0] + "/", d = p(this.data.current[0]) * 100;
+    let o, l, u;
+    for (let h = 1; h <= 12; h++)
+      o = v(h), l = r + o, u = d + h, a.push({
+        text: o,
+        fullText: l,
         value: u,
         disabled: L(u, e, t),
         isRangeFirst: u === s && n,
         isRangeLast: u === n && s,
         isRangeTemp: k(u, this),
         selected: this._isSelected(u),
-        current: i === d,
-        date: this.toDate(d)
-      });
-    this.data.years = a, w(a, e, t, this.$els.calendar);
-  },
-  createMonths() {
-    const [e, t] = _(
-      this.options.dateRange,
-      "yyyyMM"
-    ), [s, n] = v(this), a = [], i = this.data.today.substr(0, 7), o = this.data.current[0] + "/", c = f(this.data.current[0]) * 100;
-    let d, u, r;
-    for (let h = 1; h <= 12; h++)
-      d = C(h), u = o + d, r = c + h, a.push({
-        text: d,
-        fullText: u,
-        value: r,
-        disabled: L(r, e, t),
-        isRangeFirst: r === s && n,
-        isRangeLast: r === n && s,
-        isRangeTemp: k(r, this),
-        selected: this._isSelected(r),
-        current: u.startsWith(i),
-        date: this.toDate(u)
+        current: l.startsWith(i),
+        date: this.toDate(l)
       });
     this.data.months = a, w(
       a,
@@ -717,35 +716,35 @@ Y.prototype = {
     );
   },
   createDays() {
-    const [e, t] = _(
+    const [e, t] = m(
       this.options.dateRange,
       "yyyyMMdd"
-    ), [s, n] = v(this), { firstDayOfWeek: a, lastDayOfMonth: i } = Te(this.data), o = new Array(a).fill(0);
-    for (let l = 1; l <= i; l++)
-      o.push(l);
-    if (o.length % 7 !== 0)
-      for (let l = 0; l < o.length % 7; l++)
-        o.push(0);
-    let c = 0, d, u, r;
-    const h = this.data.current.slice(0, 2).join("/") + "/", { itemFormatter: D } = this.options, m = o.map((l) => {
-      c > 6 && (c = 0), d = l > 0 ? C(l) : "";
-      const y = h + d;
-      return r = l > 0 ? +y.replace(/\//g, "") : 0, u = {
-        text: d,
-        fullText: l > 0 ? y : "",
-        value: r,
-        week: c++,
-        disabled: !l || L(r, e, t),
+    ), [s, n] = x(this), { firstDayOfWeek: a, lastDayOfMonth: i } = Ee(this.data), r = new Array(a).fill(0);
+    for (let c = 1; c <= i; c++)
+      r.push(c);
+    if (r.length % 7 !== 0)
+      for (let c = 0; c < r.length % 7; c++)
+        r.push(0);
+    let d = 0, o, l, u;
+    const h = this.data.current.slice(0, 2).join("/") + "/", { itemFormatter: f } = this.options, y = r.map((c) => {
+      d > 6 && (d = 0), o = c > 0 ? v(c) : "";
+      const g = h + o;
+      return u = c > 0 ? +g.replace(/\//g, "") : 0, l = {
+        text: o,
+        fullText: c > 0 ? g : "",
+        value: u,
+        week: d++,
+        disabled: !c || L(u, e, t),
         holiday: !1,
-        isRangeFirst: r === s && n,
-        isRangeLast: r === n && s,
-        isRangeTemp: k(r, this),
-        selected: this._isSelected(r),
-        current: this.data.today === y,
-        date: l > 0 ? this.toDate(y) : null
-      }, K(D) ? D(u) : u;
+        isRangeFirst: u === s && n,
+        isRangeLast: u === n && s,
+        isRangeTemp: k(u, this),
+        selected: this._isSelected(u),
+        current: this.data.today === g,
+        date: c > 0 ? this.toDate(g) : null
+      }, J(f) ? f(l) : l;
     });
-    this.data.dates = m, w(m, e, t, this.$els.calendar);
+    this.data.dates = y, w(y, e, t, this.$els.calendar);
   },
   destroy() {
     this.$els.calendar.removeEventListener("click", this.eventsHandler), this.$els.parent.removeChild(this.$els.calendar);
@@ -753,7 +752,7 @@ Y.prototype = {
   _isSelected(e) {
     const t = this.data.selected;
     switch (this.options.mode) {
-      case E: {
+      case S: {
         const [s, n] = t;
         if (e && s && n)
           return e >= s.value && e <= n.value;
@@ -765,25 +764,47 @@ Y.prototype = {
     return !1;
   }
 };
-const Oe = (e, t) => {
-  const s = e.__vccOpts || e;
-  for (const [n, a] of t)
-    s[n] = a;
-  return s;
-}, je = {
+function ke(e, t, s, n, a, i, r, d) {
+  var o = typeof e == "function" ? e.options : e;
+  t && (o.render = t, o.staticRenderFns = s, o._compiled = !0), n && (o.functional = !0), i && (o._scopeId = "data-v-" + i);
+  var l;
+  if (r ? (l = function(f) {
+    f = f || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext, !f && typeof __VUE_SSR_CONTEXT__ < "u" && (f = __VUE_SSR_CONTEXT__), a && a.call(this, f), f && f._registeredComponents && f._registeredComponents.add(r);
+  }, o._ssrRegister = l) : a && (l = d ? function() {
+    a.call(
+      this,
+      (o.functional ? this.parent : this).$root.$options.shadowRoot
+    );
+  } : a), l)
+    if (o.functional) {
+      o._injectStyles = l;
+      var u = o.render;
+      o.render = function(y, c) {
+        return l.call(c), u(y, c);
+      };
+    } else {
+      var h = o.beforeCreate;
+      o.beforeCreate = h ? [].concat(h, l) : [l];
+    }
+  return {
+    exports: e,
+    options: o
+  };
+}
+const we = {
   name: "ZxVueCalendar",
   props: {
-    modelValue: {
+    value: {
       type: [String, Number, Array],
       default: ""
     },
     type: {
       type: String,
-      default: Ie
+      default: Le
     },
     mode: {
       type: String,
-      default: Z
+      default: K
     },
     format: {
       type: String,
@@ -833,7 +854,7 @@ const Oe = (e, t) => {
   data() {
     return {
       calendar: null,
-      value: this.modelValue
+      date: this.value
     };
   },
   computed: {
@@ -851,13 +872,13 @@ const Oe = (e, t) => {
     }
   },
   mounted() {
-    const e = new Y({
+    const e = new B({
       ...this.options,
       el: this.$refs.el,
-      defaultDate: this.value
+      defaultDate: this.date
     });
     e.on("change", (t) => {
-      this.value = this._fmtValue(t), this.$emit("change", this.value, t);
+      this.date = this._fmtValue(t), this.$emit("change", this.date, t);
     }), e.on("error", (t) => {
       this.$emit("error", t);
     }), e.on("cancel", () => {
@@ -891,29 +912,32 @@ const Oe = (e, t) => {
     },
     _fmtValue(e) {
       const t = this.fmt, s = e.map((n) => t ? this.calendar.formatDate(n.fullText, t) : n.fullText);
-      return this.mode === Z ? s[0] : s;
+      return this.mode === K ? s[0] : s;
     }
   },
   watch: {
-    modelValue(e) {
-      this.value !== e && (this.value = e, this.setDate(e));
-    },
     value(e) {
-      this.$emit("update:modelValue", e);
+      this.date !== e && (this.date = e, this.setDate(e));
+    },
+    date(e) {
+      this.$emit("input", e);
     }
   }
-}, Be = { class: "zx-vue-calendar" }, Ye = {
-  ref: "el",
-  class: "zx-calendar-wrapper"
 };
-function Pe(e, t, s, n, a, i) {
-  return ce(), ue("div", Be, [
-    H(e.$slots, "header"),
-    de("div", Ye, null, 512),
-    H(e.$slots, "footer")
-  ]);
-}
-const He = /* @__PURE__ */ Oe(je, [["render", Pe]]);
+var Ie = function() {
+  var t = this, s = t._self._c;
+  return s("div", { staticClass: "zx-vue-calendar" }, [t._t("header"), s("div", { ref: "el", staticClass: "zx-calendar-wrapper" }), t._t("footer")], 2);
+}, Fe = [], Oe = /* @__PURE__ */ ke(
+  we,
+  Ie,
+  Fe,
+  !1,
+  null,
+  null,
+  null,
+  null
+);
+const je = Oe.exports;
 export {
-  He as ZxVueCalendar
+  je as ZxVueCalendar
 };

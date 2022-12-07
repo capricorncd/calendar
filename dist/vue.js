@@ -1,4 +1,10 @@
 /*!
+ * zx-calendar version 0.7.0
+ * Author: Xing Zhong <capricorncd@qq.com, zx198401@gmail.com>
+ * Repository: https://github.com/capricorncd/calendar#readme
+ * Released on: 2022-12-07 20:48:01 (GMT+0900)
+ */
+/*!
  * zx-calendar v0.6.1
  * git+https://github.com/capricorncd/calendar.git
  * Copyright © 2020-present, Capricorncd
