@@ -4,9 +4,7 @@
   "description": "",
   "main": "./src/index.js",
   "scripts": {
-    "build": "vite build && pnpm run after-build",
-    "after-build": "node scripts/after-build.js",
-    "docs": "node scripts/create-docs.js",
+    "build": "vite build",
     "test": "vitest"
   },
   "keywords": [],
