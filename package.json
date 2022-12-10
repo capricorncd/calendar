@@ -30,6 +30,9 @@
     "dev": "cd packages/demo && pnpm run dev",
     "build:demo": "cd packages/demo && pnpm run build",
     "build": "cd packages/calendar && pnpm run build",
+    "react": "cd packages/react-demo && pnpm run dev",
+    "vue": "cd packages/vue-demo && pnpm run dev",
+    "vue2": "cd packages/vue2-demo && pnpm run dev",
     "after-build": "node scripts/after-build.js",
     "lint": "eslint . --fix --ext .js,.cjs,.ts",
     "prepare": "husky install"

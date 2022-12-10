@@ -35,8 +35,11 @@ IE10+ (When it is used in IE browser, Polyfill needs to be introduced)
 ## Install
 
 ```bash
+# pnpm
+pnpm i zx-calendar
+
 # npm
-npm install zx-calendar
+npm i zx-calendar
 
 # yarn
 yarn add zx-calendar
@@ -46,28 +49,28 @@ yarn add zx-calendar
 
 ```bash
 # setup
-npm install
+pnpm i
 
 # start default demo
-npm run dev
+pnpm run dev
 # start vue2.x.x demo
-npm run vue
+pnpm run vue2
 # start vue3.x.x demo
-npm run vue3
+pnpm run vue
 # start react demo
-npm run react
+pnpm run react
 ```
 
 ## Usage
 
 ```javascript
-import ZxCalendar from 'zx-calendar'
+import { ZxCalendar } from 'zx-calendar'
 import 'zx-calendar/css'
 
 const options = {}
 
 // create an instance
-const zxCalendar = new ZxCanlendar(options)
+const zxCalendar = new ZxCalendar(options)
 
 // on change
 zxCalendar.on('change', data => {
@@ -156,6 +159,7 @@ https://capricorncd.github.io/calendar/dist/vue.html
 <script>
 /** Vue 2.x.x */
 import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+import 'zx-calendar/css'
 
 export default {
   components: {
@@ -186,6 +190,7 @@ export default {
 ```javascript
 /** Vue 3.x.x */
 import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
+import 'zx-calendar/css'
 
 const App = {
   components: {
@@ -234,6 +239,7 @@ https://capricorncd.github.io/calendar/dist/react.html
 ```jsx
 import React, { Component } from 'react'
 import { ZxReactCalendar } from 'zx-calendar/lib/react-calendar'
+import 'zx-calendar/css'
 
 class App extends Component {
   constructor(props) {
@@ -435,3 +441,7 @@ remove calendar from el(parent)
 ```javascript
 zxCalendar.destroy()
 ```
+
+## License
+
+MIT License © 2020-Present [Capricorncd](https://github.com/capricorncd).

@@ -133,6 +133,29 @@ importers:
     devDependencies:
       '@vitejs/plugin-vue2': 2.1.0_vue@2.7.14
 
+  packages/vue2-demo:
+    specifiers:
+      '@vitejs/plugin-vue2': ^2.1.0
+      '@zx-calendar/vue2': workspace:*
+      hash-sum: ^2.0.0
+      markdown-it: ^13.0.1
+      markdown-it-multimd-table: ^4.2.0
+      rollup: ^3.7.2
+      slash: ^3.0.0
+      source-map: ^0.7.4
+      vue: ^2.6.14
+    dependencies:
+      '@zx-calendar/vue2': link:../vue2
+      vue: 2.7.14
+    devDependencies:
+      '@vitejs/plugin-vue2': 2.1.0_vue@2.7.14
+      hash-sum: 2.0.0
+      markdown-it: 13.0.1
+      markdown-it-multimd-table: 4.2.0
+      rollup: 3.7.2
+      slash: 3.0.0
+      source-map: 0.7.4
+
 packages:
   /@ampproject/remapping/2.2.0:
     resolution:
@@ -263,7 +286,7 @@ packages:
       }
     engines: { node: '>=6.9.0' }
     dependencies:
-      '@babel/types': 7.20.2
+      '@babel/types': 7.20.5
     dev: true
 
   /@babel/helper-module-transforms/7.20.2:
@@ -516,18 +539,6 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@babel/types/7.20.2:
-    resolution:
-      {
-        integrity: sha512-FnnvsNWgZCr232sqtXggapvlkk/tuwR/qhGzcmxI0GXLCjmPYQPzio2FbdlWuY6y1sHFfQKk+rRbUZ9VStQMog==,
-      }
-    engines: { node: '>=6.9.0' }
-    dependencies:
-      '@babel/helper-string-parser': 7.19.4
-      '@babel/helper-validator-identifier': 7.19.1
-      to-fast-properties: 2.0.0
     dev: true
 
   /@babel/types/7.20.5:
@@ -2674,6 +2685,13 @@ packages:
       function-bind: 1.1.1
     dev: true
 
+  /hash-sum/2.0.0:
+    resolution:
+      {
+        integrity: sha512-WdZTbAByD+pHfl/g9QSsBIIwy8IT+EsPiKDs0KNX+zSHhdDLFKdZu0BQHljvO+0QI/BasbMSUa8wYNCZTvhslg==,
+      }
+    dev: true
+
   /iconv-lite/0.4.24:
     resolution:
       {
@@ -3719,6 +3737,17 @@ packages:
       fsevents: 2.3.2
     dev: true
 
+  /rollup/3.7.2:
+    resolution:
+      {
+        integrity: sha512-orqIX5zkHyHKVsIBl8J5a2tnVikOAMte0DgOLViyW6McYuj45FG+cQPrXILhaifBSmy0D0hKbHg2RbgzFJcwTg==,
+      }
+    engines: { node: '>=14.18.0', npm: '>=8.0.0' }
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
   /run-async/2.4.1:
     resolution:
       {
@@ -3876,6 +3905,14 @@ packages:
         integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==,
       }
     engines: { node: '>=0.10.0' }
+
+  /source-map/0.7.4:
+    resolution:
+      {
+        integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==,
+      }
+    engines: { node: '>= 8' }
+    dev: true
 
   /sourcemap-codec/1.4.8:
     resolution:
