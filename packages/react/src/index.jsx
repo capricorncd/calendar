@@ -5,17 +5,17 @@
  */
 import { Component, createRef } from 'react'
 import PropTypes from 'prop-types'
-import { ZxCalendar, DEF_OPTIONS, MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
-import { isFunction } from './helper'
+import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
+import { formatValue, initOptions } from '@zx-calendar/helpers'
 
 class ZxReactCalendar extends Component {
   constructor(props) {
     super(props)
     this.el = createRef()
     this.calendar = null
-    this.options = this._initOptions()
+    this.options = initOptions(props)
     this.state = {
-      date: props.value
+      date: props.value,
     }
   }
 
@@ -51,35 +51,6 @@ class ZxReactCalendar extends Component {
     return this.calendar.getDate()
   }
 
-  _fmtValue(list) {
-    const fmt = this.fmt()
-    const arr = list.map(item => {
-      return fmt
-        ? this.calendar.formatDate(item.fullText, fmt)
-        : item.fullText
-    })
-    return this.props.mode === MODE_SINGLE ? arr[0] : arr
-  }
-
-  _initOptions() {
-    const ret = {
-      ...this.props.option
-    }
-    let val
-    Object.keys(DEF_OPTIONS).forEach(key => {
-      val = this.props[key]
-      if (val) {
-        if (!Array.isArray(DEF_OPTIONS[key]) || DEF_OPTIONS[key].includes(val)) {
-          ret[key] = val
-        }
-      }
-    })
-    if (this.props.value) {
-      ret.defaultDate = this.props.value
-    }
-    return ret
-  }
-
   fmt() {
     const { format } = this.props
     return format && typeof format === 'string' ? format : null
@@ -89,45 +60,38 @@ class ZxReactCalendar extends Component {
     const { instance, change, cancel, error } = this.props
     const calendar = new ZxCalendar({
       ...this.options,
-      el: this.el.current
+      el: this.el.current,
     })
 
-    calendar.on('change', list => {
-      const date = this._fmtValue(list)
+    calendar.on('change', (list) => {
+      const date = formatValue(
+        list,
+        this.props.mode,
+        this.fmt(),
+        this.options.langPackage
+      )
       this.setState({
-        date: date
+        date: date,
       })
-      if (isFunction(change)) {
-        change(date, list)
-      }
+      change?.(date, list)
     })
 
-    calendar.on('error', err => {
-      if (isFunction(error)) {
-        error(err)
-      }
-    })
+    calendar.on('error', error)
 
-    calendar.on('cancel', () => {
-      if (isFunction(cancel)) {
-        cancel()
-      }
-    })
+    calendar.on('cancel', cancel)
 
     this.calendar = calendar
 
-    if (isFunction(instance)) {
-      instance(calendar)
-    }
+    instance?.(calendar)
   }
 
   render() {
     return (
-      <div className="zx-react-calendar">
+      <section className="zx-calendar-wrapper">
         {this.props.header}
-        <div ref={this.el} className="zx-calendar-wrapper" />
+        <div ref={this.el} />
         {this.props.footer}
-      </div>
+      </section>
     )
   }
 }
@@ -149,7 +113,7 @@ ZxReactCalendar.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
-    PropTypes.array
+    PropTypes.array,
   ]),
   format: PropTypes.string,
   change: PropTypes.func,
@@ -158,15 +122,14 @@ ZxReactCalendar.propTypes = {
   instance: PropTypes.func,
   option: PropTypes.object,
   header: PropTypes.node,
-  footer: PropTypes.node
+  footer: PropTypes.node,
+  colors: PropTypes.object,
 }
 
 ZxReactCalendar.defaultProps = {
   type: TYPE_DATE,
   mode: MODE_SINGLE,
-  option: {}
+  option: {},
 }
-
-export default ZxReactCalendar
 
 export { ZxReactCalendar }
