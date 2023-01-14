@@ -97,22 +97,19 @@ table {
 
 .example-demo-wrapper {
   display: flex;
+  align-items: flex-start;
   & > .zx-calendar-wrapper {
     @include calendarWrapper()
   }
 }
 
 @media screen and (max-width: 640px) {
-  .container {
-    dl {
-      dd {
-        display: block;
-      }
-    }
+  .example-demo-wrapper {
+    display: block;
 
-    .calendar-wrapper {
+    .zx-calendar-wrapper {
+      margin: 0 0 1em;
       width: 100%;
-      margin: 0 0 10px;
     }
   }
 }
