@@ -4,7 +4,7 @@
  * Date: 2020-08-11 11:11
  */
 import { obj2str } from 'obj2str'
-import { $, createElement } from 'zx-sml'
+import { $, $$, createElement } from 'zx-sml'
 // import { log } from 'zx-sml/nodejs'
 import { ZxCalendar} from '@zx-calendar/core'
 
@@ -45,11 +45,11 @@ function fmtCode(html) {
 
 function createCalendar(options: Record<string, unknown>, title: string, el?: HTMLElement) {
   el = el || $('.container')!
-  const wrapper = createEl('dl', {})
-  const dt = createEl('dt', { html: title })
-  wrapper.appendChild(dt)
-  const dd = createEl('dd', {})
-  const calendarWrapper = createEl('div', { attrs: { class: 'calendar-wrapper' } })
+  const wrapper = createEl('section', {})
+  const h2 = createEl('h2', { html: title })
+  wrapper.appendChild(h2)
+  const dd = createEl('div', { attrs: { class: 'example-demo-wrapper'} })
+  const calendarWrapper = createEl('div', { attrs: { class: 'zx-calendar-wrapper' } })
   dd.appendChild(calendarWrapper)
   /* eslint-disable */
   const calendar = new ZxCalendar({
@@ -87,6 +87,7 @@ function createCalendar(options: Record<string, unknown>, title: string, el?: HT
 
 export {
   $,
+  $$,
   createCalendar,
   createEl,
   log,

@@ -42,4 +42,5 @@ export const DEF_OPTIONS = {
   footerButtonAlign: 'flex-end',
   // hide buttons of footer when mode is multiple/range
   hideFooter: false,
+  colors: {},
 }

@@ -4,12 +4,39 @@
  * Date: 2020-08-08 15:58
  */
 import {ZxCalendar} from '@zx-calendar/core'
-import { $, createCalendar, log, logStr } from './helper'
+import { $, $$, createCalendar, log, logStr } from './helper'
 import './index.scss'
 import '@zx-calendar/demo-header'
 import { slice } from 'zx-sml'
 
 function init() {
+  // #firstDemo
+  $('#firstDemo')!.innerHTML = `
+<code>
+const testCalendar = new ZxCalendar({
+  el: '#testCalendar .test-wrapper',
+  defaultDate: '2020/02/21',
+  hideFooter: true,
+})
+  
+testCalendar.on('change', list => {
+  console.log(JSON.stringify(list, null, 2))
+})
+  
+setTimeout(function () {
+  console.log('setDate')
+  testCalendar.setDate('2020年08月19日（水） 22:12:09 PM')
+  console.log('getDate', testCalendar.getDate())
+}, 3000)
+
+// button onClick
+// cancel: alert('cancel button on click')
+// clear: testCalendar.setDate(null)
+// confirm: alert(JSON.stringify(testCalendar.getDate(), null, 2))
+
+</code>
+  `
+
   /**
    * test calendar 1
    * @type {ZxCalendar}
@@ -27,9 +54,10 @@ function init() {
 
   console.log('testCalendar', testCalendar)
   // handle button[hook-cancel, hook-clear, hook-confirm] click
-  $('#testCalendar .test-footer')
-    ?.addEventListener('click', (e) => {
-      switch ((e.currentTarget as HTMLElement).className) {
+  $$<HTMLButtonElement>('#testCalendar .test-footer button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      console.log(e.currentTarget)
+      switch ((e.currentTarget as HTMLButtonElement).className) {
         case 'hook-cancel':
           alert('cancel button on click')
           break
@@ -49,6 +77,7 @@ function init() {
           break
       }
     })
+  })
 
   testCalendar.on('error', (err) => {
     console.error(err)
