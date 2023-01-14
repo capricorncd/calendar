@@ -3,12 +3,12 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 15:55
  */
-$primaryColor: #f30;
-$arrowColor: #999;
-$holidayDotColor: rgba(0, 0, 0, 0.2);
-$currentItemBgColor: #eee;
-$whiteColor: #fff;
-$rangeSelectedBg: #eee;
+// $primaryColor: #f30;
+// $arrowColor: #999;
+// $holidayDotColor: rgba(0, 0, 0, 0.2);
+// $currentItemBgColor: #eee;
+// $whiteColor: #fff;
+// $rangeSelectedBg: #eee;
 
 .zx-calendar {
   padding: 0 0 10px;
@@ -25,7 +25,8 @@ $rangeSelectedBg: #eee;
     align-items: center;
     justify-content: center;
     height: 3rem;
-    .__l, .__r {
+    .__l,
+    .__r {
       position: absolute;
       top: 0;
       height: 100%;
@@ -33,7 +34,8 @@ $rangeSelectedBg: #eee;
       align-items: center;
       button {
         outline: none;
-        transition: box-shadow,transform,opacity .2s cubic-bezier(.4,0,.2,1);
+        transition: box-shadow, transform,
+          opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
         border: 0;
         width: 1.5rem;
@@ -45,20 +47,22 @@ $rangeSelectedBg: #eee;
         opacity: 0.7;
         background: rgba(0, 0, 0, 0);
         letter-spacing: 1px;
-        &:before, &:after {
+        &:before,
+        &:after {
           content: '';
           position: relative;
           display: inline-block;
           width: 0.5rem;
           height: 0.5rem;
-          border-top: 1px solid $arrowColor;
-          border-right: 1px solid $arrowColor;
+          border-top: 1px solid var(--zx-calendar-color-arrow);
+          border-right: 1px solid var(--zx-calendar-color-arrow);
           transform: rotate(45deg);
           margin-left: -5px;
         }
         &:hover {
-          &:before, &:after {
-            border-color: $primaryColor;
+          &:before,
+          &:after {
+            border-color: var(--zx-calendar-color-primary);
           }
         }
         &:active {
@@ -120,7 +124,7 @@ $rangeSelectedBg: #eee;
       margin-left: -2px;
       width: 4px;
       height: 4px;
-      background: $holidayDotColor;
+      background: var(--zx-calendar-color-holidayDot);
       border-radius: 50%;
       overflow: hidden;
       text-indent: -9999px;
@@ -159,27 +163,28 @@ $rangeSelectedBg: #eee;
         opacity: 0.3;
         cursor: default;
       }
-      &.is-holiday {}
+      // &.is-holiday {}
       // today, this month, this year
       &.is-current {
         .__inner {
           .__text {
-            background: $currentItemBgColor;
+            background: var(--zx-calendar-color-currentItemBg);
           }
         }
       }
-      &.is-selected, &.is-range-temp, &.is-range-first-last {
+      &.is-selected,
+      &.is-range-temp,
+      &.is-range-first-last {
         .__inner {
           .__text {
-            background: $primaryColor;
-            color: $whiteColor;
+            background: var(--zx-calendar-color-primary);
+            color: var(--zx-calendar-color-white);
             .__holiday {
-              background: $whiteColor;
+              background: var(--zx-calendar-color-white);
             }
           }
         }
       }
-
     }
   }
   .zx-calender-footer-wrapper {
@@ -197,7 +202,7 @@ $rangeSelectedBg: #eee;
       height: 1.875rem;
       border-radius: 4px;
       border: 0;
-      background: $primaryColor;
+      background: var(--zx-calendar-color-primary);
       cursor: pointer;
       opacity: 0.9;
       font-size: 0.75rem;
@@ -212,11 +217,12 @@ $rangeSelectedBg: #eee;
         }
       }
       &.__confirm-button {
-        color: $whiteColor;
+        color: var(--zx-calendar-color-white);
       }
-      &.__clear-button, &.__cancel-button {
-        border: 1px solid $currentItemBgColor;
-        background: $whiteColor;
+      &.__clear-button,
+      &.__cancel-button {
+        border: 1px solid var(--zx-calendar-color-currentItemBg);
+        background: var(--zx-calendar-color-white);
       }
     }
   }
@@ -257,17 +263,19 @@ $rangeSelectedBg: #eee;
   &.mode-is-range {
     .zx-calendar-body-wrapper {
       .is-selected {
-        background: $rangeSelectedBg;
+        background: var(--zx-calendar-color-rangeBg);
         .__inner {
           .__text {
             background: none;
             color: inherit;
             .__holiday {
-              background: $holidayDotColor;
+              background: var(--zx-calendar-color-holidayDot);
             }
           }
         }
-        &.is-range-first, &.is-range-last, &.is-range-first-last {
+        &.is-range-first,
+        &.is-range-last,
+        &.is-range-first-last {
           background: none;
           &:before {
             content: '';
@@ -275,7 +283,7 @@ $rangeSelectedBg: #eee;
             top: 0;
             width: 50%;
             height: 100%;
-            background: $rangeSelectedBg;
+            background: var(--zx-calendar-color-rangeBg);
           }
           .__inner {
             &:before {
@@ -284,7 +292,7 @@ $rangeSelectedBg: #eee;
               left: -3px;
               width: 100%;
               height: 100%;
-              background: $rangeSelectedBg;
+              background: var(--zx-calendar-color-rangeBg);
               content: '';
               padding: 3px;
               border-radius: 50%;
@@ -292,10 +300,10 @@ $rangeSelectedBg: #eee;
             }
           }
           .__text {
-            background: $primaryColor;
-            color: $whiteColor;
+            background: var(--zx-calendar-color-primary);
+            color: var(--zx-calendar-color-white);
             .__holiday {
-              background: $whiteColor;
+              background: var(--zx-calendar-color-white);
             }
           }
         }

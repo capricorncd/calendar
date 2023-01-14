@@ -5,10 +5,8 @@
  */
 import {
   CLASS_NAME_IS_SELECTED,
-  HEADER_TITLE_FORMAT_DATE,
   HEADER_TITLE_FORMAT_YEAR,
   HEADER_TITLE_FORMAT_MONTH,
-  MODE_SINGLE,
   MODE_RANGE,
   MODE_MULTIPLE,
   TYPE_YEAR,
@@ -55,45 +53,18 @@ import {
   createBodyDom,
   setHeaderBtnStatus,
 } from './utils/private'
+import { DEF_OPTIONS, DEF_COLORS } from './defaultOptions'
 import './scss/index.scss'
-
-// default options
-const DEF_OPTIONS = {
-  // document selector or Element
-  el: null,
-  // Restricted date range
-  dateRange: [],
-  // zh/jp/en
-  lang: 'zh',
-  // show holiday info
-  showHoliday: false,
-  // date/month/year
-  type: TYPE_DATE,
-  isFullWeek: false,
-  titleFormatter: HEADER_TITLE_FORMAT_DATE,
-  // item suffix
-  itemSuffix: null,
-  // default selected date
-  defaultDate: [],
-  // function, custom item handler
-  // return object {}
-  itemFormatter: null,
-  // Selection mode: single selection, multiple selection, range selection
-  mode: MODE_SINGLE,
-  // language package
-  langPackage: null,
-  // footer buttons
-  footerButtons: ['clear', 'cancel', 'confirm'],
-  // justify-content
-  footerButtonAlign: 'flex-end',
-  // hide buttons of footer when mode is multiple/range
-  hideFooter: false,
-}
 
 function ZxCalendar(params = {}) {
   const options = {
     ...DEF_OPTIONS,
     ...params,
+    // colors
+    colors: {
+      ...DEF_COLORS,
+      ...params.colors,
+    },
   }
   // check type
   if (!params.titleFormatter) {
@@ -107,6 +78,7 @@ function ZxCalendar(params = {}) {
   if (!options.el || !$(options.el)) {
     throw new Error(`Initial parameter el[${options.el}] is invalid.`)
   }
+
   this.options = options
   // on event list
   this._eventList = {}
@@ -197,7 +169,15 @@ ZxCalendar.prototype = {
       'mode-is-' + options.mode,
     ]
     calendarVNodeCopy.a.class = calendarClassName.join(' ')
+    // add styles
+    calendarVNodeCopy.a.style = Object.keys(options.colors)
+      .map((color) => {
+        return `--zx-calendar-color-${color}: ${options.colors[color]}`
+      })
+      .join(';')
+
     const calendar = createDom(calendarVNodeCopy)
+
     // header
     const header = createDom(headerVNode)
     calendar.appendChild(header)

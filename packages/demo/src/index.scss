@@ -8,33 +8,8 @@ button {
   outline: none;
 }
 
-header {
-  position: fixed;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  .l {
-    margin-left: 20px;
-    h1 {
-      margin: 0;
-      padding: 0;
-      line-height: 1;
-      font-size: 24px;
-    }
-    a {
-      font-size: 12px;
-    }
-  }
-  > a {
-    margin-right: 20px;
-  }
-}
-
-header, footer {
+footer {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,10 +25,6 @@ header, footer {
       opacity: 1;
     }
   }
-}
-
-footer {
-  position: relative;
 }
 
 .container {
@@ -72,16 +43,6 @@ footer {
       margin: 0;
       padding: 0;
       display: flex;
-
-      pre {
-        border-radius: 4px;
-        background: rgba(0, 0, 0, .1);
-        margin: 0;
-        padding: 20px;
-        flex: 1;
-        color: #333;
-        overflow-x: auto;
-      }
     }
   }
 
@@ -93,6 +54,14 @@ footer {
     overflow: hidden;
     background: #fff;
     box-sizing: border-box;
+  }
+}
+
+pre {
+  margin: 0;
+  flex: 1;
+  code {
+    border-radius: 4px;
   }
 }
 

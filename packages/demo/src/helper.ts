@@ -56,9 +56,11 @@ function createCalendar(options: Record<string, unknown>, title: string, el?: HT
     ...options,
     el: calendarWrapper
   })
-  const pre = createEl('pre', {
+  const pre = createEl('pre', {})
+  const code = createEl('code', {
     html: obj2str(options, { indentSpaces: 2 })
   }, true)
+  pre.appendChild(code)
   dd.appendChild(pre)
   wrapper.appendChild(dd)
   el.appendChild(wrapper)

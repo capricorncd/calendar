@@ -23,6 +23,10 @@
     "./lib/react-calendar": {
       "import": "./dist/zx-react-calendar.es.js",
       "require": "./dist/zx-react-calendar.umd.js"
+    },
+    "./lib/solid-calendar": {
+      "import": "./dist/zx-solid-calendar.es.js",
+      "require": "./dist/zx-solid-calendar.umd.js"
     }
   },
   "packageManager": "pnpm@7.5.1",
@@ -33,6 +37,7 @@
     "react": "cd packages/react-demo && pnpm run dev",
     "vue": "cd packages/vue-demo && pnpm run dev",
     "vue2": "cd packages/vue2-demo && pnpm run dev",
+    "solid": "cd packages/solid && pnpm run dev",
     "after-build": "node scripts/after-build.js",
     "lint": "eslint . --fix --ext .js,.cjs,.ts",
     "prepare": "husky install"
@@ -49,10 +54,11 @@
     "react-calendar",
     "zx-vue-calendar",
     "zxReactCalendar",
+    "zxSolidCalendar",
     "zx-calendar"
   ],
   "dependencies": {
-    "zx-sml": "^0.6.4"
+    "zx-sml": "^0.6.5"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
