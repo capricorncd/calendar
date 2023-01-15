@@ -1,0 +1,25 @@
+```jsx
+import { createSignal } from 'solid-js'
+import { ZxSolidCalendar } from '../src'
+
+export function TypeYear() {
+  const [year, setYear] = createSignal(new Date().getFullYear().toString())
+
+  return (
+    <div>
+      <h3>type year</h3>
+      <p>value is {year()}</p>
+      <section class="example-demo-wrapper">
+        <ZxSolidCalendar
+          type="year"
+          value={year()}
+          change={(newYear) => {
+            setYear(newYear)
+          }}
+        />
+        INJECT_CODE
+      </section>
+    </div>
+  )
+}
+```

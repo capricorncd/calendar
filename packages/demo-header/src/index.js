@@ -1,28 +1,23 @@
 const links = [
   {
     label: 'Home',
-    link: './index.html',
     path: '/index.html',
   },
   {
     label: 'Vue2 demo',
-    link: './vue.html',
     path: '/vue.html',
   },
   {
     label: 'Vue3 demo',
-    link: './vue3.html',
     path: '/vue3.html',
   },
   {
     label: 'React demo',
-    link: './react.html',
     path: '/react.html',
   },
   {
     label: 'Solid-js',
-    link: './solidjs.html',
-    path: '/solidjs.html',
+    path: '/solid.html',
   },
 ]
 
@@ -30,7 +25,6 @@ class DemoHeader extends HTMLElement {
   constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
-    console.log(location)
 
     // styles
     this.styles = document.createElement('style')
@@ -63,6 +57,7 @@ class DemoHeader extends HTMLElement {
       }
       .nav-wrap .current-link {
         text-decoration: underline;
+        font-weight: bold;
       }
       h1 {
         margin: 0;
@@ -83,7 +78,7 @@ class DemoHeader extends HTMLElement {
               .map((item) => {
                 return `<a class="${
                   location.pathname.endsWith(item.path) ? 'current-link' : ''
-                }" href="${item.link}">${item.label}</a>`
+                }" href=".${item.path}">${item.label}</a>`
               })
               .join('\n')}
           </nav>

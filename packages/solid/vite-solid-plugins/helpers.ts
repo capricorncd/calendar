@@ -13,11 +13,11 @@ export function escapeTag(str) {
 }
 
 export function replaceFrom(str, type = 'vue') {
-  return str.replace(`@zx-calendar/${type}`, `zx-calendar/lib/${type}-calendar`)
+  return str.replace(`../src`, `zx-calendar/lib/${type}-calendar`)
 }
 
 function handleTable(tables: string[], lines: string[]) {
-  lines.push('<div className="table-wrapper">')
+  lines.push('<div class="table-wrapper">')
   lines.push(md.render(tables.join('\n')).replace(/\bcolspan\b/gi, 'colSpan'))
   lines.push('</div>')
   tables.length = 0
@@ -57,7 +57,7 @@ export function formatMdx(source) {
   if (isCode) {
     // create pre
     const pres: string[] = []
-    pres.push('<pre><code className="jsx">')
+    pres.push('<pre><code class="jsx">')
     lines.forEach((line) => {
       if (/INJECT_CODE/.test(line)) {
         return
@@ -68,12 +68,11 @@ export function formatMdx(source) {
       }
       // import XX from xxx
       if (/import\s/.test(line)) {
-        line = replaceFrom(line, 'react')
+        line = replaceFrom(line, 'solid')
       }
       pres.push(
         escapeTag(line).replace(/[{}]/g, (match) => {
           return match === '{' ? '__L__' : '__R__'
-          // return match
         })
       )
     })
@@ -86,7 +85,7 @@ export function formatMdx(source) {
         }
         return line
       })
-      .join('\n')
+      .join(EOL)
   }
 
   const arr = lines.map((line) => {
@@ -99,40 +98,21 @@ export function formatMdx(source) {
     return line
   })
   // console.log(arr)
-  const code = `
-import React, { Component } from 'react'
-class App extends Component {
-  render() {
-    return <>
-      ${arr.join('\n')}
-    </>
-  }
+  return arr.join(EOL)
 }
-export default App
-`
-  // console.log('code:::::', code)
-  return code
-}
-
-const reg = /"(\w*import React.+)"/
 
 function handlePreCode(line) {
-  // console.log(line)
-  return line.replace(reg, (match, $1) => {
-    $1 = $1
-      .replace(/__[LR]__/g, (m) => {
-        return m === '__L__' ? '{' : '}'
-      })
-      .replace(/__WRAP__/g, '\\n')
-    // console.log($1)
-    return `"${$1}"`
-  })
+  return line
+    .replace(/__[LR]__/g, (m) => {
+      return m === '__L__' ? '{' : '}'
+    })
+    .replace(/__WRAP__/g, EOL)
 }
 
 export function afterTransform(source) {
   const lines = source.split(/[\n\r]/).map((line) => {
-    if (!line) return
-    if (reg.test(line.trim())) {
+    if (!line) return ''
+    if (/__(L|R|WRAP)__/.test(line)) {
       line = handlePreCode(line)
     }
     return line

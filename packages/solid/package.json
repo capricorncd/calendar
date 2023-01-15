@@ -1,0 +1,28 @@
+{
+  "name": "@zx-calendar/solidjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.tsx",
+  "scripts": {
+    "dev": "vite --port=8005 --host --d",
+    "build": "vite build",
+    "build:demo": "vite build --d"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "babel-preset-solid": "^1.6.6",
+    "markdown-it": "^13.0.1",
+    "markdown-it-multimd-table": "^4.2.0",
+    "sass": "^1.56.1",
+    "vite-plugin-solid": "^2.5.0"
+  },
+  "dependencies": {
+    "@zx-calendar/core": "workspace:*",
+    "@zx-calendar/demo-header": "workspace:*",
+    "@zx-calendar/helpers": "workspace:*",
+    "solid-js": "^1.6.6"
+  }
+}

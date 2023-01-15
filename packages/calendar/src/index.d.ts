@@ -3,15 +3,6 @@
  * https://github.com/capricorncd
  * Date: 2020-09-20 10:53
  */
-import type {
-  TYPE_DATE,
-  TYPE_MONTH,
-  TYPE_YEAR,
-  MODE_MULTIPLE,
-  MODE_RANGE,
-  MODE_SINGLE,
-} from './constants'
-
 export type { ILangPackage } from 'date-utils-2020'
 export type * from './constants'
 
@@ -46,7 +37,12 @@ export class ZxCalendar {
 /**
  * @type ZxCalendarModes
  */
-export type ZxCalendarModes = MODE_SINGLE | MODE_MULTIPLE | MODE_RANGE
+export type ZxCalendarModes = 'single' | 'multiple' | 'range'
+
+/**
+ * @type ZxCalendarTypes
+ */
+export type ZxCalendarTypes = 'date' | 'month' | 'year'
 
 /**
  * @type ZxCalendarColors
@@ -55,6 +51,7 @@ export interface ZxCalendarColors {
   primary: string
   arrow: string
   holidayDot: string
+  // Depending on `type`, for today, or this month, or this year
   currentItemBg: string
   white: string
   rangeBg: string
@@ -73,7 +70,7 @@ export interface ZxCalendarOptions {
   // show holiday info
   showHoliday?: boolean
   // date/month/year
-  type?: TYPE_DATE | TYPE_MONTH | TYPE_YEAR
+  type?: ZxCalendarTypes
   isFullWeek?: boolean
   // title formatter
   titleFormatter?: string
@@ -83,7 +80,7 @@ export interface ZxCalendarOptions {
   defaultDate?: any[] | any
   // function, custom item handler
   // return object {}
-  itemFormatter?: (originalData: Record<string, any>) => Record<string, any>
+  itemFormatter?: (originalData: ZxCalendarItem) => ZxCalendarItem
   // Selection mode: single selection, multiple selection, range selection
   mode?: ZxCalendarModes
   // language package
@@ -96,4 +93,24 @@ export interface ZxCalendarOptions {
   hideFooter?: boolean
   // colors
   colors?: ZxCalendarColors
+}
+
+/**
+ * @type ZxCalendarItem
+ * Each element data of ZxCalendar
+ */
+export interface ZxCalendarItem {
+  // Depending on `type`, for today, or this month, or this year
+  current: boolean
+  date: Date
+  disabled: boolean
+  fullText: string
+  holiday: boolean
+  isRangeFirst: boolean
+  isRangeLast: boolean
+  isRangeTemp: boolean
+  selected: boolean
+  text: string
+  value: number
+  week: number
 }

@@ -1,6 +1,10 @@
 import { formatDate, ILangPackage } from 'date-utils-2020'
 import { MODE_SINGLE, DEF_OPTIONS } from '@zx-calendar/core'
-import type { ZxCalendarModes } from '@zx-calendar/core'
+import type { ZxCalendarModes, ZxCalendarItem } from '@zx-calendar/core'
+
+type FormatValueType<T> = T extends typeof MODE_SINGLE | undefined
+  ? string
+  : string[]
 
 /**
  *
@@ -10,18 +14,19 @@ import type { ZxCalendarModes } from '@zx-calendar/core'
  * @param langPackage - language package information, see https://github.com/capricorncd/date-utils-2020/blob/main/README.md#langpackage
  * @returns {string | string[]}
  */
-export function formatValue(
-  result: Array<any>,
+export function formatValue<T extends ZxCalendarModes>(
+  result: Array<ZxCalendarItem>,
   mode: ZxCalendarModes,
   formatter?: string,
   langPackage?: ILangPackage
-): string | string[] {
+): FormatValueType<T> {
   const arr = result.map((item) => {
     return formatter
       ? formatDate(item.fullText, formatter, langPackage)
       : item.fullText
   })
-  return mode === MODE_SINGLE ? arr[0] : arr
+  const res = !mode || mode === MODE_SINGLE ? arr[0] : arr
+  return res as FormatValueType<T>
 }
 
 /**
@@ -37,7 +42,7 @@ export function initOptions(props) {
   Object.keys(DEF_OPTIONS).forEach((key) => {
     val = props[key]
     if (
-      val &&
+      typeof val !== 'undefined' &&
       (!Array.isArray(DEF_OPTIONS[key]) || DEF_OPTIONS[key].includes(val))
     ) {
       ret[key] = val
