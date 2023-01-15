@@ -7,7 +7,7 @@ const fs = require('fs')
 const { EOL } = require('os')
 const path = require('path')
 const { formatDate } = require('zx-sml')
-const { log } = require('zx-sml/nodejs')
+const { log, warn } = require('zx-sml/nodejs')
 // root package.json
 const pkg = require('../package.json')
 
@@ -26,19 +26,29 @@ const header = [
 
 function addHeader(file) {
   const source = fs.readFileSync(file, 'utf8').toString()
-  if (source.trim().startsWith('/*!')) return
+  if (source.trim().startsWith('/*!')) return false
   fs.writeFileSync(file, [...header, source].join(EOL), 'utf8')
-  log(file)
+  return true
 }
 
 function main() {
-  log('add header start ...')
+  log('handle dist files is starting ...')
+
   fs.readdirSync(distDir).forEach((file) => {
-    if (/\.(js|css)$/.test(file)) {
-      addHeader(path.join(distDir, file))
+    // remove `zx-*-calendar.min.css` css files
+    if (/zx-\w+-calendar\.min\.css/.test(file)) {
+      fs.unlinkSync(path.join(distDir, file))
+      warn(`${file} has been removed!!`)
+    }
+    // add header information
+    else if (/\.(js|css)$/.test(file)) {
+      if (addHeader(path.join(distDir, file))) {
+        log(`${file} has been updated!!`)
+      }
     }
   })
-  log('add header end.')
+
+  log('handle dist files is ended.')
 }
 
 main()

@@ -60,6 +60,7 @@
     "build:solid": "cd packages/solid && pnpm run build",
     "build:solid-demo": "cd packages/solid && pnpm run build:demo",
     "after-build": "node scripts/after-build.js",
+    "build:all": "pnpm run build & pnpm run build:demo & pnpm run build:react & pnpm run build:react-demo & pnpm run build:vue & pnpm run build:vue-demo & pnpm run build:vue2 & pnpm run build:vue2-demo & pnpm run build:solid & pnpm run build:solid-demo && pnpm run after-build",
     "lint": "eslint . --fix --ext .js,.cjs,.ts",
     "prepare": "husky install"
   },
