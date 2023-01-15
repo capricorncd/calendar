@@ -1,9 +1,3 @@
-/*!
- * zx-calendar version 0.7.0
- * Author: Xing Zhong <capricorncd@qq.com, zx198401@gmail.com>
- * Repository: https://github.com/capricorncd/calendar#readme
- * Released on: 2023-01-14 18:34:34 (GMT+0900)
- */
 const it = "yyyy/MM", ot = "yyyy-yyyy", rt = "yyyy", _ = "is-selected", K = "is-disabled", lt = "is-holiday", ct = "is-current", X = "is-range-first", q = "is-range-last", Z = "is-range-first-last", Q = "is-range-temp", B = "is-first-page", H = "is-last-page", ut = "is-weekend", R = "date-only", v = "__prev-button", O = "__next-button", j = "__title-wrapper", tt = "__item-week", et = "__confirm-button", st = "__clear-button", nt = "__cancel-button", W = "multiple", E = "range", dt = "single", F = "date", Y = "month", b = "year", V = {
   en: {
     full: [
@@ -666,7 +660,7 @@ J.prototype = {
     return this.data.selected.slice(0);
   },
   setCurrentDate(e) {
-    const t = this.toDate(e);
+    const t = this.toDate(String(e));
     if (!t)
       return;
     const s = p(t, "yyyy/MM/dd");

@@ -1,6 +1,6 @@
 {
   "name": "zx-calendar",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "calendar, vue-calendar, vue3-calendar, react-calendar",
   "main": "dist/zx-calendar.umd.js",
   "module": "dist/zx-calendar.es.js",
@@ -79,6 +79,7 @@
     "zx-calendar"
   ],
   "dependencies": {
+    "zx-calendar": "workspace:^0.7.1",
     "zx-sml": "^0.6.5"
   },
   "devDependencies": {

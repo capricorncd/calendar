@@ -30,10 +30,13 @@ const cfg: UserConfigExport = {
       //   solid: resolve(__dirname, './solid.html'),
       // },
       output: {
-        entryFileNames: (chunkInfo) => {
-          // 防止编译后JS文件被放入assets目录中
-          return '[name].min.js'
+        globals: {
+          'zx-calendar': 'ZxCalendar',
         },
+        // entryFileNames: (chunkInfo) => {
+        //   // 防止编译后JS文件被放入assets目录中
+        //   return '[name].min.js'
+        // },
         assetFileNames: (assetInfo) => {
           // 重命名编译后的css文件名
           if (assetInfo.name === 'style.css') return 'zx-solid-calendar.min.css'
@@ -53,13 +56,17 @@ if (isDemo) {
   cfg.build.rollupOptions.input = {
     solid: resolve(__dirname, './solid.html'),
   }
+  cfg.build.rollupOptions.output.entryFileNames = () => {
+    // 防止编译后JS文件被放入assets目录中
+    return '[name].min.js'
+  }
 } else {
   cfg.build.lib = {
     entry: resolve(__dirname, 'src/index.tsx'),
     name: 'ZxSolidCalendar',
     fileName: (format) => `zx-solid-calendar.${format}.js`,
   }
-  cfg.build.rollupOptions.external = ['solid-js']
+  cfg.build.rollupOptions.external = ['solid-js', 'zx-calendar']
 }
 
 // https://vitejs.dev/config/

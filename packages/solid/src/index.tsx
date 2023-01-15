@@ -4,7 +4,8 @@
  * Date: 2022-12-30 15:10:21 (GMT+0900)
  */
 import { onMount, JSX } from 'solid-js'
-import { ZxCalendar } from '@zx-calendar/core'
+// import { ZxCalendar } from '@zx-calendar/core'
+import { ZxCalendar } from 'zx-calendar'
 import type {
   ZxCalendarItem,
   ZxCalendarOptions,

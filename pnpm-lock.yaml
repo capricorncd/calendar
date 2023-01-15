@@ -17,8 +17,10 @@ importers:
       typescript: ^4.9.3
       vite: ^3.2.4
       vitest: ^0.25.3
+      zx-calendar: workspace:^0.7.1
       zx-sml: ^0.6.5
     dependencies:
+      zx-calendar: 'link:'
       zx-sml: 0.6.5
     devDependencies:
       '@types/node': 18.11.9

@@ -438,13 +438,15 @@ ZxCalendar.prototype = {
   },
   /**
    * set current date
-   * @param dateStr
+   * @param dateStr - number | string
    */
   setCurrentDate(dateStr) {
     // yyyy -> yyyy/01/01
     // yyyy/MM -> yyyy/MM/01
     // yyyy/MM/dd -> yyyy/MM/dd
-    const date = this.toDate(dateStr)
+    // 为数字时，会被作为时间戳处理，所以需转换为字符串。
+    // 比如 `2023` 会返回 `'1970'`年
+    const date = this.toDate(String(dateStr))
     if (!date) return
     const currentDay = formatDate(date, 'yyyy/MM/dd')
     this.data.currentDate = date
