@@ -16,6 +16,13 @@ export function replaceFrom(str, type = 'vue') {
   return str.replace(`@zx-calendar/${type}`, `zx-calendar/lib/${type}-calendar`)
 }
 
+function handleTable(tables: string[], lines: string[]) {
+  lines.push('<div className="table-wrapper">')
+  lines.push(md.render(tables.join('\n')).replace(/\bcolspan\b/gi, 'colSpan'))
+  lines.push('</div>')
+  tables.length = 0
+}
+
 export function formatMdx(source) {
   const lines: string[] = []
   const tables: string[] = []
@@ -34,12 +41,7 @@ export function formatMdx(source) {
       tables.push(line)
     } else {
       if (tables.length) {
-        lines.push('<div className="table-wrapper">')
-        lines.push(
-          md.render(tables.join('\n')).replace(/\bcolspan\b/gi, 'colSpan')
-        )
-        lines.push('</div>')
-        tables.length = 0
+        handleTable(tables, lines)
       }
       lines.push(isCode ? line : md.render(line))
     }
@@ -47,10 +49,7 @@ export function formatMdx(source) {
 
   // last table check
   if (tables.length) {
-    lines.push('<div className="table-wrapper">')
-    lines.push(md.render(tables.join('\n')).replace(/\bcolspan\b/gi, 'colSpan'))
-    lines.push('</div>')
-    tables.length = 0
+    handleTable(tables, lines)
   }
 
   // console.log('isCode', isCode)
