@@ -25,9 +25,9 @@ const header = [
 ]
 
 function addHeader(file) {
-  const liens = fs.readFileSync(file, 'utf8').toString().split(EOL)
-  if (liens.some((line) => line.includes(version))) return
-  fs.writeFileSync(file, [...header, ...liens].join(EOL), 'utf8')
+  const source = fs.readFileSync(file, 'utf8').toString()
+  if (source.trim().startsWith('/*!')) return
+  fs.writeFileSync(file, [...header, source].join(EOL), 'utf8')
   log(file)
 }
 
