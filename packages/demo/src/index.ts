@@ -3,7 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2020-08-08 15:58
  */
-import {ZxCalendar} from '@zx-calendar/core'
+import { ZxCalendar } from '@zx-calendar/core'
 import { $, $$, createCalendar, log, logStr } from './helper'
 import './index.scss'
 import '@zx-calendar/demo-header'

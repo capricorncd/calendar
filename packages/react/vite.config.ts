@@ -17,7 +17,10 @@ export default defineConfig({
       fileName: (format) => `zx-react-calendar.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'zx-calendar'],
+      external: [
+        'react',
+        // 'zx-calendar',
+      ],
       output: {
         globals: {
           react: 'React',

@@ -66,7 +66,10 @@ if (isDemo) {
     name: 'ZxSolidCalendar',
     fileName: (format) => `zx-solid-calendar.${format}.js`,
   }
-  cfg.build.rollupOptions.external = ['solid-js', 'zx-calendar']
+  cfg.build.rollupOptions.external = [
+    'solid-js',
+    // 'zx-calendar',
+  ]
 }
 
 // https://vitejs.dev/config/

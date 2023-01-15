@@ -5,8 +5,7 @@
  */
 import { Component, createRef } from 'react'
 import PropTypes from 'prop-types'
-// import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
-import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from 'zx-calendar'
+import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
 import { formatValue, initOptions } from '@zx-calendar/helpers'
 
 class ZxReactCalendar extends Component {

@@ -18,7 +18,10 @@ export default defineConfig({
       fileName: (format) => `zx-vue-calendar.${format}.js`,
     },
     rollupOptions: {
-      external: ['vue', 'zx-calendar'],
+      external: [
+        'vue',
+        // 'zx-calendar',
+      ],
       output: {
         globals: {
           vue: 'Vue',

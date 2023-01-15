@@ -1,8 +1,7 @@
 /** * Created by Capricorncd. * https://github.com/capricorncd * Date:
 2020-09-24 23:38 */
 <script>
-// import ZxCalendar, { MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
-import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from 'zx-calendar'
+import ZxCalendar, { MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
 import { formatValue, initOptions } from '@zx-calendar/helpers'
 
 export default {
