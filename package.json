@@ -12,6 +12,22 @@
       "require": "./dist/zx-calendar.umd.js"
     },
     "./css": "./dist/zx-calendar.min.css",
+    "./vue": {
+      "import": "./dist/zx-vue-calendar.es.js",
+      "require": "./dist/zx-vue-calendar.umd.js"
+    },
+    "./vue2": {
+      "import": "./dist/zx-vue2-calendar.es.js",
+      "require": "./dist/zx-vue2-calendar.umd.js"
+    },
+    "./react": {
+      "import": "./dist/zx-react-calendar.es.js",
+      "require": "./dist/zx-react-calendar.umd.js"
+    },
+    "./solid": {
+      "import": "./dist/zx-solid-calendar.es.js",
+      "require": "./dist/zx-solid-calendar.umd.js"
+    },
     "./lib/vue3-calendar": {
       "import": "./dist/zx-vue-calendar.es.js",
       "require": "./dist/zx-vue-calendar.umd.js"
@@ -23,10 +39,6 @@
     "./lib/react-calendar": {
       "import": "./dist/zx-react-calendar.es.js",
       "require": "./dist/zx-react-calendar.umd.js"
-    },
-    "./lib/solid-calendar": {
-      "import": "./dist/zx-solid-calendar.es.js",
-      "require": "./dist/zx-solid-calendar.umd.js"
     }
   },
   "packageManager": "pnpm@7.5.1",
