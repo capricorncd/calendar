@@ -12,6 +12,13 @@ https://capricorncd.github.io/calendar/dist/index.html
 
 ![zx-calendar](./snapshot.png)
 
+```js
+// Import CSS files in the entry file or root component
+import 'zx-calendar/css'
+
+import { ZxCalendar } from 'zx-calendar'
+```
+
 #### Vue docs and example
 
 ```js
@@ -73,8 +80,10 @@ pnpm run solid
 ## Usage
 
 ```javascript
-import { ZxCalendar } from 'zx-calendar'
+// Import CSS files in the entry file or root component
 import 'zx-calendar/css'
+
+import { ZxCalendar } from 'zx-calendar'
 
 const options = {}
 
