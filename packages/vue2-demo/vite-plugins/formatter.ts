@@ -18,6 +18,14 @@ function replaceFrom(str) {
   )
 }
 
+function handleTable(tables: string[], lines: string[]) {
+  lines.push('<div class="table-wrapper">')
+  lines.push(md.render(tables.join('\n')))
+  lines.push('</div>')
+  // clear tables
+  tables.length = 0
+}
+
 export function formatVueMdSource(source, filename) {
   if (!/\.md$/.test(filename)) return source
   const lines: string[] = []
@@ -59,8 +67,7 @@ export function formatVueMdSource(source, filename) {
         tables.push(line)
       } else {
         if (tables.length) {
-          lines.push(md.render(tables.join('\n')))
-          tables.length = 0
+          handleTable(tables, lines)
         }
         lines.push(md.render(line))
       }
@@ -69,10 +76,7 @@ export function formatVueMdSource(source, filename) {
 
   // last table check
   if (tables.length) {
-    lines.push('<div class="table-wrapper">')
-    lines.push(md.render(tables.join('\n')))
-    lines.push('</div>')
-    tables.length = 0
+    handleTable(tables, lines)
   }
 
   const arr = ['<template><section>']
