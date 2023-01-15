@@ -4,8 +4,8 @@
  * Date: 2022-12-30 15:10:21 (GMT+0900)
  */
 import { onMount, JSX } from 'solid-js'
-import {
-  ZxCalendar,
+import { ZxCalendar } from '@zx-calendar/core'
+import type {
   ZxCalendarItem,
   ZxCalendarOptions,
   ZxCalendarModes,
@@ -13,7 +13,9 @@ import {
 } from '@zx-calendar/core'
 import { formatValue, initOptions } from '@zx-calendar/helpers'
 
-interface ZxCalendarProps {
+export * from '@zx-calendar/core'
+
+export interface ZxSolidCalendarProps {
   // Date selected by default
   value?: string | number | Array<string | number>
   // Display type, default `date`
@@ -37,7 +39,7 @@ interface ZxCalendarProps {
   footer?: JSX.Element
 }
 
-export function ZxSolidCalendar(props: ZxCalendarProps) {
+export function ZxSolidCalendar(props: ZxSolidCalendarProps) {
   const { change, instance } = props
 
   let elRef
