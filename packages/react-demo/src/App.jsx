@@ -32,9 +32,7 @@ class App extends Component {
           <h2>Usage</h2>
           <pre>
             <code className="javascript custom pt15 pb15">
-              {
-                "import { ZxReactCalendar } from 'zx-calendar/lib/react-calendar'"
-              }
+              {"import { ZxReactCalendar } from 'zx-calendar/react'"}
             </code>
           </pre>
           <Docs />

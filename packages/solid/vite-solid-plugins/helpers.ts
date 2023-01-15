@@ -12,8 +12,8 @@ export function escapeTag(str) {
   return str.replace(/<(\/?\w+)/g, '&lt;$1').replace(/(\w+)>/g, '$1&gt;')
 }
 
-export function replaceFrom(str, type = 'vue') {
-  return str.replace(`../src`, `zx-calendar/lib/${type}-calendar`)
+export function replaceFrom(str) {
+  return str.replace(`../src`, `zx-calendar/solid`)
 }
 
 function handleTable(tables: string[], lines: string[]) {
@@ -68,7 +68,7 @@ export function formatMdx(source) {
       }
       // import XX from xxx
       if (/import\s/.test(line)) {
-        line = replaceFrom(line, 'solid')
+        line = replaceFrom(line)
       }
       pres.push(
         escapeTag(line).replace(/[{}]/g, (match) => {

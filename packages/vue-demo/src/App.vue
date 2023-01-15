@@ -21,7 +21,7 @@ export default {
     <h2>Usage</h2>
     <pre>
       <code class="javascript">
-import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
+import { ZxVueCalendar } from 'zx-calendar/vue'
 import 'zx-calendar/css'
       </code>
     </pre>

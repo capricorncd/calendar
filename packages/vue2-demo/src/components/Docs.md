@@ -12,11 +12,11 @@ yarn add zx-calendar
 
 ```javascript
 // Vue 2.x.x
-import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+import { ZxVueCalendar } from 'zx-calendar/vue2'
 import 'zx-calendar/css'
 
 // Vue 3.x.x
-import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
+import { ZxVueCalendar } from 'zx-calendar/vue'
 ```
 
 ## Properties

@@ -25,7 +25,7 @@ export function App() {
       <pre>
         <code class="javascript">
           {
-            "import { ZxSolidCalendar } from 'zx-calendar/lib/solid-calendar'"
+            "import { ZxSolidCalendar } from 'zx-calendar/solid'"
           }
         </code>
       </pre>

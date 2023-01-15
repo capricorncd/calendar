@@ -12,10 +12,7 @@ function escapeTag(str) {
 }
 
 function replaceFrom(str) {
-  return str.replace(
-    "from '@zx-calendar/vue2'",
-    `from 'zx-calendar/lib/vue-calendar'`
-  )
+  return str.replace("from '@zx-calendar/vue2'", `from 'zx-calendar/vue2'`)
 }
 
 function handleTable(tables: string[], lines: string[]) {
