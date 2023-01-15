@@ -166,18 +166,6 @@ const options = {
 }
 ```
 
-## Vue
-
-https://capricorncd.github.io/calendar/dist/vue.html
-
-[ZxVueCalendar](./docs/ZxVueCalendar.md)
-
-## React
-
-https://capricorncd.github.io/calendar/dist/react.html
-
-[ZxReactCalendar](./docs/ZxReactCalendar.md)
-
 ## Methods
 
 ### setDate(date)
