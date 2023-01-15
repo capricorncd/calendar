@@ -75,20 +75,18 @@ export function formatVueMdSource(source, filename) {
     tables.length = 0
   }
 
-  const arr = ['<template><div class="example-demo-wrapper">']
+  const arr = ['<template><section>']
   arr.push(...lines)
 
   if (codes.length) {
+    arr.push('<div class="example-demo-wrapper">')
     // create pre
     let isTemplate = true
-    const pres = [
-      '<pre class="code-hook"><code class="html">',
-      escapeTag('<template>'),
-    ]
+    const pres = ['<pre><code class="html">', escapeTag('<template>')]
     pres.push(escapeTag('  <div>'))
     codes.forEach((line) => {
       if (/^<script/.test(line)) {
-        pres.push(escapeTag('  </div>'))
+        pres.push(escapeTag('  </section>'))
         pres.push(escapeTag('</template>'))
         pres.push('')
         isTemplate = false
@@ -100,13 +98,16 @@ export function formatVueMdSource(source, filename) {
     // codes
     codes.forEach((line) => {
       if (/^<script/.test(line)) {
-        arr.push(pres.join('\n'))
-        arr.push('</div></template>')
+        arr.push(
+          pres.join('\n'),
+          '</div>', // paired <div class="example-demo-wrapper">
+          '</section></template>'
+        )
       }
       arr.push(line)
     })
   } else {
-    arr.push('</div></template>')
+    arr.push('</section></template>')
     // arr.push('<script>export default {}</script>')
   }
 

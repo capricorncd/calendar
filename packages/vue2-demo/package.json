@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@zx-calendar/demo-header": "workspace:*",
     "@zx-calendar/vue2": "workspace:*",
     "vue": "^2.6.14"
   },

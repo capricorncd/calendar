@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import '../../react-demo/src/index.scss'
+import '../../demo/src/index.scss'
+import '@zx-calendar/demo-header'
 
 /* eslint-disable */
 new Vue({

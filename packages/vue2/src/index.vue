@@ -1,18 +1,14 @@
 <template>
-  <div class="zx-vue-calendar">
+  <div class="zx-calendar-wrapper">
     <slot name="header"></slot>
-    <div ref="el" class="zx-calendar-wrapper"></div>
+    <div ref="el"></div>
     <slot name="footer"></slot>
   </div>
 </template>
 
 <script>
-import {
-  ZxCalendar,
-  MODE_SINGLE,
-  TYPE_DATE,
-  DEF_OPTIONS,
-} from '@zx-calendar/core'
+import { ZxCalendar, MODE_SINGLE, TYPE_DATE } from '@zx-calendar/core'
+import { formatValue, initOptions } from '@zx-calendar/helpers'
 
 export default {
   name: 'ZxVueCalendar',
@@ -81,22 +77,7 @@ export default {
   },
   computed: {
     options() {
-      const ret = {
-        ...this.option,
-      }
-      let val
-      Object.keys(DEF_OPTIONS).forEach((key) => {
-        val = this[key]
-        if (val) {
-          if (
-            !Array.isArray(DEF_OPTIONS[key]) ||
-            DEF_OPTIONS[key].includes(val)
-          ) {
-            ret[key] = val
-          }
-        }
-      })
-      return ret
+      return initOptions(this)
     },
     fmt() {
       return typeof this.format === 'string' ? this.format : null
@@ -110,7 +91,12 @@ export default {
     })
 
     calendar.on('change', (list) => {
-      this.date = this._fmtValue(list)
+      this.date = formatValue(
+        list,
+        this.mode,
+        this.fmt,
+        this.options.langPackage
+      )
       this.$emit('change', this.date, list)
     })
 
@@ -149,15 +135,6 @@ export default {
     },
     getDate() {
       return this.calendar.getDate()
-    },
-    _fmtValue(list) {
-      const fmt = this.fmt
-      const arr = list.map((item) => {
-        return fmt
-          ? this.calendar.formatDate(item.fullText, fmt)
-          : item.fullText
-      })
-      return this.mode === MODE_SINGLE ? arr[0] : arr
     },
   },
   watch: {

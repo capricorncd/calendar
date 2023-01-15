@@ -1,11 +1,12 @@
 ### mode:range
 
-value: {{value}}
+and custom colors. value: {{value}}
 
 ```html
 <zx-vue-calendar
   v-model="value"
-  mode="range" 
+  mode="range"
+  :option="{colors: {primary: 'green', rangeBg: 'chartreuse'}}"
   @cancel="handleCancel"
   @change="handleChange" />
 <script>
