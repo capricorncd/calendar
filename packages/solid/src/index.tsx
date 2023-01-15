@@ -3,16 +3,13 @@
  * https://github.com/capricorncd
  * Date: 2022-12-30 15:10:21 (GMT+0900)
  */
-import { onMount, createSignal, createMemo, JSX } from 'solid-js'
+import { onMount, JSX } from 'solid-js'
 import {
   ZxCalendar,
   ZxCalendarItem,
   ZxCalendarOptions,
   ZxCalendarModes,
   ZxCalendarTypes,
-  DEF_OPTIONS,
-  MODE_SINGLE,
-  TYPE_DATE,
 } from '@zx-calendar/core'
 import { formatValue, initOptions } from '@zx-calendar/helpers'
 

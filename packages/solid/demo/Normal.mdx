@@ -2,7 +2,7 @@
 import { createSignal } from "solid-js";
 import { ZxSolidCalendar } from "../src";
 
-export function Normal() {
+export default function Normal() {
   const [date, setDate] = createSignal()
 
   return (
@@ -10,7 +10,7 @@ export function Normal() {
       <p>value {date()}</p>
       <div class="example-demo-wrapper">
         <ZxSolidCalendar
-          footer={<div>footer</div>}
+          footer={<div>insert a footer</div>}
           value={date()}
           change={(newDate) => {
             setDate(newDate)
