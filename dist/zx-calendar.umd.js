@@ -1,3 +1,9 @@
+/*!
+ * zx-calendar version 0.7.2
+ * Author: Xing Zhong <capricorncd@qq.com, zx198401@gmail.com>
+ * Repository: https://github.com/capricorncd/calendar#readme
+ * Released on: 2023-01-15 21:35:15 (GMT+0900)
+ */
 (function(h,A){typeof exports=="object"&&typeof module<"u"?A(exports):typeof define=="function"&&define.amd?define(["exports"],A):(h=typeof globalThis<"u"?globalThis:h||self,A(h.zxCalendar={}))})(this,function(h){"use strict";const A="yyyy/MM",dt="yyyy-yyyy",ht="yyyy",_="is-selected",V="is-disabled",ft="is-holiday",pt="is-current",G="is-range-first",U="is-range-last",z="is-range-first-last",J="is-range-temp",K="is-first-page",X="is-last-page",yt="is-weekend",C="date-only",O="__prev-button",w="__next-button",x="__title-wrapper",q="__item-week",Z="__confirm-button",Q="__clear-button",tt="__cancel-button",et="multiple",m="range",_t="single",$="date",v="month",L="year",st={en:{full:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],abbr:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]},jp:{full:["\u65E5\u66DC\u65E5","\u6708\u66DC\u65E5","\u706B\u66DC\u65E5","\u6C34\u66DC\u65E5","\u6728\u66DC\u65E5","\u91D1\u66DC\u65E5","\u571F\u66DC\u65E5"],abbr:["\u65E5","\u6708","\u706B","\u6C34","\u6728","\u91D1","\u571F"]},zh:{full:["\u661F\u671F\u65E5","\u661F\u671F\u4E00","\u661F\u671F\u4E8C","\u661F\u671F\u4E09","\u661F\u671F\u56DB","\u661F\u671F\u4E94","\u661F\u671F\u516D"],abbr:["\u65E5","\u4E00","\u4E8C","\u4E09","\u56DB","\u4E94","\u516D"]}},gt=["confirmButton","cancelButton","clearButton"],nt={en:["ok","cancel","clear"],jp:["\u9078\u629E","\u30AD\u30E3\u30F3\u30BB\u30EB","\u30AF\u30EA\u30A2\u30FC"],zh:["\u786E\u5B9A","\u53D6\u6D88","\u6E05\u9664"]};function Et(e="en",t){const s=nt[e]||nt.en,n=gt.reduce((a,o,r)=>(a[o]=s[r],a),{}),i=st[e]||st.en;return n.weeks=t?i.full:i.abbr,n}function mt({lang:e,isFullWeek:t,langPackage:s}){return{langPackage:{...Et(e,t),...s}}}/*!
  * date-utils-2020 v1.1.0
  * Author: Capricorncd
