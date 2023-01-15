@@ -4,7 +4,8 @@ https://capricorncd.github.io/calendar/dist/solid.html
 
 ```jsx
 import { createSignal } from 'solid-js'
-import { ZxSolidCalendar } from 'zx-calendar/lib/solid-calendar'
+import { ZxSolidCalendar } from 'zx-calendar/solid'
+import 'zx-calendar/css'
 
 export function App() {
   const [date, setDate] = createSignal()

@@ -2,6 +2,42 @@
 
 https://capricorncd.github.io/calendar/dist/vue.html
 
+```js
+/** Vue 3.x */
+import { ZxVueCalendar } from 'zx-calendar/vue'
+
+/** Vue 2.x */
+import { ZxVueCalendar } from 'zx-calendar/vue2'
+```
+
+### Vue 3.x
+
+```javascript
+import { ZxVueCalendar } from 'zx-calendar/vue'
+import 'zx-calendar/css'
+
+const App = {
+  components: {
+    ZxVueCalendar
+  },
+  data() {
+    return {
+      date: '1990/09/12'
+    }
+  },
+  template: `
+    <div>
+      <h2>{{ date }}</h2>
+      <ZxVueCalendar v-model="date"></ZxVueCalendar>
+    </div>
+  `
+}
+
+Vue.createApp(App).mount('#app')
+```
+
+### Vue 2.x
+
 ```html
 <template>
   <zx-vue-calendar 
@@ -12,8 +48,7 @@ https://capricorncd.github.io/calendar/dist/vue.html
 </template>
 
 <script>
-/** Vue 2.x.x */
-import { ZxVueCalendar } from 'zx-calendar/lib/vue-calendar'
+import { ZxVueCalendar } from 'zx-calendar/vue2'
 import 'zx-calendar/css'
 
 export default {
@@ -38,33 +73,6 @@ export default {
   }
 }
 </script>
-```
-
-### Vue 3.x.x
-
-```javascript
-/** Vue 3.x.x */
-import { ZxVueCalendar } from 'zx-calendar/lib/vue3-calendar'
-import 'zx-calendar/css'
-
-const App = {
-  components: {
-    ZxVueCalendar
-  },
-  data() {
-    return {
-      date: '1990/09/12'
-    }
-  },
-  template: `
-    <div>
-      <h2>{{ date }}</h2>
-      <ZxVueCalendar v-model="date"></ZxVueCalendar>
-    </div>
-  `
-}
-
-Vue.createApp(App).mount('#app')
 ```
 
 |Props|Type|Default|Description|

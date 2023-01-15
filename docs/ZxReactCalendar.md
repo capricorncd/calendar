@@ -4,7 +4,7 @@ https://capricorncd.github.io/calendar/dist/react.html
 
 ```jsx
 import React, { Component } from 'react'
-import { ZxReactCalendar } from 'zx-calendar/lib/react-calendar'
+import { ZxReactCalendar } from 'zx-calendar/react'
 import 'zx-calendar/css'
 
 class App extends Component {

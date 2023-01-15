@@ -1,6 +1,6 @@
 # zx-calendar
 
-zx-calendar, zx-vue-calendar (Vue2.x.x and Vue3.x.x), zx-react-calendar
+zx-calendar, ZxReactCalendar, ZxSolidCalendar, zx-vue-calendar (Vue2.x and Vue3.x)
 
 <p align="left">
   <a href="https://npmcharts.com/compare/zx-calendar?minimal=true"><img src="https://img.shields.io/npm/dm/zx-calendar.svg?sanitize=true" alt="Downloads"></a>
@@ -14,28 +14,30 @@ https://capricorncd.github.io/calendar/dist/index.html
 
 #### Vue docs and example
 
-Vue 2.x.x
+```js
+import { ZxVueCalendar } from 'zx-calendar/vue'
+// vue 2.x
+import { ZxVueCalendar } from 'zx-calendar/vue2'
+```
 
-https://capricorncd.github.io/calendar/dist/vue.html
-
-Vue 3.x.x
-
-https://capricorncd.github.io/calendar/dist/vue3.html
-
-[ZxVueCalendar](docs/ZxVueCalendar.md)
+`ZxVueCalendar` [Docs](docs/ZxVueCalendar.md) | [Demo vue2.x](https://capricorncd.github.io/calendar/dist/vue.html) | [Demo vue3.x](https://capricorncd.github.io/calendar/dist/vue3.html)
 
 #### React docs and example
 
-https://capricorncd.github.io/calendar/dist/react.html
+```js
+import { ZxReactCalendar } from 'zx-calendar/react'
+```
 
-[ZxReactCalendar](docs/ZxReactCalendar.md)
+`ZxReactCalendar` [Docs](docs/ZxReactCalendar.md) | [Demo](https://capricorncd.github.io/calendar/dist/react.html)
 
 
 #### Solid-js
 
-https://capricorncd.github.io/calendar/dist/solid.html
+```js
+import { ZxSolidCalendar } from 'zx-calendar/solid'
+```
 
-[ZxSolidCalendar](docs/ZxSolidCalendar.md)
+`ZxSolidCalendar` [Docs](docs/ZxSolidCalendar.md) | [Demo](https://capricorncd.github.io/calendar/dist/solid.html)
 
 ## Install
 
@@ -95,7 +97,7 @@ zxCalendar.on('error', err => {
 })
 ```
 
-#### Options
+## Options
 
 ```javascript
 // default options
