@@ -22,15 +22,20 @@ Vue 3.x.x
 
 https://capricorncd.github.io/calendar/dist/vue3.html
 
+[ZxVueCalendar](docs/ZxVueCalendar.md)
+
 #### React docs and example
 
 https://capricorncd.github.io/calendar/dist/react.html
 
-[简体中文](docs/)
+[ZxReactCalendar](docs/ZxReactCalendar.md)
 
-### Browser Support
 
-IE10+ (When it is used in IE browser, Polyfill needs to be introduced)
+#### Solid-js
+
+https://capricorncd.github.io/calendar/dist/solid.html
+
+[ZxSolidCalendar](docs/ZxSolidCalendar.md)
 
 ## Install
 
