@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@zx-calendar/demo-header": "workspace:*",
     "@zx-calendar/vue": "workspace:*",
     "vue": "^3.2.45"
   },

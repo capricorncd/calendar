@@ -18,12 +18,9 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (chunkInfo) => {
-          // default `assets/[name].[hash].js`
-          // return '[name].[hash].js';
           return '[name].min.js'
         },
         assetFileNames: (chunkInfo) => {
-          console.log('assetFileNames', chunkInfo.name, chunkInfo.type)
           return '[name].min.[ext]'
         },
       },

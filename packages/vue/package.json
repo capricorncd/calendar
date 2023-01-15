@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@zx-calendar/core": "workspace:*",
+    "@zx-calendar/helpers": "workspace:*",
     "vue": "^3.2.45"
   },
   "devDependencies": {
