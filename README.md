@@ -102,18 +102,18 @@ zxCalendar.on('error', err => {
 ```javascript
 // default options
 const options = {
-  // element selector or element  
+  // element selector or element, calendar will be append this `el`
   el: '#app',
-  // date/month/year
+  // calendar's types, options date/month/year
   type: 'date',
-  // zh/jp/en that week and button text
+  // zh/jp/en that week and button text languages
   lang: 'zh',
-  // 星期一(省略形式: 一)
+  // Whether to display the full name of the week, `Mon` -> `Monday`/ 星期一(省略形式: 一)
   isFullWeek: false,
-  // title formatter of header
-  // type date: yyyy/MM
-  // type month: yyyy
-  // type year: yyyy-yyyy
+  // header title display format
+  // type is date: yyyy/MM
+  // type is month: yyyy
+  // type is year: yyyy-yyyy
   titleFormatter: 'yyyy/MM',
   // item suffix, 日/月/年
   itemSuffix: null,
@@ -128,9 +128,9 @@ const options = {
   // function, custom item handler
   // return object {text: string, value: number, fullText: string, disabled: boolean, ...}
   itemFormatter: null,
-  // Selection mode: single/multiple/range
+  // Selection mode, options single/multiple/range
   mode: 'single',
-  // language package
+  // language package, used when formatting dates
   langPackage: {
     confirmButton: 'ok',
     cancelButton: 'cancel',
@@ -152,10 +152,15 @@ const options = {
   // colors
   colors: {
     primary: '#f30',
+    // next/prev arrow color
     arrow: '#999',
+    // holiday dot color
     holidayDot: 'rgba(0, 0, 0, 0.2)',
+    // today/this month(year) item background color
     currentItemBg: '#eee',
+    // white color
     white: '#fff',
+    // selected range items background color
     rangeBg: '#eee',
   },
 }
