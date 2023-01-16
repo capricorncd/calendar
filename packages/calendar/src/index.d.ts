@@ -25,7 +25,7 @@ export type InputDateType = string | number | Date
 /**
  * @document ZxCalendar
  * zx-calendar, ZxReactCalendar, ZxSolidCalendar, zx-vue-calendar (Vue2.x and Vue3.x)
- * ```bash
+ * ```js
  * // Import CSS files in the entry file or root component
  * import 'zx-calendar/css'
  *

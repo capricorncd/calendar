@@ -108,7 +108,7 @@ zxCalendar.on('error', err => {
 
 ## Options
 
-see [ZxCalendarOptions](docs/#ZxCalendarOptions)
+see [ZxCalendarOptions](docs/README.md#zxcalendaroptions)
 
 ```javascript
 // default options

@@ -4,7 +4,7 @@ zx-calendar, ZxReactCalendar, ZxSolidCalendar, zx-vue-calendar (Vue2.x and Vue3.
 
 https://capricorncd.github.io/calendar/dist/index.html
 
-```bash
+```js
 // Import CSS files in the entry file or root component
 import 'zx-calendar/css'
 
