@@ -32,7 +32,7 @@ Param|Types|Required|Description
 :--|:--|:--|:--
 input|`string`/`timestamp`/`Date`|yes|-
 format|`string`|yes|-
-langPackage|`ILangPackage`|no|ses []()
+langPackage|`ILangPackage`|no|see [ILangPackage](#ilangpackage)
 
 - @returns `string`
 
@@ -120,6 +120,31 @@ input|`string`/`timestamp`/`Date`|yes|-
 - @returns `Date|null`
 
 ## Types
+
+### ILangPackage
+
+The method [formatDate](#formatdateinput-format-langpackage)'s parameter.
+
+Prop|Types|Required|Description
+:--|:--|:--|:--
+weeks|`string[]`|yes|-
+confirmButton|`string`|no|-
+cancelButton|`string`|no|-
+clearButton|`string`|no|-
+
+<details>
+<summary>Source Code</summary>
+
+```ts
+interface ILangPackage {
+  weeks: string[]
+  confirmButton?: string
+  cancelButton?: string
+  clearButton?: string
+}
+```
+
+</details>
 
 ### InputDateType
 
@@ -222,12 +247,12 @@ lang|`string`|no|weeks or button display language, optional `zh`\|`jp`\|`en`
 showHoliday|`boolean`|no|show holiday info
 type|`ZxCalendarTypes`|no|optional `date`/`month`/`year`, default `date`.
 isFullWeek|`boolean`|no|Whether to display the full name of the week, `Mon` -> `Monday`/ 星期一(省略形式: 一)
-titleFormatter|`string`|no|The header title display format. type is date: yyyy/MM, type is month: yyyy, type is year: yyyy-yyyy.
-itemSuffix|`null`/`string`|no|item suffix, 日/月/年 etc.
-defaultDate|`any[]`/`any`|no|default selected date. yyyy-MM-dd, yyyy/MM/dd, yyyy, timestamp, Array etc.
+titleFormatter|`string`|no|The header title display format. type is date: `yyyy/MM`, type is month: `yyyy`, type is year: `yyyy-yyyy`.
+itemSuffix|`null`/`string`|no|item suffix, `日/月/年` etc.
+defaultDate|`any[]`/`any`|no|default selected date. `yyyy-MM-dd`, `yyyy/MM/dd`, `yyyy`, `timestamp`, `Array` etc.
 itemFormatter|`(originalData: ZxCalendarItem) => ZxCalendarItem`|no|custom item handler, param `originalData` see [ZxCalendarItem](#ZxCalendarItem)
 mode|`ZxCalendarModes`|no|Selection mode, optional `single`\|`multiple`\|`range`
-langPackage|`ILangPackage`|no|language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`
+langPackage|`ILangPackage`|no|language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`, see [ILangPackage](#ilangpackage)
 footerButtons|`string[]`|no|footer buttons. display clear/cancel/confirm button or sort, when `mode` is `multiple\|range`, default `['clear', 'cancel', 'confirm']`.
 hideFooter|`boolean`|no|hide buttons of footer when mode is `multiple\|range`
 footerButtonAlign|`string`|no|justify-content
@@ -251,19 +276,19 @@ interface ZxCalendarOptions {
   // Whether to display the full name of the week, `Mon` -> `Monday`/ 星期一(省略形式: 一)
   isFullWeek?: boolean
   // The header title display format.
-  // type is date: yyyy/MM,
-  // type is month: yyyy,
-  // type is year: yyyy-yyyy.
+  // type is date: `yyyy/MM`,
+  // type is month: `yyyy`,
+  // type is year: `yyyy-yyyy`.
   titleFormatter?: string
-  // item suffix, 日/月/年 etc.
+  // item suffix, `日/月/年` etc.
   itemSuffix?: null | string
-  // default selected date. yyyy-MM-dd, yyyy/MM/dd, yyyy, timestamp, Array etc.
+  // default selected date. `yyyy-MM-dd`, `yyyy/MM/dd`, `yyyy`, `timestamp`, `Array` etc.
   defaultDate?: any[] | any
   // custom item handler, param `originalData` see [ZxCalendarItem](#ZxCalendarItem)
   itemFormatter?: (originalData: ZxCalendarItem) => ZxCalendarItem
   // Selection mode, optional `single`|`multiple`|`range`
   mode?: ZxCalendarModes
-  // language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`
+  // language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`, see [ILangPackage](#ilangpackage)
   langPackage?: ILangPackage
   // footer buttons.
   // display clear/cancel/confirm button or sort, when `mode` is `multiple|range`, default `['clear', 'cancel', 'confirm']`.

@@ -6,8 +6,8 @@
 export type * from './constants'
 
 /**
- * @interface ILangPackage
- * method formatDate's parameter.
+ * @type ILangPackage
+ * The method [formatDate](#formatdateinput-format-langpackage)'s parameter.
  */
 export interface ILangPackage {
   weeks: string[]
@@ -41,7 +41,7 @@ export class ZxCalendar {
    * @method formatDate(input, format, langPackage)
    * @param input `string|timestamp|Date`
    * @param format `string`
-   * @param langPackage? `ILangPackage` ses []()
+   * @param langPackage? `ILangPackage` see [ILangPackage](#ilangpackage)
    * @returns `string`
    */
   formatDate<T>(input: T, format: string, langPackage?: ILangPackage): string
@@ -179,19 +179,19 @@ export interface ZxCalendarOptions {
   // Whether to display the full name of the week, `Mon` -> `Monday`/ 星期一(省略形式: 一)
   isFullWeek?: boolean
   // The header title display format.
-  // type is date: yyyy/MM,
-  // type is month: yyyy,
-  // type is year: yyyy-yyyy.
+  // type is date: `yyyy/MM`,
+  // type is month: `yyyy`,
+  // type is year: `yyyy-yyyy`.
   titleFormatter?: string
-  // item suffix, 日/月/年 etc.
+  // item suffix, `日/月/年` etc.
   itemSuffix?: null | string
-  // default selected date. yyyy-MM-dd, yyyy/MM/dd, yyyy, timestamp, Array etc.
+  // default selected date. `yyyy-MM-dd`, `yyyy/MM/dd`, `yyyy`, `timestamp`, `Array` etc.
   defaultDate?: any[] | any
   // custom item handler, param `originalData` see [ZxCalendarItem](#ZxCalendarItem)
   itemFormatter?: (originalData: ZxCalendarItem) => ZxCalendarItem
   // Selection mode, optional `single`|`multiple`|`range`
   mode?: ZxCalendarModes
-  // language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`
+  // language packages for formateDate method, `{ weeks: string[], confirmButton: string, cancelButton: string, clearButton: string}`, see [ILangPackage](#ilangpackage)
   langPackage?: ILangPackage
   // footer buttons.
   // display clear/cancel/confirm button or sort, when `mode` is `multiple|range`, default `['clear', 'cancel', 'confirm']`.
