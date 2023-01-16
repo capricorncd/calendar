@@ -125,14 +125,9 @@ input|`string`/`timestamp`/`Date`|yes|-
 
 Function date parameter of ZxCalendar.
 
-<details>
-<summary>Source Code</summary>
-
 ```ts
 type InputDateType = string | number | Date
 ```
-
-</details>
 
 ### ZxCalendarColors
 
@@ -211,14 +206,9 @@ interface ZxCalendarItem {
 
 ### ZxCalendarModes
 
-<details>
-<summary>Source Code</summary>
-
 ```ts
 type ZxCalendarModes = 'single' | 'multiple' | 'range'
 ```
-
-</details>
 
 ### ZxCalendarOptions
 
@@ -291,11 +281,6 @@ interface ZxCalendarOptions {
 
 ### ZxCalendarTypes
 
-<details>
-<summary>Source Code</summary>
-
 ```ts
 type ZxCalendarTypes = 'date' | 'month' | 'year'
 ```
-
-</details>

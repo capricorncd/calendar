@@ -8,7 +8,9 @@ const { outputFile } = require('zx-sml/nodejs')
 
 function main() {
   const coreDir = path.join(__dirname, '../packages/calendar/src')
-  outputFile(coreDir, path.join(__dirname, '../docs/README.md'))
+  outputFile(coreDir, path.join(__dirname, '../docs/README.md'), {
+    typeWithAuto: true,
+  })
 }
 
 main()
