@@ -108,6 +108,8 @@ zxCalendar.on('error', err => {
 
 ## Options
 
+see [ZxCalendarOptions](docs/#ZxCalendarOptions)
+
 ```javascript
 // default options
 const options = {
