@@ -3,7 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2022-12-30 15:10:21 (GMT+0900)
  */
-import { onMount, JSX } from 'solid-js'
+import { onMount, JSX, createEffect, createSignal } from 'solid-js'
 import { ZxCalendar } from '@zx-calendar/core'
 import type {
   ZxCalendarItem,
@@ -42,21 +42,33 @@ export interface ZxSolidCalendarProps {
 export function ZxSolidCalendar(props: ZxSolidCalendarProps) {
   const { change, instance } = props
 
-  let elRef
+  const [zxCalendar, setZxCalendar] = createSignal<ZxCalendar>(null)
+
+  let elRef, value
+
+  createEffect(() => {
+    if (props.value !== value && zxCalendar()) {
+      zxCalendar().setDate(props.value)
+    }
+  })
 
   onMount(() => {
     const options = initOptions(props)
     options.el = elRef
 
     const zxCalendar = new ZxCalendar(options)
+    setZxCalendar(zxCalendar)
 
     instance?.(zxCalendar)
 
     zxCalendar.on('change', (res: ZxCalendarItem[]) => {
-      change?.(
-        formatValue(res, options.mode, options.format, options.langPackage),
-        res
+      value = formatValue(
+        res,
+        options.mode,
+        options.format,
+        options.langPackage
       )
+      change?.(value, res)
     })
   })
 

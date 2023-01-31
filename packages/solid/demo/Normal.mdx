@@ -1,9 +1,12 @@
 ```jsx
-import { createSignal } from "solid-js";
-import { ZxSolidCalendar } from "../src";
+import { createSignal } from 'solid-js';
+import { ZxSolidCalendar } from '../src';
+import { formatDate } from 'zx-sml';
 
 export default function Normal() {
-  const [date, setDate] = createSignal()
+  const [date, setDate] = createSignal(
+    formatDate(Date.now() * (Math.random() + 0.5), 'yyyy/MM/dd')
+  )
 
   return (
     <div>
