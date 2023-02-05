@@ -71,9 +71,11 @@ export function formatMdx(source) {
         line = replaceFrom(line)
       }
       pres.push(
-        escapeTag(line).replace(/[{}]/g, (match) => {
-          return match === '{' ? '__L__' : '__R__'
-        })
+        escapeTag(line)
+          .replace(/[{}]/g, (match) => {
+            return match === '{' ? '__L__' : '__R__'
+          })
+          .replace(/\s/g, '__S__')
       )
     })
     pres.push('</code></pre>')
@@ -103,6 +105,7 @@ export function formatMdx(source) {
 
 function handlePreCode(line) {
   return line
+    .replace(/__S__/g, ' ')
     .replace(/__[LR]__/g, (m) => {
       return m === '__L__' ? '{' : '}'
     })
