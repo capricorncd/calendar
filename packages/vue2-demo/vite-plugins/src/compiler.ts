@@ -31,5 +31,7 @@ function tryRequire(id: string, from?: string) {
     return from
       ? _require(_require.resolve(id, { paths: [from] }))
       : _require(id)
-  } catch (e) {}
+  } catch (e) {
+    // ...
+  }
 }

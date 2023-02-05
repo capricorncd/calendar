@@ -92,7 +92,7 @@ export function formatMdx(source) {
 
   const arr = lines.map((line) => {
     if (/style="(.+?)"/g.test(line)) {
-      line = line.replace(/style="(.+?)"/g, (match, $1) => {
+      line = line.replace(/style="(.+?)"/g, () => {
         // console.log(match, $1)
         return ''
       })

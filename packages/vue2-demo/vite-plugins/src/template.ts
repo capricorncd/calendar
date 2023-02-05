@@ -155,6 +155,7 @@ function transformRequireToImport(code: string): string {
 
   code = code.replace(
     /require\(("(?:[^"\\]|\\.)+"|'(?:[^'\\]|\\.)+')\)/g,
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     (_, name): any => {
       if (!(name in imports)) {
         // #81 compat unicode assets name

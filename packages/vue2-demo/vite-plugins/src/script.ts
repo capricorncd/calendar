@@ -17,6 +17,7 @@ export function setResolvedScript(
   script: SFCScriptBlock,
   ssr: boolean
 ): void {
+  /* eslint-disable-next-line @typescript-eslint/no-extra-semi */
   ;(ssr ? ssrCache : clientCache).set(descriptor, script)
 }
 

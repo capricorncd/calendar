@@ -71,6 +71,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
 
   let options: ResolvedOptions = {
     isProduction: process.env.NODE_ENV === 'production',
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     compiler: null as any, // to be set in buildStart
     ...rawOptions,
     include,
@@ -160,6 +161,7 @@ export default function vuePlugin(rawOptions: Options = {}): Plugin {
         if (block) {
           return {
             code: block.content,
+            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
             map: block.map as any,
           }
         }

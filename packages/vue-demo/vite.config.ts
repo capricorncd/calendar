@@ -17,10 +17,10 @@ export default defineConfig({
         vue3: resolve(__dirname, './vue3.html'),
       },
       output: {
-        entryFileNames: (chunkInfo) => {
+        entryFileNames: () => {
           return '[name].min.js'
         },
-        assetFileNames: (chunkInfo) => {
+        assetFileNames: () => {
           return '[name].min.[ext]'
         },
       },

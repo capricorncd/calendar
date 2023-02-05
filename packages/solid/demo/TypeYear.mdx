@@ -3,7 +3,7 @@ import { createSignal } from 'solid-js'
 import { ZxSolidCalendar } from '../src'
 
 export default function TypeYear() {
-  const [year, setYear] = createSignal(new Date().getFullYear().toString())
+  const [year, setYear] = createSignal(String(new Date().getFullYear()))
 
   return (
     <div>

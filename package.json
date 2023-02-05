@@ -82,7 +82,7 @@
     "zx-calendar"
   ],
   "dependencies": {
-    "zx-sml": "^0.6.5"
+    "zx-sml": "^0.6.6"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

@@ -22,10 +22,11 @@ export function createDescriptor(
     isProduction,
     sourceMap,
     compiler,
-    customSourceFormatter = (s, filename) => s,
+    customSourceFormatter = (s) => s,
   }: ResolvedOptions
 ): SFCParseResult {
   let descriptor: SFCDescriptor
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   let errors: any[] = []
   try {
     descriptor = compiler.parse({

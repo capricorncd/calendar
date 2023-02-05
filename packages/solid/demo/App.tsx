@@ -9,9 +9,10 @@ import TypeYear from './TypeYear.mdx';
 export function App() {
 
   onMount(() => {
-    slice<HTMLElement, NodeList>(document.querySelectorAll('pre code')).forEach((block) => {
-      window.hljs.highlightElement(block)
-    })
+    slice<HTMLElement, NodeList>(document.querySelectorAll('pre code'))
+      .forEach((block) => {
+        window.hljs.highlightElement(block)
+      })
   })
 
   return (
@@ -25,7 +26,10 @@ export function App() {
       <pre>
         <code class="javascript">
           {
-            "import { ZxSolidCalendar } from 'zx-calendar/solid'"
+            `
+import { ZxSolidCalendar } from 'zx-calendar/solid'
+import 'zx-calendar/css'
+            `
           }
         </code>
       </pre>

@@ -14,7 +14,7 @@ const directRequestRE = /(\?|&)direct\b/
  * Vite-specific HMR handling
  */
 export async function handleHotUpdate(
-  { file, modules, read, server }: HmrContext,
+  { file, modules, read }: HmrContext,
   options: ResolvedOptions
 ): Promise<ModuleNode[] | void> {
   const prevDescriptor = getDescriptor(file, options, false)
@@ -43,6 +43,7 @@ export async function handleHotUpdate(
       (descriptor.script?.lang && !descriptor.script.src)
     ) {
       const scriptModuleRE = new RegExp(
+        /* eslint-disable-next-line no-useless-escape */
         `type=script.*&lang\.${
           descriptor.scriptSetup?.lang || descriptor.script?.lang
         }$`

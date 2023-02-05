@@ -18,7 +18,7 @@ export default defineConfig({
         react: resolve(__dirname, './react.html'),
       },
       output: {
-        entryFileNames: (chunkInfo) => {
+        entryFileNames: () => {
           // default `assets/[name].[hash].js`
           // return '[name].[hash].js';
           return '[name].min.js'

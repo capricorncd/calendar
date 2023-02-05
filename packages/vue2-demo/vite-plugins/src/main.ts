@@ -157,6 +157,7 @@ var __component__ = /*#__PURE__*/__normalizer(
       resolvedMap
     )
     resolvedCode = code
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     resolvedMap = resolvedMap ? (map as any) : resolvedMap
   }
 

@@ -13,7 +13,7 @@ export default function VitePluginFmtMdx(): Plugin {
     name: 'vite:fmt-mdx',
     // apply: 'serve',
     enforce: 'pre',
-    load: (id, options) => {
+    load: (id: string) => {
       // console.log('load::::====', id, options)
       if (/\.mdx$/i.test(id)) {
         const source = fs.readFileSync(id).toString()
@@ -24,7 +24,7 @@ export default function VitePluginFmtMdx(): Plugin {
   }
 }
 
-async function transform(source: string, id, options) {
+async function transform(source: string, id: string) {
   if (!/\.mdx$/i.test(id)) return source
   // console.log('mdx.plugin::', id)
   // console.log(source)

@@ -36,6 +36,7 @@ export async function transformStyle(
   })
 
   if (result.errors.length) {
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     result.errors.forEach((error: any) => {
       if (error.line && error.column) {
         error.loc = {
@@ -56,7 +57,8 @@ export async function transformStyle(
         result.map as Omit<RawSourceMap, 'version'> as ExistingRawSourceMap,
         filename
       )
-    : ({ mappings: '' } as any)
+    : /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+      ({ mappings: '' } as any)
 
   return {
     code: result.code,

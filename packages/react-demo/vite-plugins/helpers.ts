@@ -8,11 +8,11 @@ import { EOL } from 'os'
 
 const md = mdIt().use(require('markdown-it-multimd-table'))
 
-export function escapeTag(str) {
+export function escapeTag(str: string) {
   return str.replace(/<(\/?\w+)/g, '&lt;$1').replace(/(\w+)>/g, '$1&gt;')
 }
 
-export function replaceFrom(str) {
+export function replaceFrom(str: string) {
   return str.replace(`@zx-calendar/react`, `zx-calendar/react`)
 }
 
@@ -23,7 +23,7 @@ function handleTable(tables: string[], lines: string[]) {
   tables.length = 0
 }
 
-export function formatMdx(source) {
+export function formatMdx(source: string) {
   const lines: string[] = []
   const tables: string[] = []
   let isCode = false
@@ -91,7 +91,7 @@ export function formatMdx(source) {
 
   const arr = lines.map((line) => {
     if (/style="(.+?)"/g.test(line)) {
-      line = line.replace(/style="(.+?)"/g, (match, $1) => {
+      line = line.replace(/style="(.+?)"/g, () => {
         // console.log(match, $1)
         return ''
       })
@@ -116,11 +116,11 @@ export default App
 
 const reg = /"(\w*import React.+)"/
 
-function handlePreCode(line) {
+function handlePreCode(line: string) {
   // console.log(line)
   return line.replace(reg, (match, $1) => {
     $1 = $1
-      .replace(/__[LR]__/g, (m) => {
+      .replace(/__[LR]__/g, (m: string) => {
         return m === '__L__' ? '{' : '}'
       })
       .replace(/__WRAP__/g, '\\n')
@@ -129,7 +129,7 @@ function handlePreCode(line) {
   })
 }
 
-export function afterTransform(source) {
+export function afterTransform(source: string) {
   const lines = source.split(/[\n\r]/).map((line) => {
     if (!line) return
     if (reg.test(line.trim())) {

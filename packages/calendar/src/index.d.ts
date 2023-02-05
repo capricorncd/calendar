@@ -186,7 +186,7 @@ export interface ZxCalendarOptions {
   // item suffix, `日/月/年` etc.
   itemSuffix?: null | string
   // default selected date. `yyyy-MM-dd`, `yyyy/MM/dd`, `yyyy`, `timestamp`, `Array` etc.
-  defaultDate?: any[] | any
+  defaultDate?: unknown[] | unknown
   // custom item handler, param `originalData` see [ZxCalendarItem](#ZxCalendarItem)
   itemFormatter?: (originalData: ZxCalendarItem) => ZxCalendarItem
   // Selection mode, optional `single`|`multiple`|`range`

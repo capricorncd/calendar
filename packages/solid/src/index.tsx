@@ -44,7 +44,7 @@ export function ZxSolidCalendar(props: ZxSolidCalendarProps) {
 
   const [zxCalendar, setZxCalendar] = createSignal<ZxCalendar>(null)
 
-  let elRef, value
+  let elRef: HTMLDivElement, value: string | string[]
 
   createEffect(() => {
     if (props.value !== value && zxCalendar()) {
