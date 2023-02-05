@@ -63,7 +63,7 @@
     "build:all": "pnpm run build:core & pnpm run build:demo & pnpm run build:react & pnpm run build:react-demo & pnpm run build:vue & pnpm run build:vue-demo & pnpm run build:vue2 & pnpm run build:vue2-demo & pnpm run build:solid & pnpm run build:solid-demo",
     "build": "pnpm run build:all && pnpm run build:after",
     "docs": "node scripts/docs.js",
-    "lint": "eslint . --fix --ext .js,.cjs,.ts",
+    "lint": "eslint . --fix --ext .js,.cjs,.ts,.tsx",
     "prepare": "husky install"
   },
   "repository": {

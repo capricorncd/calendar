@@ -13,7 +13,7 @@
     "sass": "^1.56.1"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "date-utils-2020": "^1.1.0"
   }

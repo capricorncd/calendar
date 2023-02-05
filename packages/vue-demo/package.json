@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@zx-calendar/demo-header": "workspace:*",
     "@zx-calendar/vue": "workspace:*",

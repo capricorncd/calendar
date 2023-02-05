@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js'
+import 'solid-js'
 
 declare module 'solid-js' {
   namespace JSX {
@@ -17,13 +17,11 @@ declare module 'solid-js' {
 }
 
 declare global {
-  const hljs: {
-    highlightElement: (el: Element) => void
+  interface Window {
+    hljs: {
+      highlightElement: (el: Element) => void
+    }
   }
 }
 
-// declare module '*.mdx';
-declare module '*.mdx' {
-  const MDXComponent: (props: Record<string, unknown>) => JSX.Element
-  export default MDXComponent
-}
+declare module '*.mdx'
