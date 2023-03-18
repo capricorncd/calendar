@@ -6,7 +6,6 @@
 const fs = require('fs')
 const { EOL } = require('os')
 const path = require('path')
-const { formatDate } = require('zx-sml')
 const { log, warn } = require('zx-sml/nodejs')
 // root package.json
 const pkg = require('../package.json')
@@ -20,7 +19,7 @@ const header = [
   ` * ${version}`,
   ` * Author: ${pkg.author}`,
   ` * Repository: ${pkg.homepage}`,
-  ` * Released on: ${formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss (g)')}`,
+  // ` * Released on: ${formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss (g)')}`,
   ` */`,
 ]
 
