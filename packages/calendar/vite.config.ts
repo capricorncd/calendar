@@ -3,6 +3,7 @@
  * https://github.com/capricorncd
  * Date: 2022/11/26 18:15:35 (GMT+0900)
  */
+/// <reference types="vitest" />
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import { toCamelCase } from 'zx-sml'
@@ -28,5 +29,13 @@ export default defineConfig({
         },
       },
     },
+  },
+  css: {
+    postcss: {
+      plugins: [require('autoprefixer')],
+    },
+  },
+  test: {
+    environment: 'jsdom',
   },
 })
